@@ -11,32 +11,33 @@ export class ContactoService {
   private baseUrl = 'http://localhost:3000';
   private endpoint = `${this.baseUrl}/contacto`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // GET lista de contactos
+  // Obtener todos los contactos
   getContactos(): Observable<Contacto[]> {
     return this.http.get<Contacto[]>(this.endpoint)
-      .pipe(
-        catchError(this.handleError)
-      );
+      .pipe(catchError(this.handleError));
   }
 
+  // Crear nuevo contacto
   createContacto(contacto: Contacto): Observable<Contacto> {
     return this.http.post<Contacto>(this.endpoint, contacto)
-      .pipe(
-        catchError(this.handleError)
-      );
+      .pipe(catchError(this.handleError));
   }
 
-  // DELETE contacto por id
-  eliminarContacto(id: number): Observable<any> {
-    return this.http.delete(`${this.endpoint}/${id}`)
-      .pipe(
-        catchError(this.handleError)
-      );
+  // Actualizar contacto existente
+  actualizarContacto(id_contacto: number, contacto: Contacto): Observable<Contacto> {
+    return this.http.put<Contacto>(`${this.endpoint}/${id_contacto}`, contacto)
+      .pipe(catchError(this.handleError));
   }
 
-  // Manejo básico de errores
+  // Eliminar contacto
+  eliminarContacto(id_contacto: number): Observable<any> {
+    return this.http.delete(`${this.endpoint}/${id_contacto}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  // Manejo de errores
   private handleError(error: HttpErrorResponse) {
     console.error('Error en ContactoService:', error);
     return throwError(() => new Error(error.message || 'Error en la petición HTTP'));

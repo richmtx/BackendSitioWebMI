@@ -5,8 +5,8 @@
       <h2>Contacto</h2>
       <h3>Nuestras Instalaciones:</h3>
       <p>
-        Las instalaciones del Programa de Maestría en Ingeniería, se localizan físicamente en el edificio
-        de la Unidad de Posgrado, Investigación y Desarrollo Tecnológico, UPIDET, localizado en el área
+        Las instalaciones del Programa de Maestría en Ingeniería se localizan físicamente en el edificio
+        de la Unidad de Posgrado, Investigación y Desarrollo Tecnológico (UPIDET), localizado en el área
         norte del Instituto Tecnológico de Durango, entre el Blvd. Felipe Pescador y el Blvd. Tecnológico.
       </p>
 
@@ -23,32 +23,71 @@
         </thead>
         <tbody>
           <!-- Filas de contactos existentes -->
-          <tr *ngFor="let contacto of contactos">
-            <td>{{ contacto.nombre }}</td>
-            <td>{{ contacto.puesto }}</td>
-            <td>{{ contacto.correo }}</td>
-            <td>{{ contacto.telefono }}</td>
-            <td>
-              <button class="edit-btnContacto">Editar</button>
-              <button (click)="eliminarContacto(contacto.id)" class="delete-btnContacto">
-                Eliminar
-              </button>
-            </td>
-          </tr>
+          <ng-container *ngFor="let contacto of contactos">
+            <!-- Fila normal -->
+            <tr *ngIf="!contactoEditando || contactoEditando.id_contacto !== contacto.id_contacto">
+              <td>{{ contacto.nombre }}</td>
+              <td>{{ contacto.puesto }}</td>
+              <td>{{ contacto.correo }}</td>
+              <td>{{ contacto.telefono }}</td>
+              <td>
+                <button (click)="editarContacto(contacto)" class="edit-btnContacto">Editar</button>
+                <button (click)="eliminarContacto(contacto.id_contacto)" class="delete-btnContacto">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
 
-          <!-- Fila para agregar nuevo contacto (ahora al final) -->
+            <!-- Fila editable -->
+            <tr *ngIf="contactoEditando && contactoEditando.id_contacto === contacto.id_contacto">
+              <td>
+                <input
+                  [(ngModel)]="contactoEditando.nombre"
+                  placeholder="Nombre"
+                  class="input-amplio"
+                />
+              </td>
+              <td>
+                <input
+                  [(ngModel)]="contactoEditando.puesto"
+                  placeholder="Puesto"
+                  class="input-amplio"
+                />
+              </td>
+              <td>
+                <input
+                  [(ngModel)]="contactoEditando.correo"
+                  placeholder="Correo"
+                  type="email"
+                  class="input-amplio"
+                />
+              </td>
+              <td>
+                <input
+                  [(ngModel)]="contactoEditando.telefono"
+                  placeholder="Teléfono"
+                  class="input-amplio"
+                />
+              </td>
+              <td>
+                <button (click)="guardarEdicion()" class="save-btnContacto">Guardar</button>
+                <button (click)="cancelarEdicion()" class="cancel-btnContacto">Cancelar</button>
+              </td>
+            </tr>
+          </ng-container>
+
+          <!-- Fila para agregar nuevo contacto -->
           <tr *ngIf="nuevoContacto">
-            <td><input [(ngModel)]="nuevoContacto.nombre" placeholder="Nombre" class="input-amplio"></td>
-            <td><input [(ngModel)]="nuevoContacto.puesto" placeholder="Puesto" class="input-amplio"></td>
-            <td><input [(ngModel)]="nuevoContacto.correo" placeholder="Correo" type="email" class="input-amplio"></td>
-            <td><input [(ngModel)]="nuevoContacto.telefono" placeholder="Teléfono" class="input-amplio"></td>
+            <td><input [(ngModel)]="nuevoContacto.nombre" placeholder="Nombre" class="input-amplio" /></td>
+            <td><input [(ngModel)]="nuevoContacto.puesto" placeholder="Puesto" class="input-amplio" /></td>
+            <td><input [(ngModel)]="nuevoContacto.correo" placeholder="Correo" type="email" class="input-amplio" /></td>
+            <td><input [(ngModel)]="nuevoContacto.telefono" placeholder="Teléfono" class="input-amplio" /></td>
             <td>
               <button (click)="guardarNuevoContacto()" class="save-btnContacto">Guardar</button>
               <button (click)="cancelarNuevoContacto()" class="cancel-btnContacto">Cancelar</button>
             </td>
           </tr>
         </tbody>
-
       </table>
 
       <!-- Mensajes de carga y errores -->
