@@ -1,0 +1,145 @@
+
+/* Estilos para el contenido */
+
+.about-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px;
+    background-color: #fff;
+}
+
+.about-container {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.about-text {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about-text h2 {
+    padding-top: -15px;
+    margin-bottom: 0px;
+    font-size: 2rem;
+    color: #000;
+}
+
+.about-text h3 {
+    color: #000;
+    margin-top: 30px;
+    font-size: 1.3rem;
+}
+
+.about-text p {
+    font-size: 1.3rem;
+    margin-top: -10px;
+    text-align: justify;
+}
+
+.study-plan-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.study-plan-table th,
+.study-plan-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #000;
+}
+
+.study-plan-table th {
+    text-align: center;
+    font-size: 1.1rem;
+    background-color: #f2f2f2;
+    color: #000;
+    font-weight: bold;
+}
+
+.study-plan-table td {
+    text-align: center;
+    font-size: 1.1rem;
+    background-color: #fff;
+}
+
+/*--------------------------------------------------------------------------------------------------*/
+
+.actions {
+    margin-top: 10px;
+}
+
+.btnEditar,
+.btnEliminarLGYAC,
+.añadir-btnLGYAC {
+    padding: 6px 12px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.añadir-btnLGYAC {
+    background-color: #007bff;
+    color: white;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.btnEditar:hover,
+.btnEliminarLGYAC:hover,
+.añadir-btnLGYAC:hover {
+    opacity: 0.8;
+}
+
+.btnEliminarLGYAC {
+    color: white;
+    background-color: #dc3545;
+}
+
+.btnEditar {
+    background-color: #ffc107;
+}
+
+.btn-guardar {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-cancelar {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-cancelar:hover,
+.btn-guardar:hover {
+    opacity: 0.8;
+}
+
+.input-text {
+    width: 90%;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
