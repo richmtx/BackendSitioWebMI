@@ -1,0 +1,47 @@
+<section class="about-section">
+  <div class="about-container">
+    <div class="about-text" id="requisitos-container">
+      <h2>Requisitos para la obtención del grado académico</h2>
+
+      <!-- Lista de requisitos -->
+      <ul *ngIf="requisitos.length > 0; else noData">
+        <li *ngFor="let req of requisitos">
+          <div *ngIf="editandoId === req.id_grado; else modoNormal" style="width: 100%;">
+            <input type="text" [(ngModel)]="editDescripcion" class="input-requisito" />
+            <div class="botones-requisito">
+              <button class="guardar-btn" (click)="guardarEdicion(req)">Guardar</button>
+              <button class="cancelar-btn" (click)="cancelarEdicion()">Cancelar</button>
+            </div>
+          </div>
+
+          <ng-template #modoNormal>
+            <span>• {{ req.descripcion }}</span>
+            <div class="botones-requisito">
+              <button class="editar-btn" (click)="editarRequisito(req)">Editar</button>
+              <button class="eliminar-btn" (click)="eliminarRequisito(req)">Eliminar</button>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+
+      <!-- Si no hay requisitos -->
+      <ng-template #noData>
+        <p>No hay requisitos registrados.</p>
+      </ng-template>
+
+      <!-- Nuevo requisito -->
+      <div *ngIf="nuevoRequisitoVisible" class="nuevo-requisito">
+        <input type="text" [(ngModel)]="nuevoRequisito" placeholder="Escribe el nuevo requisito"
+          class="input-requisito" />
+        <button class="guardar-btn" (click)="guardarNuevo()">Guardar</button>
+        <button class="cancelar-btn" (click)="cancelarNuevo()">Cancelar</button>
+      </div>
+
+      <p *ngIf="errorMsg" style="color: red;">{{ errorMsg }}</p>
+    </div>
+  </div>
+</section>
+
+<div class="actions">
+  <button (click)="mostrarInput()" class="añadir-btnRequisito">Añadir Requisito</button>
+</div>
