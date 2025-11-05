@@ -58,42 +58,6 @@
             <div class="separator"></div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
             <!-- Distribución de Asignaturas -->
             <h3>Distribución de Asignaturas</h3>
             <table class="study-plan-table">
@@ -101,17 +65,125 @@
                     <tr>
                         <th>Materia</th>
                         <th>Créditos</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
+
                     <tr *ngFor="let item of distribucion">
-                        <td>{{ item.materia }}</td>
-                        <td>{{ item.creditos }}</td>
+                        <ng-container
+                            *ngIf="filaEditandoDistribucion === item.id_asignatura; else modoLecturaDistribucion">
+                            <td><input type="text" [(ngModel)]="editMateriaDistribucion" class="input-amplio" /></td>
+                            <td><input type="number" [(ngModel)]="editCreditosDistribucion" class="input-amplio" /></td>
+                            <td>
+                                <button (click)="guardarEdicionDistribucion(item.id_asignatura)"
+                                    class="save-btnSintesis">Guardar</button>
+                                <button (click)="cancelarEdicionDistribucion()"
+                                    class="cancel-btnSintesis">Cancelar</button>
+                            </td>
+                        </ng-container>
+
+                        <ng-template #modoLecturaDistribucion>
+                            <td>{{ item.materia }}</td>
+                            <td>{{ item.creditos }}</td>
+                            <td>
+                                <button (click)="editarFilaDistribucion(item)"
+                                    class="editar-btnSintesis">Editar</button>
+                                <button (click)="eliminarFilaDistribucion(item.id_asignatura)"
+                                    class="eliminar-btnSintesis">Eliminar</button>
+                            </td>
+                        </ng-template>
+                    </tr>
+
+                    <tr *ngIf="nuevaFilaActivaDistribucion">
+                        <td><input type="text" [(ngModel)]="nuevaMateriaDistribucion" placeholder="Materia"
+                                class="input-amplio" /></td>
+                        <td><input type="number" [(ngModel)]="nuevosCreditosDistribucion" placeholder="Créditos"
+                                class="input-amplio" /></td>
+                        <td>
+                            <button (click)="guardarNuevaFilaDistribucion()" class="save-btnSintesis">Guardar</button>
+                            <button (click)="cancelarNuevaFilaDistribucion()"
+                                class="cancel-btnSintesis">Cancelar</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
 
+            <!-- Botón de añadir -->
+            <div class="actions">
+                <button (click)="anadirFilaDistribucion()" class="añadir-btnAsignaturas">Añadir Fila</button>
+            </div>
+
             <div class="separator"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <!-- Asignaturas Básicas -->
             <h3>Asignaturas Básicas</h3>
