@@ -1,0 +1,189 @@
+<!-- Requisitos y antecedentes académicos de ingreso de los candidatos -->
+<section class="about-section">
+  <div class="about-container" id="requisitos-container">
+    <div class="about-text">
+      <h2>Requisitos y antecedentes académicos de ingreso de los candidatos</h2>
+
+
+      <!-- Sección 1: Antecedentes -->
+      <h3 class="centrado">Antecedentes</h3>
+
+      <div *ngIf="antecedentes.length > 0; else noAntecedentes">
+        <div class="item-contenedor" *ngFor="let item of antecedentes">
+
+          <ng-container *ngIf="editingId !== item.id_requisito; else editMode">
+            <span class="texto-antecedente">• {{ item.descripcion }}</span>
+            <div class="btn-container">
+              <button (click)="editarAntecedente(item)" class="editar-btn">Editar</button>
+              <button (click)="eliminarAntecedente(item)" class="eliminar-btn">Eliminar</button>
+            </div>
+          </ng-container>
+
+          <ng-template #editMode>
+            <input type="text" [(ngModel)]="editDescripcion" class="input-requisito"
+              placeholder="Edita el antecedente..." />
+            <div class="btn-container">
+              <button (click)="guardarEdicionAntecedente(item)" class="guardar-btn">Guardar</button>
+              <button (click)="cancelarEdicion()" class="cancelar-btn">Cancelar</button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <ng-template #noAntecedentes>
+        <p>No hay antecedentes registrados.</p>
+      </ng-template>
+
+      <div class="actions" *ngIf="!nuevoAntecedenteActivo">
+        <button (click)="activarNuevoAntecedente()" class="añadir-btnAntecedentes">Añadir Antecedente</button>
+      </div>
+
+      <div *ngIf="nuevoAntecedenteActivo" class="input-contenedor">
+        <input type="text" [(ngModel)]="nuevoAntecedente" class="input-requisito"
+          placeholder="Escribe un nuevo antecedente..." />
+        <div class="actions">
+          <button (click)="guardarNuevoAntecedente()" class="guardar-btn">Guardar</button>
+          <button (click)="cancelarNuevoAntecedente()" class="cancelar-btn">Cancelar</button>
+        </div>
+      </div>
+
+
+      <!-- Sección 2: Requisitos -->
+      <h3 class="centrado">Requisitos</h3>
+      <p>
+        Los alumnos que soliciten ingreso al programa deberán de cubrir la fase de selección
+        que incluye los siguientes puntos:
+      </p>
+
+      <div *ngIf="requisitos.length > 0; else noRequisitos">
+        <div class="item-contenedor" *ngFor="let item of requisitos">
+
+          <ng-container *ngIf="editingId !== item.id_requisito; else editModeReq">
+            <span class="texto-requisito">• {{ item.descripcion }}</span>
+            <div class="btn-container">
+              <button (click)="editarRequisito(item)" class="editar-btn">Editar</button>
+              <button (click)="eliminarRequisito(item)" class="eliminar-btn">Eliminar</button>
+            </div>
+          </ng-container>
+
+          <ng-template #editModeReq>
+            <input type="text" [(ngModel)]="editDescripcion" class="input-requisito"
+              placeholder="Edita el requisito..." />
+            <div class="btn-container">
+              <button (click)="guardarEdicionRequisito(item)" class="guardar-btn">Guardar</button>
+              <button (click)="cancelarEdicion()" class="cancelar-btn">Cancelar</button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <ng-template #noRequisitos>
+        <p>No hay requisitos registrados.</p>
+      </ng-template>
+
+      <div *ngIf="nuevoRequisitoActivo" class="input-contenedor">
+        <input type="text" [(ngModel)]="nuevoRequisito" class="input-requisito"
+          placeholder="Escribe un nuevo requisito..." />
+        <div class="actions">
+          <button (click)="guardarNuevoRequisito()" class="guardar-btn">Guardar</button>
+          <button (click)="cancelarNuevoRequisito()" class="cancelar-btn">Cancelar</button>
+        </div>
+      </div>
+
+      <div class="actions" *ngIf="!nuevoRequisitoActivo">
+        <button (click)="activarNuevoRequisito()" class="añadir-btnRequisito">Añadir Requisito</button>
+      </div>
+
+
+      <!-- Sección 3: Proceso de Selección -->
+      <h3 class="centrado">Proceso de Selección de Aspirantes</h3>
+      <p>La selección de estudiantes se basa en la evaluación de 3 aspectos básicos:</p>
+
+      <div *ngIf="seleccion.length > 0; else noSeleccion">
+        <div class="item-contenedor" *ngFor="let item of seleccion">
+
+          <ng-container *ngIf="editingId !== item.id_requisito; else editModeSeleccion">
+            <span class="texto-seleccion">• {{ item.descripcion }}</span>
+            <div class="btn-container">
+              <button (click)="editarSeleccion(item)" class="editar-btn">Editar</button>
+              <button (click)="eliminarSeleccion(item)" class="eliminar-btn">Eliminar</button>
+            </div>
+          </ng-container>
+
+          <ng-template #editModeSeleccion>
+            <input type="text" [(ngModel)]="editDescripcion" class="input-requisito"
+              placeholder="Edita el elemento de selección..." />
+            <div class="btn-container">
+              <button (click)="guardarEdicionSeleccion(item)" class="guardar-btn">Guardar</button>
+              <button (click)="cancelarEdicion()" class="cancelar-btn">Cancelar</button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <ng-template #noSeleccion>
+        <p>No hay procesos de selección registrados.</p>
+      </ng-template>
+
+      <div *ngIf="nuevoSeleccionActivo" class="input-contenedor">
+        <input type="text" [(ngModel)]="nuevoSeleccion" class="input-requisito"
+          placeholder="Escribe un nuevo elemento de selección..." />
+        <div class="actions">
+          <button (click)="guardarNuevoSeleccion()" class="guardar-btn">Guardar</button>
+          <button (click)="cancelarNuevoSeleccion()" class="cancelar-btn">Cancelar</button>
+        </div>
+      </div>
+
+      <div class="actions" *ngIf="!nuevoSeleccionActivo">
+        <button (click)="activarNuevoSeleccion()" class="añadir-btnSeleccion">Añadir Selección</button>
+      </div>
+
+
+      <!-- Sección 4: URLs -->
+      <h3 class="centrado">Consultar Convocatoria:</h3>
+
+      <div *ngIf="urls.length > 0 && !editandoConvocatoria; else editarConvocatoriaTpl">
+        <a *ngIf="urls[0]" [href]="urls[0].descripcion" target="_blank">{{ urls[0].descripcion }}</a>
+        <div class="actions">
+          <button *ngIf="urls[0]" (click)="editarConvocatoria(urls[0])" class="editar-btn">
+            Editar URL
+          </button>
+        </div>
+      </div>
+
+      <ng-template #editarConvocatoriaTpl>
+        <div class="input-contenedor">
+          <input type="text" [(ngModel)]="nuevaURL" class="input-requisito"
+            placeholder="Edita la URL de Convocatoria..." />
+          <div class="actions">
+            <button (click)="guardarEdicionURL()" class="guardar-btn">Guardar</button>
+            <button (click)="cancelarEdicionURL()" class="cancelar-btn">Cancelar</button>
+          </div>
+        </div>
+      </ng-template>
+
+      <h3 class="centrado">Consultar Solicitud Nuevo Ingreso:</h3>
+
+      <div *ngIf="urls.length > 1 && !editandoSolicitud; else editarSolicitudTpl">
+        <a *ngIf="urls[1]" [href]="urls[1].descripcion" target="_blank">{{ urls[1].descripcion }}</a>
+        <div class="actions">
+          <button *ngIf="urls[1]" (click)="editarSolicitud(urls[1])" class="editar-btn">
+            Editar URL
+          </button>
+        </div>
+      </div>
+
+      <ng-template #editarSolicitudTpl>
+        <div class="input-contenedor">
+          <input type="text" [(ngModel)]="nuevaURL" class="input-requisito"
+            placeholder="Edita la URL de Solicitud de Ingreso..." />
+          <div class="actions">
+            <button (click)="guardarEdicionURL()" class="guardar-btn">Guardar</button>
+            <button (click)="cancelarEdicionURL()" class="cancelar-btn">Cancelar</button>
+          </div>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+</section>

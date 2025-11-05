@@ -1,0 +1,203 @@
+
+/* Estilos para Requisitos Ingreso */
+
+.about-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 50px;
+  background-color: #fff;
+}
+
+.about-container {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.about-text {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-text h2 {
+  padding-top: -15px;
+  margin-bottom: 0px;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  color: #000;
+}
+
+.about-text h3 {
+  font-size: 1.2rem;
+}
+
+.about-text h3.centrado {
+  text-align: center;
+}
+
+.about-text p {
+  font-size: 1rem;
+  color: #000;
+  line-height: 1.6;
+  text-align: center;
+  margin-top: -5px;
+}
+
+/*---------------------------------------------------------------------------*/
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 80px;
+}
+
+.editar-btnSolicitud,
+.editar-btnConvocatoria,
+.guardar-btn,
+.cancelar-btn,
+.eliminar-btn,
+.editar-btn,
+.añadir-btnSeleccion,
+.añadir-btnRequisito,
+.añadir-btnAntecedentes {
+  padding: 6px 12px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.editar-btnSolicitud,
+.editar-btnConvocatoria,
+.editar-btn {
+  background-color: #ffc107;
+  color: black;
+}
+
+.eliminar-btn,
+.cancelar-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.guardar-btn,
+.añadir-btnSeleccion,
+.añadir-btnRequisito,
+.añadir-btnAntecedentes {
+  background-color: #007bff;
+  color: white;
+}
+
+.editar-btnSolicitud:hover,
+.editar-btnConvocatoria:hover,
+.eliminar-btn:hover,
+.editar-btn:hover,
+.cancelar-btn:hover,
+.guardar-btn:hover,
+.añadir-btnSeleccion:hover,
+.añadir-btnRequisito:hover,
+.añadir-btnAntecedentes:hover {
+  opacity: 0.8;
+}
+
+.guardar-btn,
+.cancelar-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+}
+
+.antecedente-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.antecedente-item .texto {
+  flex: 1;
+  margin: 0;
+}
+
+.antecedente-item .botones button {
+  margin-left: 8px;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+}
+
+.guardar-btn,
+.cancelar-btn {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.item-contenedor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.item-contenedor span {
+  flex: 1;
+  padding-right: 1rem;
+}
+
+.btn-container {
+  display: flex;
+  gap: 8px;
+}
+
+.editar-btn,
+.eliminar-btn {
+  padding: 5px 10px;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editar-btn {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.eliminar-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.input-contenedor {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-requisito {
+  width: 90%;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
