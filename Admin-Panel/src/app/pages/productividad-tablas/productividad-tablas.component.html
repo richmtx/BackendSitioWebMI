@@ -1,0 +1,202 @@
+<!-- Productividad Tablas -->
+<section class="about-section">
+    <div class="about-container">
+        <div class="about-text">
+            <h2>Productividad</h2>
+
+            <!-- ===================================================== -->
+            <!-- 1️ CUERPOS ACADÉMICOS -->
+            <!-- ===================================================== -->
+            <h3>Cuerpos Académicos</h3>
+
+            <table class="study-plan-table">
+                <thead>
+                    <tr>
+                        <th>Cuerpos Académicos</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let cuerpo of cuerposAcademicos">
+                        <td>
+                            <div class="cuerpo-container">
+                                <!-- Nombre del proyecto -->
+                                <div class="nombre-proyecto">
+                                    {{ cuerpo.nomProy }}
+                                </div>
+
+                                <!-- Lista de integrantes -->
+                                <div class="integrantes" *ngIf="cuerpo.integrantes?.length">
+                                    <strong>Integrantes:</strong><br />
+                                    <div class="lista-integrantes">
+                                        <div *ngFor="let integrante of cuerpo.integrantes">
+                                            {{ integrante.nombre }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Botones de acción -->
+                                <div class="acciones">
+                                    <button class="edit-btnCuerpos">Editar</button>
+                                    <button class="delete-btnCuerpos">Eliminar</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Botón de añadir fila -->
+            <div class="actions">
+                <button class="añadir-btnCuerpos">Añadir Fila</button>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- ===================================================== -->
+            <!-- 2️ SISTEMA NACIONAL -->
+            <!-- ===================================================== -->
+            <h3>Sistema Nacional de Investigadoras e Investigadores</h3>
+
+            <table class="study-plan-table snii-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">No. de SNII</th>
+                        <th colspan="2">NIVEL</th>
+                    </tr>
+                    <tr>
+                        <th>C</th>
+                        <th>1</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let snii of sistemaNacional">
+                        <td>{{ snii.numProfesores }}</td>
+                        <td>{{ snii.nivelC }}</td>
+                        <td>{{ snii.nivel1 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="actions">
+                <button class="edit-btnSistema">Editar</button>
+                <button class="save-btnSistema" style="display:none;">Guardar</button>
+                <button class="cancel-btnSistema" style="display:none;">Cancelar</button>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- ===================================================== -->
+            <!-- 3️ PERFIL DESEABLE -->
+            <!-- ===================================================== -->
+            <h3>Perfil Deseable</h3>
+
+            <table class="study-plan-table">
+                <thead>
+                    <tr>
+                        <th>No. de Profesores</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let perfil of perfilDeseable">
+                        <td>{{ perfil.numProfesores }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="actions">
+                <button class="edit-btnPerfil">Editar</button>
+                <button class="save-btnPerfil" style="display:none;">Guardar</button>
+                <button class="cancel-btnPerfil" style="display:none;">Cancelar</button>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- ===================================================== -->
+            <!-- 4️ OTROS RECONOCIMIENTOS -->
+            <!-- ===================================================== -->
+            <h3>Otros Reconocimientos</h3>
+
+            <table class="study-plan-table">
+                <thead>
+                    <tr>
+                        <th>Profesor</th>
+                        <th>Tipo de Reconocimiento</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let rec of otrosReconocimientos">
+                        <td>{{ rec.profesor }}</td>
+                        <td>{{ rec.tipoRec }}</td>
+                        <td>
+                            <button class="edit-btnOtros">Editar</button>
+                            <button class="delete-btnOtros">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="actions">
+                <button class="añadir-btnOtros">Añadir Fila</button>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- ===================================================== -->
+            <!-- 5️ CONVENIOS FIRMADOS -->
+            <!-- ===================================================== -->
+            <h3>Convenios Firmados</h3>
+
+            <table class="study-plan-table">
+                <thead>
+                    <tr>
+                        <th>Empresa/Productor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let conv of conveniosFirmados">
+                        <td>{{ conv.empresaProd }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="actions">
+                <button class="edit-btnConvenios">Editar</button>
+                <button class="save-btnConvenios" style="display:none;">Guardar</button>
+                <button class="cancel-btnConvenios" style="display:none;">Cancelar</button>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- ===================================================== -->
+            <!-- 6️ PARTICIPACIÓN EN REDES -->
+            <!-- ===================================================== -->
+            <h3>Participación en redes de investigación científica y tecnológica</h3>
+
+            <table class="study-plan-table">
+                <thead>
+                    <tr>
+                        <th>Nombre de la Red</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let red of participacionRedes">
+                        <td>• {{ red.nombre }}</td>
+                        <td>
+                            <button class="edit-btnParti">Editar</button>
+                            <button class="delete-btnParti">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="actions">
+                <button class="añadir-btnParti">Añadir Fila</button>
+            </div>
+
+            <div class="separator"></div>
+        </div>
+    </div>
+</section>
