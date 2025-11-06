@@ -148,7 +148,7 @@ export class SintesisPlanComponent implements OnInit {
         this.nuevaFilaActivaDistribucion = false;
         this.nuevaMateriaDistribucion = '';
         this.nuevosCreditosDistribucion = null;
-        this.cargarDatos(); 
+        this.cargarDatos();
       },
       error: (err) => {
         console.error('Error al guardar:', err);
@@ -160,6 +160,115 @@ export class SintesisPlanComponent implements OnInit {
       }
     });
   }
+
+  // === POST - Asignaturas Básicas ===
+  nuevaFilaActivaBasicas = false;
+  nuevaMateriaBasica = '';
+  nuevosCreditosBasica: number | null = null;
+
+  anadirFilaBasicas(): void {
+    this.nuevaFilaActivaBasicas = true;
+  }
+
+  cancelarNuevaFilaBasicas(): void {
+    this.nuevaFilaActivaBasicas = false;
+    this.nuevaMateriaBasica = '';
+    this.nuevosCreditosBasica = null;
+  }
+
+  guardarNuevaFilaBasicas(): void {
+    if (!this.nuevaMateriaBasica || !this.nuevosCreditosBasica) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos.'
+      });
+      return;
+    }
+
+    const nuevoDato = {
+      materia: this.nuevaMateriaBasica,
+      creditos: this.nuevosCreditosBasica
+    };
+
+    this.basicasService.create(nuevoDato).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Guardado correctamente',
+          text: 'La nueva asignatura básica fue agregada.',
+          confirmButtonText: 'Aceptar'
+        });
+        this.nuevaFilaActivaBasicas = false;
+        this.nuevaMateriaBasica = '';
+        this.nuevosCreditosBasica = null;
+        this.cargarDatos();
+      },
+      error: (err) => {
+        console.error('Error al guardar:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al guardar los datos.'
+        });
+      }
+    });
+  }
+
+  // === POST - Asignaturas Optativas ===
+  nuevaFilaActivaOptativas = false;
+  nuevaMateriaOptativa = '';
+  nuevosCreditosOptativa: number | null = null;
+
+  anadirFilaOptativas(): void {
+    this.nuevaFilaActivaOptativas = true;
+  }
+
+  cancelarNuevaFilaOptativas(): void {
+    this.nuevaFilaActivaOptativas = false;
+    this.nuevaMateriaOptativa = '';
+    this.nuevosCreditosOptativa = null;
+  }
+
+  guardarNuevaFilaOptativas(): void {
+    if (!this.nuevaMateriaOptativa || !this.nuevosCreditosOptativa) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos.'
+      });
+      return;
+    }
+
+    const nuevoDato = {
+      materia: this.nuevaMateriaOptativa,
+      creditos: this.nuevosCreditosOptativa
+    };
+
+    this.optativasService.create(nuevoDato).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Guardado correctamente',
+          text: 'La nueva asignatura optativa fue agregada.',
+          confirmButtonText: 'Aceptar'
+        });
+        this.nuevaFilaActivaOptativas = false;
+        this.nuevaMateriaOptativa = '';
+        this.nuevosCreditosOptativa = null;
+        this.cargarDatos();
+      },
+      error: (err) => {
+        console.error('Error al guardar:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al guardar los datos.'
+        });
+      }
+    });
+  }
+
 
   // === PUT (editar) ===
   filaEditando: number | null = null;
@@ -269,6 +378,116 @@ export class SintesisPlanComponent implements OnInit {
     });
   }
 
+  // === PUT - Asignaturas Básicas ===
+  filaEditandoBasicas: number | null = null;
+  editMateriaBasicas = '';
+  editCreditosBasicas: number | null = null;
+
+  editarFilaBasicas(item: AsignaturaBasica): void {
+    this.filaEditandoBasicas = item.id_asignatura;
+    this.editMateriaBasicas = item.materia;
+    this.editCreditosBasicas = item.creditos;
+  }
+
+  cancelarEdicionBasicas(): void {
+    this.filaEditandoBasicas = null;
+    this.editMateriaBasicas = '';
+    this.editCreditosBasicas = null;
+  }
+
+  guardarEdicionBasicas(id_asignatura: number): void {
+    if (!this.editMateriaBasicas || !this.editCreditosBasicas) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos.'
+      });
+      return;
+    }
+
+    const datosActualizados = {
+      materia: this.editMateriaBasicas,
+      creditos: this.editCreditosBasicas
+    };
+
+    this.basicasService.update(id_asignatura, datosActualizados).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Actualizado correctamente',
+          text: 'La asignatura básica fue actualizada exitosamente.',
+          confirmButtonText: 'Aceptar'
+        });
+        this.filaEditandoBasicas = null;
+        this.cargarDatos();
+      },
+      error: (err) => {
+        console.error('Error al actualizar:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al actualizar los datos.'
+        });
+      }
+    });
+  }
+
+
+  // === PUT - Asignaturas Optativas ===
+  filaEditandoOptativas: number | null = null;
+  editMateriaOptativas = '';
+  editCreditosOptativas: number | null = null;
+
+  editarFilaOptativas(item: AsignaturaOptativa): void {
+    this.filaEditandoOptativas = item.id_optativas;
+    this.editMateriaOptativas = item.materia;
+    this.editCreditosOptativas = item.creditos;
+  }
+
+  cancelarEdicionOptativas(): void {
+    this.filaEditandoOptativas = null;
+    this.editMateriaOptativas = '';
+    this.editCreditosOptativas = null;
+  }
+
+  guardarEdicionOptativas(id_optativas: number): void {
+    if (!this.editMateriaOptativas || !this.editCreditosOptativas) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos.'
+      });
+      return;
+    }
+
+    const datosActualizados = {
+      materia: this.editMateriaOptativas,
+      creditos: this.editCreditosOptativas
+    };
+
+    this.optativasService.update(id_optativas, datosActualizados).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Actualizado correctamente',
+          text: 'La asignatura optativa fue actualizada exitosamente.',
+          confirmButtonText: 'Aceptar'
+        });
+        this.filaEditandoOptativas = null;
+        this.cargarDatos();
+      },
+      error: (err) => {
+        console.error('Error al actualizar:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al actualizar los datos.'
+        });
+      }
+    });
+  }
+
+
   // === DELETE ===
   eliminarFila(id_orientacion: number): void {
     Swal.fire({
@@ -329,7 +548,83 @@ export class SintesisPlanComponent implements OnInit {
               timer: 1500,
               showConfirmButton: true
             });
-            this.cargarDatos(); 
+            this.cargarDatos();
+          },
+          error: (err) => {
+            console.error('Error al eliminar:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Ocurrió un error al eliminar la asignatura.'
+            });
+          }
+        });
+      } else {
+      }
+    });
+  }
+
+  // === DELETE - Asignaturas Básicas ===
+  eliminarFilaBasicas(id_asignatura: number): void {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará la asignatura de forma permanente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.basicasService.delete(id_asignatura).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Eliminado correctamente',
+              text: 'La asignatura básica fue eliminada.',
+              timer: 1500,
+              showConfirmButton: true
+            });
+            this.cargarDatos();
+          },
+          error: (err) => {
+            console.error('Error al eliminar:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Ocurrió un error al eliminar la asignatura.'
+            });
+          }
+        });
+      } else {
+      }
+    });
+  }
+
+  // === DELETE - Asignaturas Optativas ===
+  eliminarFilaOptativas(id_optativas: number): void {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará la asignatura de forma permanente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.optativasService.delete(id_optativas).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Eliminado correctamente',
+              text: 'La asignatura optativa fue eliminada.',
+              timer: 1500,
+              showConfirmButton: true
+            });
+            this.cargarDatos();
           },
           error: (err) => {
             console.error('Error al eliminar:', err);

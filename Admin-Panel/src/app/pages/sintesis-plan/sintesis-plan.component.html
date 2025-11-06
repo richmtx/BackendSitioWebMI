@@ -117,74 +117,6 @@
             <div class="separator"></div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <!-- Asignaturas Básicas -->
             <h3>Asignaturas Básicas</h3>
             <table class="study-plan-table">
@@ -192,17 +124,75 @@
                     <tr>
                         <th>Materia</th>
                         <th>Créditos</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of basicas">
-                        <td>{{ item.materia }}</td>
-                        <td>{{ item.creditos }}</td>
+
+                        <ng-container *ngIf="filaEditandoBasicas === item.id_asignatura; else modoLecturaBasicas">
+                            <td>
+                                <input type="text" [(ngModel)]="editMateriaBasicas" class="input-amplio"
+                                    placeholder="Materia" />
+                            </td>
+                            <td>
+                                <input type="number" [(ngModel)]="editCreditosBasicas" class="input-amplio"
+                                    placeholder="Créditos" />
+                            </td>
+                            <td>
+                                <button (click)="guardarEdicionBasicas(item.id_asignatura)" class="save-btnSintesis">
+                                    Guardar
+                                </button>
+                                <button (click)="cancelarEdicionBasicas()" class="cancel-btnSintesis">
+                                    Cancelar
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <ng-template #modoLecturaBasicas>
+                            <td>{{ item.materia }}</td>
+                            <td>{{ item.creditos }}</td>
+                            <td>
+                                <button (click)="editarFilaBasicas(item)" class="editar-btnSintesis">
+                                    Editar
+                                </button>
+                                <button (click)="eliminarFilaBasicas(item.id_asignatura)" class="eliminar-btnSintesis">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </ng-template>
+                    </tr>
+
+                    <tr *ngIf="nuevaFilaActivaBasicas">
+                        <td>
+                            <input type="text" [(ngModel)]="nuevaMateriaBasica" placeholder="Materia"
+                                class="input-amplio" />
+                        </td>
+                        <td>
+                            <input type="number" [(ngModel)]="nuevosCreditosBasica" placeholder="Créditos"
+                                class="input-amplio" />
+                        </td>
+                        <td>
+                            <button (click)="guardarNuevaFilaBasicas()" class="save-btnSintesis">
+                                Guardar
+                            </button>
+                            <button (click)="cancelarNuevaFilaBasicas()" class="cancel-btnSintesis">
+                                Cancelar
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
 
+            <!-- Botón de añadir -->
+            <div class="actions">
+                <button (click)="anadirFilaBasicas()" class="añadir-btnBasicas">
+                    Añadir Fila
+                </button>
+            </div>
+
             <div class="separator"></div>
+
 
             <!-- Asignaturas Optativas -->
             <h3>Asignaturas Optativas</h3>
@@ -211,15 +201,74 @@
                     <tr>
                         <th>Materia</th>
                         <th>Créditos</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of optativas">
-                        <td>{{ item.materia }}</td>
-                        <td>{{ item.creditos }}</td>
+                        <ng-container *ngIf="filaEditandoOptativas === item.id_optativas; else modoLecturaOptativas">
+                            <td>
+                                <input type="text" [(ngModel)]="editMateriaOptativas" class="input-amplio"
+                                    placeholder="Materia" />
+                            </td>
+                            <td>
+                                <input type="number" [(ngModel)]="editCreditosOptativas" class="input-amplio"
+                                    placeholder="Créditos" />
+                            </td>
+                            <td>
+                                <button (click)="guardarEdicionOptativas(item.id_optativas)" class="save-btnSintesis">
+                                    Guardar
+                                </button>
+                                <button (click)="cancelarEdicionOptativas()" class="cancel-btnSintesis">
+                                    Cancelar
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <ng-template #modoLecturaOptativas>
+                            <td>{{ item.materia }}</td>
+                            <td>{{ item.creditos }}</td>
+                            <td>
+                                <button (click)="editarFilaOptativas(item)" class="editar-btnSintesis">
+                                    Editar
+                                </button>
+                                <button (click)="eliminarFilaOptativas(item.id_optativas)" class="eliminar-btnSintesis">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </ng-template>
+                    </tr>
+
+                    <tr *ngIf="nuevaFilaActivaOptativas">
+                        <td>
+                            <input type="text" [(ngModel)]="nuevaMateriaOptativa" placeholder="Materia"
+                                class="input-amplio" />
+                        </td>
+                        <td>
+                            <input type="number" [(ngModel)]="nuevosCreditosOptativa" placeholder="Créditos"
+                                class="input-amplio" />
+                        </td>
+                        <td>
+                            <button (click)="guardarNuevaFilaOptativas()" class="save-btnSintesis">
+                                Guardar
+                            </button>
+                            <button (click)="cancelarNuevaFilaOptativas()" class="cancel-btnSintesis">
+                                Cancelar
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+
+            <!-- Botón de añadir -->
+            <div class="actions">
+                <button (click)="anadirFilaOptativas()" class="añadir-btnOptativas">
+                    Añadir Fila
+                </button>
+            </div>
+
+            <div class="separator"></div>
+
         </div>
     </div>
 </section>
