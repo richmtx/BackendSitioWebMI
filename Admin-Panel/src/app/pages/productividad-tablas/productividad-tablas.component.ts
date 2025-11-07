@@ -95,7 +95,8 @@ export class ProductividadTablasComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Proyecto guardado correctamente',
-          showConfirmButton: false,
+          text: 'El nuevo cuerpo académico ha sido agregado.',
+          showConfirmButton: true,
           timer: 2000
         });
       },
