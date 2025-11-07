@@ -19,39 +19,70 @@
                 <tbody>
                     <tr *ngFor="let cuerpo of cuerposAcademicos">
                         <td>
-                            <div class="cuerpo-container">
-                                <!-- Nombre del proyecto -->
-                                <div class="nombre-proyecto">
-                                    {{ cuerpo.nomProy }}
-                                </div>
+                            <div *ngIf="filaEditando === cuerpo.id_cuerpo; else modoLectura" class="cuerpo-container">
+                                <label>Nombre del Proyecto:</label>
+                                <textarea [(ngModel)]="editNomProy" rows="2"></textarea>
 
-                                <!-- Lista de integrantes -->
-                                <div class="integrantes" *ngIf="cuerpo.integrantes?.length">
-                                    <strong>Integrantes:</strong><br />
-                                    <div class="lista-integrantes">
-                                        <div *ngFor="let integrante of cuerpo.integrantes">
-                                            {{ integrante.nombre }}
-                                        </div>
-                                    </div>
-                                </div>
+                                <label>Integrantes (uno por línea):</label>
+                                <textarea [(ngModel)]="editIntegrantes" rows="5"></textarea>
 
-                                <!-- Botones de acción -->
                                 <div class="acciones">
-                                    <button class="edit-btnCuerpos">Editar</button>
-                                    <button class="delete-btnCuerpos">Eliminar</button>
+                                    <button class="guardar-btn"
+                                        (click)="guardarEdicion(cuerpo.id_cuerpo)">Guardar</button>
+                                    <button class="cancelar-btn" (click)="cancelarEdicion()">Cancelar</button>
                                 </div>
                             </div>
+
+                            <ng-template #modoLectura>
+                                <div class="cuerpo-container">
+                                    <div class="nombre-proyecto">{{ cuerpo.nomProy }}</div>
+
+                                    <div class="integrantes" *ngIf="cuerpo.integrantes?.length">
+                                        <strong>Integrantes:</strong><br />
+                                        <div class="lista-integrantes">
+                                            <div *ngFor="let integrante of cuerpo.integrantes">
+                                                {{ integrante.nombre }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="acciones">
+                                        <button class="edit-btnCuerpos" (click)="editarCuerpo(cuerpo)">Editar</button>
+                                        <button class="delete-btnCuerpos"
+                                            (click)="eliminarCuerpo(cuerpo.id_cuerpo)">Eliminar</button>
+                                    </div>
+                                </div>
+                            </ng-template>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            <!-- Botón de añadir fila -->
             <div class="actions">
-                <button class="añadir-btnCuerpos">Añadir Fila</button>
+                <button class="añadir-btnCuerpos" (click)="mostrarFormCuerpos()">Añadir Fila</button>
+            </div>
+
+            <div *ngIf="mostrarFormularioCuerpos" class="formulario-cuerpos">
+                <h4>Nuevo Cuerpo Académico</h4>
+
+                <label>Nombre del Proyecto:</label>
+                <textarea [(ngModel)]="nuevoNomProy" rows="2"
+                    placeholder="Escribe el nombre del proyecto..."></textarea>
+
+                <label>Integrantes (uno por línea):</label>
+                <textarea [(ngModel)]="nuevosIntegrantes" rows="5" placeholder="Ejemplo:
+                        Ruben Guerrero Rivera (Presidente)
+                        Eduardo Gamero Inda
+                        José Antonio Martínez Rivera"></textarea>
+
+                <div class="acciones-formulario">
+                    <button class="guardar-btn" (click)="guardarNuevoCuerpo()">Guardar</button>
+                    <button class="cancelar-btn" (click)="cancelarNuevoCuerpo()">Cancelar</button>
+                </div>
             </div>
 
             <div class="separator"></div>
+
 
             <!-- ===================================================== -->
             <!-- 2️ SISTEMA NACIONAL -->
@@ -69,22 +100,36 @@
                         <th>1</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr *ngFor="let snii of sistemaNacional">
-                        <td>{{ snii.numProfesores }}</td>
-                        <td>{{ snii.nivelC }}</td>
-                        <td>{{ snii.nivel1 }}</td>
+                        <ng-container *ngIf="filaEditandoSistema === snii.id_sistema; else modoLecturaSistema">
+
+                            <td><input type="number" [(ngModel)]="editNumProfesores" class="input-snii" /></td>
+                            <td><input type="text" [(ngModel)]="editNivelC" class="input-snii" /></td>
+                            <td><input type="text" [(ngModel)]="editNivel1" class="input-snii" /></td>
+                        </ng-container>
+
+                        <ng-template #modoLecturaSistema>
+                            <td>{{ snii.numProfesores }}</td>
+                            <td>{{ snii.nivelC }}</td>
+                            <td>{{ snii.nivel1 }}</td>
+                        </ng-template>
                     </tr>
                 </tbody>
             </table>
 
             <div class="actions">
-                <button class="edit-btnSistema">Editar</button>
-                <button class="save-btnSistema" style="display:none;">Guardar</button>
-                <button class="cancel-btnSistema" style="display:none;">Cancelar</button>
+                <button *ngIf="!filaEditandoSistema" class="edit-btnSistema"
+                    (click)="editarSistema(sistemaNacional[0])">Editar</button>
+                <button *ngIf="filaEditandoSistema" class="guardar-btnSistema"
+                    (click)="guardarEdicionSistema()">Guardar</button>
+                <button *ngIf="filaEditandoSistema" class="cancelar-btnSistema"
+                    (click)="cancelarEdicionSistema()">Cancelar</button>
             </div>
 
             <div class="separator"></div>
+
 
             <!-- ===================================================== -->
             <!-- 3️ PERFIL DESEABLE -->
@@ -97,20 +142,39 @@
                         <th>No. de Profesores</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr *ngFor="let perfil of perfilDeseable">
-                        <td>{{ perfil.numProfesores }}</td>
+                        <ng-container *ngIf="filaEditandoPerfil === perfil.id_perfil; else modoLecturaPerfil">
+                            <td>
+                                <input type="number" [(ngModel)]="editNumProfesoresPerfil" class="input-perfil"
+                                    placeholder="Escribe el número de profesores" />
+                            </td>
+                        </ng-container>
+
+                        <ng-template #modoLecturaPerfil>
+                            <td>{{ perfil.numProfesores }}</td>
+                        </ng-template>
                     </tr>
                 </tbody>
             </table>
 
             <div class="actions">
-                <button class="edit-btnPerfil">Editar</button>
-                <button class="save-btnPerfil" style="display:none;">Guardar</button>
-                <button class="cancel-btnPerfil" style="display:none;">Cancelar</button>
+                <button *ngIf="!filaEditandoPerfil" class="edit-btnPerfil" (click)="editarPerfil(perfilDeseable[0])">
+                    Editar
+                </button>
+
+                <button *ngIf="filaEditandoPerfil" class="guardar-btnPerfil" (click)="guardarEdicionPerfil()">
+                    Guardar
+                </button>
+
+                <button *ngIf="filaEditandoPerfil" class="cancelar-btnPerfil" (click)="cancelarEdicionPerfil()">
+                    Cancelar
+                </button>
             </div>
 
             <div class="separator"></div>
+
 
             <!-- ===================================================== -->
             <!-- 4️ OTROS RECONOCIMIENTOS -->
@@ -125,23 +189,132 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr *ngFor="let rec of otrosReconocimientos">
-                        <td>{{ rec.profesor }}</td>
-                        <td>{{ rec.tipoRec }}</td>
-                        <td>
-                            <button class="edit-btnOtros">Editar</button>
-                            <button class="delete-btnOtros">Eliminar</button>
-                        </td>
+                        <ng-container
+                            *ngIf="filaEditandoReconocimiento === rec.id_reconocimientos; else modoLecturaOtros">
+                            <td>
+                                <input type="text" [(ngModel)]="reconocimientoEditando.profesor" class="input-otros"
+                                    placeholder="Nombre del profesor" />
+                            </td>
+                            <td>
+                                <input type="text" [(ngModel)]="reconocimientoEditando.tipoRec" class="input-otros"
+                                    placeholder="Tipo de reconocimiento" />
+                            </td>
+                            <td>
+                                <button class="guardar-btnOtros" (click)="guardarEdicionReconocimiento(rec)">
+                                    Guardar
+                                </button>
+                                <button class="cancelar-btnOtros" (click)="cancelarEdicionReconocimiento()">
+                                    Cancelar
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <ng-template #modoLecturaOtros>
+                            <td>{{ rec.profesor }}</td>
+                            <td>{{ rec.tipoRec }}</td>
+                            <td>
+                                <button class="edit-btnOtros" (click)="editarReconocimiento(rec.id_reconocimientos)">
+                                    Editar
+                                </button>
+                                <button class="delete-btnOtros"
+                                    (click)="eliminarReconocimiento(rec.id_reconocimientos)">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </ng-template>
                     </tr>
                 </tbody>
             </table>
 
             <div class="actions">
-                <button class="añadir-btnOtros">Añadir Fila</button>
+                <button class="añadir-btnOtros" (click)="mostrarFormReconocimientos()">Añadir Fila</button>
+            </div>
+
+            <div *ngIf="mostrarFormularioReconocimientos" class="formulario-cuerpos">
+                <h4>Nuevo Reconocimiento</h4>
+
+                <label>Profesor:</label>
+                <input type="text" [(ngModel)]="nuevoProfesor" placeholder="Escribe el nombre del profesor..."
+                    class="input-otros" />
+
+                <label>Tipo de Reconocimiento:</label>
+                <input type="text" [(ngModel)]="nuevoTipoRec"
+                    placeholder="Ejemplo: Perfil Deseable, Premio a la Innovación..." class="input-otros" />
+
+                <div class="acciones-formulario">
+                    <button class="guardar-btn" (click)="guardarNuevoReconocimiento()">Guardar</button>
+                    <button class="cancelar-btn" (click)="cancelarNuevoReconocimiento()">Cancelar</button>
+                </div>
             </div>
 
             <div class="separator"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <!-- ===================================================== -->
             <!-- 5️ CONVENIOS FIRMADOS -->
@@ -168,6 +341,53 @@
             </div>
 
             <div class="separator"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <!-- ===================================================== -->
             <!-- 6️ PARTICIPACIÓN EN REDES -->
@@ -197,6 +417,28 @@
             </div>
 
             <div class="separator"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
     </div>
 </section>
