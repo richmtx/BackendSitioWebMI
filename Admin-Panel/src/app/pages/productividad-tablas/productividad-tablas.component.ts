@@ -169,6 +169,59 @@ export class ProductividadTablasComponent implements OnInit {
     });
   }
 
+  // ====== POST: PARTICIPACIÓN EN REDES ======
+  mostrarFormularioRed = false;
+  nuevoNombreRed = '';
+
+  mostrarFormRed(): void {
+    this.mostrarFormularioRed = true;
+  }
+
+  cancelarNuevaRed(): void {
+    this.mostrarFormularioRed = false;
+    this.nuevoNombreRed = '';
+  }
+
+  guardarNuevaRed(): void {
+    if (!this.nuevoNombreRed.trim()) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campo vacío',
+        text: 'Por favor ingresa el nombre de la red.',
+        confirmButtonColor: '#007bff'
+      });
+      return;
+    }
+
+    const nuevaRed = { nombre: this.nuevoNombreRed };
+
+    this.participacionService.create(nuevaRed).subscribe({
+      next: () => {
+        this.cargarDatos();
+        this.cancelarNuevaRed();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Guardado correctamente',
+          text: 'La nueva red ha sido agregada exitosamente.',
+          showConfirmButton: true,
+          timer: 2000,
+          background: '#f9f9f9',
+          iconColor: '#28a745'
+        });
+      },
+      error: (err) => {
+        console.error('Error al guardar la red:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo guardar la red.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
   // ===== PUT (Editar) =====
   editarCuerpo(cuerpo: any): void {
     this.filaEditando = cuerpo.id_cuerpo;
@@ -397,6 +450,163 @@ export class ProductividadTablasComponent implements OnInit {
     });
   }
 
+  // ====== PUT: CONVENIOS FIRMADOS ======
+  filaEditandoConvenio: number | null = null;
+  backupConvenio: any = null;
+
+  editarConvenio(id: number): void {
+    this.filaEditandoConvenio = id;
+
+    const original = this.conveniosFirmados.find(c => c.id_convenios === id);
+    this.backupConvenio = { ...original };
+  }
+
+  getConvenioActual(): any {
+    return this.conveniosFirmados.find(c => c.id_convenios === this.filaEditandoConvenio);
+  }
+
+  cancelarEdicionConvenio(): void {
+    if (this.backupConvenio) {
+      const index = this.conveniosFirmados.findIndex(
+        c => c.id_convenios === this.backupConvenio.id_convenios
+      );
+      if (index !== -1) {
+        this.conveniosFirmados[index] = { ...this.backupConvenio };
+      }
+    }
+
+    this.filaEditandoConvenio = null;
+    this.backupConvenio = null;
+  }
+
+  guardarEdicionConvenio(conv: any): void {
+    if (!conv.empresaProd.toString().trim()) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campo vacío',
+        text: 'Por favor escribe el nombre o número antes de guardar.',
+        confirmButtonColor: '#007bff'
+      });
+      return;
+    }
+
+    const convenioEditado = { empresaProd: Number(conv.empresaProd) };
+
+    this.conveniosService.update(conv.id_convenios, convenioEditado).subscribe({
+      next: () => {
+        this.cargarDatos();
+        this.cancelarEdicionConvenio();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Actualizado correctamente',
+          text: 'Los cambios se han guardado.',
+          showConfirmButton: true,
+          timer: 3000,
+          background: '#f9f9f9',
+          iconColor: '#28a745'
+        });
+      },
+      error: (err) => {
+        console.error('Error al actualizar el convenio:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el convenio.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  // ====== PUT: PARTICIPACIÓN EN REDES ======
+  filaEditandoRedId: number | null = null;
+  editNombreRed = '';
+  private redIdKeys = ['id_red', 'id_participacion', 'id_participacion_red', 'id'];
+
+  getRedId(red: any): number | null {
+    for (const k of this.redIdKeys) {
+      if (red && red[k] != null) return Number(red[k]);
+    }
+    return null;
+  }
+
+  trackByRedId = (_: number, item: any) => this.getRedId(item) ?? item?.nombre ?? _;
+
+  editarRed(red: any): void {
+    const id = this.getRedId(red);
+    if (id == null) {
+      console.warn('No se encontró un id válido en el registro de red:', red);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se puede editar este registro porque no tiene un ID válido.',
+        confirmButtonColor: '#dc3545'
+      });
+      return;
+    }
+
+    this.filaEditandoRedId = id;
+    this.editNombreRed = red.nombre ?? '';
+  }
+
+  cancelarEdicionRed(): void {
+    this.filaEditandoRedId = null;
+    this.editNombreRed = '';
+  }
+
+  guardarEdicionRed(red: any): void {
+    const id = this.getRedId(red);
+    if (id == null) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo identificar el registro a actualizar.',
+        confirmButtonColor: '#dc3545'
+      });
+      return;
+    }
+
+    const nombreLimpio = (this.editNombreRed ?? '').trim();
+    if (!nombreLimpio) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campo vacío',
+        text: 'Por favor ingresa el nombre de la red antes de guardar.',
+        confirmButtonColor: '#007bff'
+      });
+      return;
+    }
+
+    const payload = { nombre: nombreLimpio };
+
+    this.participacionService.update(id, payload).subscribe({
+      next: () => {
+        this.cargarDatos();
+        this.cancelarEdicionRed();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Actualizado correctamente',
+          text: 'La red ha sido modificada exitosamente.',
+          showConfirmButton: true,
+          timer: 2000,
+          background: '#f9f9f9',
+          iconColor: '#28a745'
+        });
+      },
+      error: (err) => {
+        console.error('Error al actualizar la red:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: (err?.error?.message ?? 'No se pudo actualizar la red.'),
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
   // ===== DELETE (Eliminar) =====
   eliminarCuerpo(id: number): void {
     Swal.fire({
@@ -471,6 +681,58 @@ export class ProductividadTablasComponent implements OnInit {
               icon: 'error',
               title: 'Error',
               text: 'No se pudo eliminar el reconocimiento.',
+              confirmButtonColor: '#dc3545'
+            });
+          }
+        });
+      }
+    });
+  }
+
+  // ====== DELETE: PARTICIPACIÓN EN REDES ======
+  eliminarRed(red: any): void {
+    const id = this.getRedId(red);
+    if (id == null) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo identificar el registro a eliminar.',
+        confirmButtonColor: '#dc3545'
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará la red de forma permanente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      background: '#f9f9f9'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.participacionService.delete(id).subscribe({
+          next: () => {
+            this.cargarDatos();
+            Swal.fire({
+              icon: 'success',
+              title: 'Eliminado correctamente',
+              text: 'La red ha sido eliminada.',
+              showConfirmButton: true,
+              timer: 2000,
+              background: '#f9f9f9',
+              iconColor: '#28a745'
+            });
+          },
+          error: (err) => {
+            console.error('Error al eliminar la red:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo eliminar la red.',
               confirmButtonColor: '#dc3545'
             });
           }

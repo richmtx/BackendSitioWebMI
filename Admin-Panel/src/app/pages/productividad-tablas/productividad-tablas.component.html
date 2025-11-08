@@ -253,69 +253,6 @@
             <div class="separator"></div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <!-- ===================================================== -->
             <!-- 5️ CONVENIOS FIRMADOS -->
             <!-- ===================================================== -->
@@ -327,66 +264,41 @@
                         <th>Empresa/Productor</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr *ngFor="let conv of conveniosFirmados">
-                        <td>{{ conv.empresaProd }}</td>
+                        <ng-container *ngIf="filaEditandoConvenio === conv.id_convenios; else modoLecturaConvenio">
+                            <td>
+                                <input type="text" [(ngModel)]="conv.empresaProd" class="input-otros"
+                                    placeholder="Nombre de la empresa o productor" />
+                            </td>
+                        </ng-container>
+
+                        <ng-template #modoLecturaConvenio>
+                            <td>{{ conv.empresaProd }}</td>
+                        </ng-template>
                     </tr>
                 </tbody>
             </table>
 
             <div class="actions">
-                <button class="edit-btnConvenios">Editar</button>
-                <button class="save-btnConvenios" style="display:none;">Guardar</button>
-                <button class="cancel-btnConvenios" style="display:none;">Cancelar</button>
+                <ng-container *ngIf="filaEditandoConvenio !== null; else botonEditar">
+                    <button class="guardar-btnPerfil" (click)="guardarEdicionConvenio(getConvenioActual())">
+                        Guardar
+                    </button>
+                    <button class="cancelar-btnPerfil" (click)="cancelarEdicionConvenio()">
+                        Cancelar
+                    </button>
+                </ng-container>
+
+                <ng-template #botonEditar>
+                    <button class="edit-btnPerfil" (click)="editarConvenio(conveniosFirmados[0]?.id_convenios)">
+                        Editar
+                    </button>
+                </ng-template>
             </div>
 
             <div class="separator"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             <!-- ===================================================== -->
@@ -402,42 +314,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let red of participacionRedes">
-                        <td>• {{ red.nombre }}</td>
-                        <td>
-                            <button class="edit-btnParti">Editar</button>
-                            <button class="delete-btnParti">Eliminar</button>
-                        </td>
+                    <tr *ngFor="let red of participacionRedes; trackBy: trackByRedId">
+                        <ng-container *ngIf="filaEditandoRedId === getRedId(red); else lecturaRed">
+                            <td>
+                                <input type="text" [(ngModel)]="editNombreRed" class="input-amplio"
+                                    placeholder="Nombre de la red" />
+                            </td>
+                            <td>
+                                <button class="guardar-btnPerfil" (click)="guardarEdicionRed(red)">Guardar</button>
+                                <button class="cancelar-btnPerfil" (click)="cancelarEdicionRed()">Cancelar</button>
+                            </td>
+                        </ng-container>
+
+                        <ng-template #lecturaRed>
+                            <td>• {{ red.nombre }}</td>
+                            <td>
+                                <button class="edit-btnParti" (click)="editarRed(red)">Editar</button>
+                                <button class="delete-btnParti" (click)="eliminarRed(red)">Eliminar</button>
+                            </td>
+                        </ng-template>
                     </tr>
                 </tbody>
             </table>
 
             <div class="actions">
-                <button class="añadir-btnParti">Añadir Fila</button>
+                <button class="añadir-btnOtros" (click)="mostrarFormRed()">Añadir Fila</button>
+            </div>
+
+            <div *ngIf="mostrarFormularioRed" class="formulario-nueva-red">
+                <input type="text" [(ngModel)]="nuevoNombreRed" placeholder="Nombre de la red" class="input-amplio" />
+
+                <div class="actions">
+                    <button class="guardar-btnPerfil" (click)="guardarNuevaRed()">Guardar</button>
+                    <button class="cancelar-btnPerfil" (click)="cancelarNuevaRed()">Cancelar</button>
+                </div>
             </div>
 
             <div class="separator"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         </div>
     </div>
