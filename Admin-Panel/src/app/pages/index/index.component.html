@@ -94,3 +94,106 @@
 </section>
 
 <div class="separator"></div>
+
+
+<!-- ===================================================== -->
+<!-- SECCIÓN DE PODCAST (ADMIN - CONSUME API GET/POST/PUT/DELETE) -->
+<!-- ===================================================== -->
+<section class="multimedia-section">
+  <h2 class="multimedia-title">Multimedia</h2>
+
+  <div class="multimedia-content">
+    <div class="multimedia-left">
+      <h3 class="subtitle-podcast">Podcasts</h3>
+
+      <div *ngIf="podcasts.length === 0" class="sin-podcast">
+        <p>No hay podcasts registrados actualmente.</p>
+      </div>
+
+      <div *ngFor="let podcast of podcasts" class="podcast">
+        <ng-container *ngIf="podcastEditandoId !== podcast.id_podcast; else modoEdicionPodcast">
+          <iframe
+            style="border-radius:12px"
+            [src]="sanitizarURL(podcast.url)"
+            width="100%"
+            height="152"
+            frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+          </iframe>
+
+          <h4>{{ podcast.titulo }}</h4>
+          <p>{{ podcast.descripcion }}</p>
+
+          <div class="botones-podcast">
+            <button class="editar-btn" (click)="editarPodcast(podcast)">Editar</button>
+            <button class="eliminar-btn" (click)="eliminarPodcast(podcast.id_podcast)">Eliminar</button>
+          </div>
+        </ng-container>
+
+        <ng-template #modoEdicionPodcast>
+          <div class="formulario-podcast">
+            <h3>Editar Podcast</h3>
+
+            <div class="campo-form">
+              <label for="tituloEditPodcast">Título:</label>
+              <input type="text" id="tituloEditPodcast" [(ngModel)]="editPodcast.titulo"
+                placeholder="Título del podcast" />
+            </div>
+
+            <div class="campo-form">
+              <label for="urlEditPodcast">URL (Spotify Embed):</label>
+              <input type="text" id="urlEditPodcast" [(ngModel)]="editPodcast.url"
+                placeholder="https://open.spotify.com/embed/episode/..." />
+            </div>
+
+            <div class="campo-form">
+              <label for="descripcionEditPodcast">Descripción:</label>
+              <textarea id="descripcionEditPodcast" [(ngModel)]="editPodcast.descripcion"
+                placeholder="Descripción del podcast"></textarea>
+            </div>
+
+            <div class="botones-form">
+              <button class="guardar-btn" (click)="guardarEdicionPodcast(podcast)">Guardar</button>
+              <button class="cancelar-btn" (click)="cancelarEdicionPodcast()">Cancelar</button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="acciones-podcast">
+        <button class="agregar-btn" (click)="mostrarFormularioPodcast = true" *ngIf="!mostrarFormularioPodcast">
+          Nuevo Podcast
+        </button>
+      </div>
+
+      <div *ngIf="mostrarFormularioPodcast" class="formulario-podcast">
+        <h3>Nuevo Podcast</h3>
+
+        <div class="campo-form">
+          <label for="tituloPodcast">Título:</label>
+          <input type="text" id="tituloPodcast" [(ngModel)]="nuevoPodcast.titulo" placeholder="Título del podcast" />
+        </div>
+
+        <div class="campo-form">
+          <label for="urlPodcast">URL (Spotify Embed):</label>
+          <input type="text" id="urlPodcast" [(ngModel)]="nuevoPodcast.url"
+            placeholder="https://open.spotify.com/embed/episode/..." />
+        </div>
+
+        <div class="campo-form">
+          <label for="descripcionPodcast">Descripción:</label>
+          <textarea id="descripcionPodcast" [(ngModel)]="nuevoPodcast.descripcion"
+            placeholder="Descripción del podcast"></textarea>
+        </div>
+
+        <div class="botones-form">
+          <button class="guardar-btn" (click)="guardarNuevoPodcast()">Guardar</button>
+          <button class="cancelar-btn" (click)="cancelarNuevoPodcast()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="separator"></div>

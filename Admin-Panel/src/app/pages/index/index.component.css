@@ -192,3 +192,173 @@
 .eliminar-btn:hover {
   background-color: #c82333;
 }
+
+/*----------------------------------------------------------------*/
+
+/* Estilos para la sección de podcast */
+
+.multimedia-section {
+  padding: 50px 5%;
+  background-color: #ffff;
+}
+
+.multimedia-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.multimedia-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+}
+
+.subtitle-podcast {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: #000;
+  margin-left: 65px;
+}
+
+.podcast {
+  margin: 0 auto 30px auto;
+  max-width: 700px;
+}
+
+.podcast iframe {
+  width: 100% !important;
+  display: block;
+  margin: 0 auto;
+}
+
+.podcast h4 {
+  max-width: 500px;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.podcast p {
+  text-align: center;
+  color: #666;
+  font-size: 0.95em;
+}
+
+.sin-podcast {
+  text-align: center;
+  font-style: italic;
+  color: #777;
+  margin: 20px 0;
+}
+
+/* Botones de acciones para podcast */
+
+.acciones-podcast {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.formulario-podcast {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: #fafafa;
+}
+
+.formulario-podcast h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.campo-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.campo-form input,
+.campo-form textarea {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.campo-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.botones-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.guardar-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancelar-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.guardar-btn:hover {
+  background-color: #0056b3;
+}
+
+.cancelar-btn:hover {
+  background-color: #c82333;
+}
+
+.botones-podcast {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.editar-btn {
+  background-color: #ffc107;
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.editar-btn:hover {
+  background-color: #e0a800;
+}
+
+.eliminar-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.eliminar-btn:hover {
+  background-color: #c82333;
+}

@@ -19,23 +19,18 @@ export class EventosService {
 
   constructor(private http: HttpClient) {}
 
-  // ======= GET: Obtener todos los eventos =======
   getAllEventos(): Observable<Evento[]> {
     return this.http.get<Evento[]>(this.apiUrl);
   }
 
-  // (Dejamos preparados los demás métodos para cuando lleguemos al CRUD completo)
-  // ======= POST: Crear nuevo evento =======
   createEvento(eventoData: Partial<Evento>): Observable<Evento> {
     return this.http.post<Evento>(this.apiUrl, eventoData);
   }
 
-  // ======= PUT: Actualizar evento =======
   updateEvento(id_evento: number, eventoData: Partial<Evento>): Observable<Evento> {
     return this.http.put<Evento>(`${this.apiUrl}/${id_evento}`, eventoData);
   }
 
-  // ======= DELETE: Eliminar evento =======
   deleteEvento(id_evento: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id_evento}`);
   }
