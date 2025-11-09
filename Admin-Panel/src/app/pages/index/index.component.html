@@ -1,0 +1,96 @@
+<!-- ===================================================== -->
+<!-- SECCIÓN DE EVENTOS (ADMIN - CONSUME API GET/POST/PUT/DELETE) -->
+<!-- ===================================================== -->
+<section class="eventos">
+  <h2 class="titulo-eventos">Eventos</h2>
+
+  <div *ngIf="eventos.length === 0" class="sin-eventos">
+    <p>No hay eventos registrados actualmente.</p>
+  </div>
+
+  <div *ngFor="let evento of eventos; let i = index" class="evento">
+    <ng-container *ngIf="eventoEditandoId !== evento.id_evento; else modoEdicion">
+      <div class="evento-header">
+        <span class="fecha">{{ evento.fecha }}</span>
+        <span class="titulo">{{ evento.titulo }}</span>
+        <span class="lugar">{{ evento.lugar }}</span>
+      </div>
+      <p class="descripcion">{{ evento.descripcion }}</p>
+
+      <div class="botones-evento">
+        <button class="editar-btn" (click)="editarEvento(evento)">Editar</button>
+        <button class="eliminar-btn" (click)="eliminarEvento(evento.id_evento)">Eliminar</button>
+      </div>
+    </ng-container>
+
+    <ng-template #modoEdicion>
+      <div class="formulario-evento">
+        <h3>Editar Evento</h3>
+
+        <div class="campo-form">
+          <label for="titulo">Título:</label>
+          <input type="text" [(ngModel)]="editEvento.titulo" placeholder="Título del evento" />
+        </div>
+
+        <div class="campo-form">
+          <label for="fecha">Fecha:</label>
+          <input type="text" [(ngModel)]="editEvento.fecha" placeholder="Ejemplo: 28 y 29 de Mayo del 2025" />
+        </div>
+
+        <div class="campo-form">
+          <label for="lugar">Lugar:</label>
+          <input type="text" [(ngModel)]="editEvento.lugar" placeholder="Lugar del evento" />
+        </div>
+
+        <div class="campo-form">
+          <label for="descripcion">Descripción:</label>
+          <textarea [(ngModel)]="editEvento.descripcion" placeholder="Descripción del evento"></textarea>
+        </div>
+
+        <div class="botones-form">
+          <button class="guardar-btn" (click)="guardarEdicionEvento(evento)">Guardar</button>
+          <button class="cancelar-btn" (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+      </div>
+    </ng-template>
+
+    <hr *ngIf="i < eventos.length - 1" class="divisor" />
+  </div>
+
+  <div class="acciones-eventos">
+    <button class="agregar-btn" (click)="mostrarFormulario = true" *ngIf="!mostrarFormulario">
+      Nuevo Evento
+    </button>
+  </div>
+
+  <div *ngIf="mostrarFormulario" class="formulario-evento">
+    <h3>Nuevo Evento</h3>
+
+    <div class="campo-form">
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" [(ngModel)]="nuevoEvento.titulo" placeholder="Título del evento" />
+    </div>
+
+    <div class="campo-form">
+      <label for="fecha">Fecha:</label>
+      <input type="text" id="fecha" [(ngModel)]="nuevoEvento.fecha" placeholder="Ejemplo: 11 y 12 de Mayo del 2025" />
+    </div>
+
+    <div class="campo-form">
+      <label for="lugar">Lugar:</label>
+      <input type="text" id="lugar" [(ngModel)]="nuevoEvento.lugar" placeholder="Lugar del evento" />
+    </div>
+
+    <div class="campo-form">
+      <label for="descripcion">Descripción:</label>
+      <textarea id="descripcion" [(ngModel)]="nuevoEvento.descripcion" placeholder="Descripción del evento"></textarea>
+    </div>
+
+    <div class="botones-form">
+      <button class="guardar-btn" (click)="guardarNuevoEvento()">Guardar</button>
+      <button class="cancelar-btn" (click)="cancelarNuevoEvento()">Cancelar</button>
+    </div>
+  </div>
+</section>
+
+<div class="separator"></div>

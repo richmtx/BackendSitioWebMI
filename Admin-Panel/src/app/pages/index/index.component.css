@@ -1,0 +1,194 @@
+
+/* Estilos generales para la página de inicio */
+
+/*----------------------------------------------------------------*/
+
+/* Línea espaciadora */
+
+.separator {
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    margin: 40px 0px;
+    margin-top: 150px;
+    margin-bottom: 150px;
+}
+
+.input-amplio {
+  width: 85%;
+  padding: 8px;
+  font-size: 16px;
+}
+
+/*----------------------------------------------------------------*/
+
+/* Estilos para la sección de eventos */
+
+.eventos {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  margin-top: 70px;
+}
+
+.titulo-eventos {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.evento {
+  padding: 1.5rem 0;
+}
+
+.evento-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.fecha,
+.titulo,
+.lugar {
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.descripcion {
+  color: #555;
+  line-height: 1.6;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.divisor {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 1rem 0;
+}
+
+/*----------------------------------------------------------------*/
+
+.acciones-eventos {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.agregar-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.agregar-btn:hover {
+  background-color: #0056b3;
+}
+
+.formulario-evento {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: #fafafa;
+}
+
+.formulario-evento h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.campo-form label {
+  margin-bottom: 5px;
+}
+
+.campo-form input,
+.campo-form textarea {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.campo-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.botones-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.guardar-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancelar-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.guardar-btn:hover {
+  background-color: #0056b3;
+}
+
+.cancelar-btn:hover {
+  background-color: #c82333;
+}
+
+.botones-evento {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.editar-btn {
+  background-color: #ffc107;
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.editar-btn:hover {
+  background-color: #e0a800;
+}
+
+.eliminar-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.eliminar-btn:hover {
+  background-color: #c82333;
+}
