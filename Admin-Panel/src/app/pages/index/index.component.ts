@@ -139,7 +139,6 @@ export class IndexComponent implements OnInit {
     this.podcastService.getAllPodcast().subscribe({
       next: (data) => {
         this.podcasts = data;
-        console.log('Podcasts cargados:', data);
       },
       error: (err) => console.error('Error al obtener los podcasts:', err)
     });
