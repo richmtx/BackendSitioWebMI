@@ -1,3 +1,186 @@
+<!-- ============================================== -->
+<!-- SECCIÓN PORTADA - PANEL ADMIN -->
+<!-- ============================================== -->
+<section class="section-portada-admin">
+
+  <div class="portada-preview">
+    <table class="tabla-portada">
+      <thead>
+        <tr>
+          <td>
+            <img
+              *ngIf="portadaSeleccionada"
+              [src]="'http://localhost:3000/' + portadaSeleccionada.imagen"
+              alt="Imagen de portada"
+              class="imagen-portada"
+            />
+          </td>
+        </tr>
+        <tr>
+          <th class="titulo-portada">
+            {{ portadaSeleccionada?.titulo }}
+          </th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <div class="acciones-portada">
+    <button class="editar-btn" (click)="abrirFormularioPortada()">Editar Portada</button>
+  </div>
+
+  <div *ngIf="mostrarFormularioPortada" class="portada-edicion">
+    <h3>Editar Portada</h3>
+
+    <div class="form-editar-portada">
+      <label for="imagen">Cambiar imagen:</label>
+      <input
+        type="file"
+        id="imagen"
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        class="input-imagen"
+      />
+
+      <div *ngIf="previewImagen" class="preview-container">
+        <h4>Vista previa:</h4>
+        <img [src]="previewImagen" alt="Vista previa" class="preview-imagen" />
+      </div>
+
+      <label for="titulo">Texto de la portada:</label>
+      <input
+        id="titulo"
+        type="text"
+        [(ngModel)]="editTitulo"
+        placeholder="Escribe el nuevo texto"
+        class="input-texto"
+      />
+
+      <div class="acciones-portada">
+        <button class="guardar-btn" (click)="actualizarPortada()">Guardar cambios</button>
+        <button class="cancelar-btn" (click)="cerrarFormularioPortada()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="separator"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- ===================================================== -->
 <!-- SECCIÓN DE EVENTOS (ADMIN - CONSUME API GET/POST/PUT/DELETE) -->
 <!-- ===================================================== -->
@@ -112,14 +295,8 @@
 
       <div *ngFor="let podcast of podcasts" class="podcast">
         <ng-container *ngIf="podcastEditandoId !== podcast.id_podcast; else modoEdicionPodcast">
-          <iframe
-            style="border-radius:12px"
-            [src]="sanitizarURL(podcast.url)"
-            width="100%"
-            height="152"
-            frameBorder="0"
-            allowfullscreen=""
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+          <iframe style="border-radius:12px" [src]="sanitizarURL(podcast.url)" width="100%" height="152" frameBorder="0"
+            allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
           </iframe>
 
           <h4>{{ podcast.titulo }}</h4>

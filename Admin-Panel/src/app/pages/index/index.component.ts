@@ -7,6 +7,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 // Servicios
 import { EventosService, Evento } from './eventos.service';
 import { PodcastService, Podcast } from './podcast.service';
+import { PortadaService, Portada } from './portada.service';
 
 @Component({
   selector: 'app-index',
@@ -29,12 +30,14 @@ export class IndexComponent implements OnInit {
   constructor(
     private eventosService: EventosService,
     private podcastService: PodcastService,
+    private portadaService: PortadaService,
     private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
     this.cargarEventos();
     this.cargarPodcasts();
+    this.cargarPortada();
   }
 
   // =====================================================
@@ -280,5 +283,99 @@ export class IndexComponent implements OnInit {
         });
       }
     });
+  }
+
+  // ======================================================
+  // =================== PORTADA ==========================
+  // ======================================================
+
+  portadas: Portada[] = [];
+  portadaSeleccionada: Portada | null = null;
+  editTitulo: string = '';
+  imagenSeleccionada: File | null = null;
+  previewImagen: string | null = null;
+  mostrarFormularioPortada: boolean = false;
+
+  cargarPortada(): void {
+    this.portadaService.getAllPortadas().subscribe({
+      next: (data: Portada[]) => {
+        this.portadas = data;
+        if (data.length > 0) {
+          this.portadaSeleccionada = data[0];
+          this.editTitulo = data[0].titulo;
+        }
+      },
+      error: (err: any) => {
+        console.error('Error al cargar la portada:', err);
+        Swal.fire('Error', 'No se pudo cargar la portada.', 'error');
+      }
+    });
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.imagenSeleccionada = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImagen = reader.result as string;
+      };
+      reader.readAsDataURL(this.imagenSeleccionada);
+    }
+  }
+
+  abrirFormularioPortada(): void {
+    this.mostrarFormularioPortada = true;
+  }
+
+  cerrarFormularioPortada(): void {
+    this.mostrarFormularioPortada = false;
+    this.cancelarEdicionPortada();
+  }
+
+  actualizarPortada(): void {
+    if (!this.portadaSeleccionada) {
+      Swal.fire('Error', 'No hay portada seleccionada.', 'error');
+      return;
+    }
+
+    const tituloNoCambiado = this.editTitulo === this.portadaSeleccionada.titulo;
+    const imagenNoSeleccionada = !this.imagenSeleccionada;
+
+    if (tituloNoCambiado && imagenNoSeleccionada) {
+      Swal.fire('Sin cambios', 'No se detectaron modificaciones para actualizar.', 'info');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('titulo', this.editTitulo);
+    if (this.imagenSeleccionada) {
+      formData.append('imagen', this.imagenSeleccionada);
+    }
+
+    this.portadaService
+      .updatePortada(this.portadaSeleccionada.id_portada, formData)
+      .subscribe({
+        next: (actualizada: Portada) => {
+          Swal.fire('Actualizado', 'La portada se actualizó correctamente.', 'success');
+          this.portadaSeleccionada = actualizada;
+          this.imagenSeleccionada = null;
+          this.previewImagen = null;
+          this.mostrarFormularioPortada = false;
+        },
+        error: (err: any) => {
+          console.error('Error al actualizar la portada:', err);
+          Swal.fire('Error', 'No se pudo actualizar la portada.', 'error');
+        }
+      });
+  }
+
+  cancelarEdicionPortada(): void {
+    if (this.portadaSeleccionada) {
+      this.editTitulo = this.portadaSeleccionada.titulo;
+      this.imagenSeleccionada = null;
+      this.previewImagen = null;
+    }
   }
 }

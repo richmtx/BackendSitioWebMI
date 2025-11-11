@@ -7,4 +7,7 @@ export class Portada {
 
   @Column({ type: 'varchar', length: 255 })
   titulo: string;
+
+  @Column({ length: 255, nullable: true })
+  imagen: string;
 }
