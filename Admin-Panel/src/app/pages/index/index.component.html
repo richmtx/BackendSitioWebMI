@@ -95,26 +95,27 @@
 <!-- ===================================================== -->
 <section class="galeria-becas">
   <div class="card" *ngFor="let item of galeria">
-    <img [src]="'http://localhost:3000/' + item.imagen" [alt]="item.titulo" />
-    <div class="overlay">
-      <h3>{{ item.titulo }}</h3>
-      <a [href]="item.url" target="_blank">Ver más ↗</a>
+    <div class="imagen-contenedor">
+      <img [src]="'http://localhost:3000/' + item.imagen" [alt]="item.titulo" />
+      <div class="overlay">
+        <h3>{{ item.titulo }}</h3>
+        <a [href]="item.url" target="_blank">Ver más ↗</a>
+      </div>
+    </div>
+
+    <div class="boton-editar-container">
+      <button class="editar-btn" (click)="abrirEdicionGaleria(item)">Editar</button>
+      <button class="eliminar-btn" (click)="eliminarGaleria(item.id_galeria)">Eliminar</button>
     </div>
   </div>
 </section>
 
-<!-- ===================================================== -->
-<!-- BOTÓN AGREGAR IMAGEN -->
-<!-- ===================================================== -->
 <div class="agregar-container">
   <button class="btn-agregar" (click)="abrirFormularioGaleria()">Agregar</button>
 </div>
 
-<!-- ===================================================== -->
-<!-- FORMULARIO GALERÍA -->
-<!-- ===================================================== -->
 <div class="formulario-galeria" *ngIf="mostrarFormularioGaleria">
-  <h3>Agregar nueva imagen a la galería</h3>
+  <h3>Agregar nueva sección</h3>
 
   <form (submit)="guardarNuevaGaleria(); $event.preventDefault();">
     <div class="form-group">
@@ -140,148 +141,38 @@
   </form>
 </div>
 
+<div class="formulario-edicion" *ngIf="mostrarFormularioEdicionGaleria">
+  <h3>Editar campos</h3>
+
+  <form (submit)="guardarEdicionGaleria(); $event.preventDefault();">
+    <div class="form-group">
+      <label for="editTitulo">Título:</label>
+      <input type="text" id="editTitulo" [(ngModel)]="editGaleria.titulo" name="editTitulo" required />
+    </div>
+
+    <div class="form-group">
+      <label for="editUrl">URL del enlace:</label>
+      <input type="text" id="editUrl" [(ngModel)]="editGaleria.url" name="editUrl" required />
+    </div>
+
+    <div class="form-group">
+      <label for="editImagen">Cambiar imagen (opcional):</label>
+      <input type="file" id="editImagen" (change)="onFileSelectedEdicionGaleria($event)" accept="image/*" />
+    </div>
+
+    <div class="preview" *ngIf="previewImagenGaleria">
+      <p>Vista previa:</p>
+      <img [src]="previewImagenGaleria" alt="Vista previa" class="preview-img" />
+    </div>
+
+    <div class="form-botones">
+      <button type="submit" class="btn-guardar">Guardar cambios</button>
+      <button type="button" class="btn-cancelar" (click)="cancelarEdicionGaleria()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
 <div class="separator"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- ===================================================== -->

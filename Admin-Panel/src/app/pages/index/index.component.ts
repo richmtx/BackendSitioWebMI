@@ -460,4 +460,122 @@ export class IndexComponent implements OnInit {
       }
     });
   }
+
+  // ======= EDITAR (PUT) GALERÍA =======
+  mostrarFormularioEdicionGaleria: boolean = false;
+  galeriaEditandoId: number | null = null;
+  editGaleria: Partial<Galeria> = { titulo: '', url: '' };
+  imagenSeleccionadaEdicionGaleria: File | null = null;
+  previewImagenGaleria: string | null = null;
+
+  abrirEdicionGaleria(item: Galeria): void {
+    this.galeriaEditandoId = item.id_galeria;
+    this.editGaleria = { titulo: item.titulo, url: item.url };
+    this.mostrarFormularioEdicionGaleria = true;
+    this.previewImagenGaleria = 'http://localhost:3000/' + item.imagen;
+  }
+
+  onFileSelectedEdicionGaleria(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.imagenSeleccionadaEdicionGaleria = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImagenGaleria = reader.result as string;
+      };
+      reader.readAsDataURL(this.imagenSeleccionadaEdicionGaleria);
+    }
+  }
+
+  guardarEdicionGaleria(): void {
+    if (!this.galeriaEditandoId) return;
+
+    const { titulo, url } = this.editGaleria;
+    if (!titulo || !url) {
+      Swal.fire('Campos incompletos', 'Completa todos los campos antes de guardar.', 'warning');
+      return;
+    }
+
+    const original = this.galeria.find(g => g.id_galeria === this.galeriaEditandoId);
+    if (!original) return;
+
+    const tituloSinCambio = titulo === original.titulo;
+    const urlSinCambio = url === original.url;
+    const imagenSinCambio = !this.imagenSeleccionadaEdicionGaleria;
+
+    if (tituloSinCambio && urlSinCambio && imagenSinCambio) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No se detectaron modificaciones para actualizar.',
+        confirmButtonColor: '#003366'
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('titulo', titulo);
+    formData.append('url', url);
+    if (this.imagenSeleccionadaEdicionGaleria) {
+      formData.append('imagen', this.imagenSeleccionadaEdicionGaleria);
+    }
+
+    this.galeriaService.updateGaleria(this.galeriaEditandoId, formData).subscribe({
+      next: (actualizada) => {
+        const index = this.galeria.findIndex(g => g.id_galeria === this.galeriaEditandoId);
+        if (index !== -1) this.galeria[index] = actualizada;
+
+        Swal.fire('Actualizada', 'La imagen se actualizó correctamente.', 'success');
+        this.cancelarEdicionGaleria();
+      },
+      error: (err) => {
+        console.error('Error al actualizar la galería:', err);
+        Swal.fire('Error', 'No se pudo actualizar la imagen.', 'error');
+      }
+    });
+  }
+
+  cancelarEdicionGaleria(): void {
+    this.mostrarFormularioEdicionGaleria = false;
+    this.galeriaEditandoId = null;
+    this.editGaleria = { titulo: '', url: '' };
+    this.imagenSeleccionadaEdicionGaleria = null;
+    this.previewImagenGaleria = null;
+  }
+
+  // ======= ELIMINAR (DELETE) GALERÍA =======
+  eliminarGaleria(id_galeria: number): void {
+    Swal.fire({
+      title: '¿Eliminar imagen?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.galeriaService.deleteGaleria(id_galeria).subscribe({
+          next: () => {
+            this.galeria = this.galeria.filter(g => g.id_galeria !== id_galeria);
+            Swal.fire({
+              icon: 'success',
+              title: 'Eliminada',
+              text: 'La imagen fue eliminada correctamente.'
+            });
+          },
+          error: (err) => {
+            console.error('Error al eliminar la imagen:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo eliminar la imagen. Inténtalo nuevamente.'
+            });
+          }
+        });
+      }
+    });
+  }
 }
