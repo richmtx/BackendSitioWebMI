@@ -8,6 +8,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { EventosService, Evento } from './eventos.service';
 import { PodcastService, Podcast } from './podcast.service';
 import { PortadaService, Portada } from './portada.service';
+import { GaleriaService, Galeria } from './galeria.service';
 
 @Component({
   selector: 'app-index',
@@ -17,6 +18,9 @@ import { PortadaService, Portada } from './portada.service';
   imports: [CommonModule, FormsModule]
 })
 export class IndexComponent implements OnInit {
+  // ======= GALERÍA =======
+  galeria: Galeria[] = [];
+
   // ======= EVENTOS =======
   eventos: Evento[] = [];
   mostrarFormulario: boolean = false;
@@ -31,6 +35,7 @@ export class IndexComponent implements OnInit {
     private eventosService: EventosService,
     private podcastService: PodcastService,
     private portadaService: PortadaService,
+    private galeriaService: GaleriaService,
     private sanitizer: DomSanitizer
   ) { }
 
@@ -38,6 +43,7 @@ export class IndexComponent implements OnInit {
     this.cargarEventos();
     this.cargarPodcasts();
     this.cargarPortada();
+    this.cargarGaleria();
   }
 
   // =====================================================
@@ -377,5 +383,81 @@ export class IndexComponent implements OnInit {
       this.imagenSeleccionada = null;
       this.previewImagen = null;
     }
+  }
+
+
+  // ======================================================
+  // =================== GALERÍA ===========================
+  // ======================================================
+
+  cargarGaleria(): void {
+    this.galeriaService.getAllGaleria().subscribe({
+      next: (data: Galeria[]) => {
+        this.galeria = data;
+      },
+      error: (err) => {
+        console.error('Error al cargar la galería:', err);
+        Swal.fire('Error', 'No se pudo cargar la galería.', 'error');
+      }
+    });
+  }
+
+  mostrarFormularioGaleria: boolean = false;
+  nuevaGaleria: Partial<Galeria> = { titulo: '', url: '' };
+  imagenSeleccionadaGaleria: File | null = null;
+
+  abrirFormularioGaleria(): void {
+    this.mostrarFormularioGaleria = true;
+  }
+
+  cancelarNuevaGaleria(): void {
+    this.mostrarFormularioGaleria = false;
+    this.nuevaGaleria = { titulo: '', url: '' };
+    this.imagenSeleccionadaGaleria = null;
+  }
+
+  onFileSelectedGaleria(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.imagenSeleccionadaGaleria = input.files[0];
+    }
+  }
+
+  guardarNuevaGaleria(): void {
+    const { titulo, url } = this.nuevaGaleria;
+
+    if (!titulo || !url || !this.imagenSeleccionadaGaleria) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos e incluye una imagen antes de guardar.'
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('titulo', titulo);
+    formData.append('url', url);
+    formData.append('imagen', this.imagenSeleccionadaGaleria);
+
+    this.galeriaService.createGaleriaConImagen(formData).subscribe({
+      next: (galeriaCreada) => {
+        this.galeria.push(galeriaCreada);
+        Swal.fire({
+          icon: 'success',
+          title: 'Imagen agregada',
+          text: 'La imagen se agregó correctamente a la galería.'
+        });
+        this.cancelarNuevaGaleria();
+      },
+      error: (err) => {
+        console.error('Error al guardar la imagen:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo guardar la imagen. Inténtalo nuevamente.'
+        });
+      }
+    });
   }
 }

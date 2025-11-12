@@ -480,3 +480,157 @@
   margin-top: 10px;
   transition: all 0.3s ease;
 }
+
+/*----------------------------------------------------------------*/
+
+/* Sección de Galería */
+.galeria-becas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.galeria-becas .card {
+  position: relative;
+  overflow: hidden;
+}
+
+.galeria-becas .card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.galeria-becas .card:hover img {
+  transform: scale(1.05);
+}
+
+.galeria-becas .overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.galeria-becas .overlay h3 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: auto 0;
+  text-align: left;
+}
+
+.galeria-becas .overlay a {
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.galeria-becas .overlay a:hover {
+  text-decoration: underline;
+}
+
+.galeria-becas .card:nth-child(4),
+.galeria-becas .card:nth-child(5) {
+  grid-column: span 1;
+}
+
+.galeria-becas {
+  grid-template-rows: auto auto;
+}
+
+/* Estilos para la inputs y botones */
+
+.agregar-container {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.btn-agregar {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-agregar:hover {
+  background-color: #0056b3;
+}
+
+.formulario-galeria {
+  background: #f8f9fa;
+  padding: 35px;
+  border-radius: 10px;
+  max-width: 700px;
+  width: 90%;
+  margin: 0 auto 50px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.formulario-galeria h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0d1b2a;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form-group input[type='text'],
+.form-group input[type='file'] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-botones {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn-guardar {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-guardar:hover {
+  background-color: #0056b3;
+}
+
+.btn-cancelar {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background-color: #b02a37;
+}

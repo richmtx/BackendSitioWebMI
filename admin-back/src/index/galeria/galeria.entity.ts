@@ -10,4 +10,7 @@ export class Galeria {
 
   @Column({ type: 'varchar', length: 500 })
   url: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  imagen: string | null;
 }
