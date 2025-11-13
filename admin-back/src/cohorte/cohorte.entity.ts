@@ -7,4 +7,7 @@ export class Cohorte {
 
   @Column({ type: 'varchar', length: 255 })
   titulo: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  imagen: string;
 }
