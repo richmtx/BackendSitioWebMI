@@ -1,0 +1,82 @@
+<!-- Cohorte Generacional -->
+<section class="cohorte-generacional">
+    <div class="contenido-cohorte">
+        <h2>Cohorte Generacional</h2>
+    </div>
+
+    <table id="tabla1" class="tabla-imagenes">
+        <tbody>
+
+            <tr *ngFor="let item of cohorte">
+                <td>
+                    <div *ngIf="filaEditando !== item.id_cohorte">
+
+                        <h3 class="titulo-cohorte">{{ item.titulo }}</h3>
+
+                        <img *ngIf="item.imagen" [src]="'http://localhost:3000/uploads/' + item.imagen"
+                            [alt]="item.titulo" class="imagen-cohorte">
+
+                        <p *ngIf="!item.imagen">Sin imagen disponible</p>
+
+                        <button class="btn-editar" (click)="abrirEdicion(item)">
+                            Editar
+                        </button>
+
+                        <button class="btn-eliminar" (click)="eliminarCohorte(item.id_cohorte)">
+                            Eliminar
+                        </button>
+                    </div>
+
+                    <div *ngIf="filaEditando === item.id_cohorte" class="cohorte-formulario">
+
+                        <label>Título:</label>
+                        <input type="text" [(ngModel)]="editTitulo">
+
+                        <label>Imagen:</label>
+                        <input type="file" (change)="onFileSelectedEditar($event)">
+
+                        <div class="preview-contenedor" *ngIf="previewUrlEditar">
+                            <p class="preview-titulo">Vista previa:</p>
+                            <img [src]="previewUrlEditar" class="preview-imagen">
+                        </div>
+
+                        <div class="form-botones">
+                            <button class="btn-guardar" (click)="guardarEdicion(item.id_cohorte)">Guardar</button>
+                            <button class="btn-cancelar" (click)="cancelarEdicion()">Cancelar</button>
+                        </div>
+
+                    </div>
+
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="contenedor-boton-agregar">
+        <button class="btn-agregar" (click)="mostrarFormulario = !mostrarFormulario">
+            Agregar Cohorte
+        </button>
+    </div>
+
+    <div *ngIf="mostrarFormulario" class="cohorte-formulario">
+
+        <label>Título:</label>
+        <input type="text" [(ngModel)]="nuevoTitulo" placeholder="Ingrese el título">
+
+        <label>Imagen:</label>
+        <input type="file" (change)="onFileSelected($event)">
+
+        <div class="preview-contenedor" *ngIf="previewUrl">
+            <p class="preview-titulo">Vista previa:</p>
+            <img [src]="previewUrl" class="preview-imagen">
+        </div>
+
+        <div class="form-botones">
+            <button class="btn-guardar" (click)="guardarCohorte()">Guardar</button>
+            <button class="btn-cancelar" (click)="cancelarFormulario()">Cancelar</button>
+        </div>
+
+    </div>
+
+</section>
