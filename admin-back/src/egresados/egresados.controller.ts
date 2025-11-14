@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Put, Body, UploadedFile, UseInterceptors, } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Put,
+  Body,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { EgresadosService } from './egresados.service';
 import { Egresados } from './egresados.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -25,7 +33,6 @@ export class EgresadosController {
       storage: diskStorage({
         destination: './uploads/egresados',
         filename: (req, file, callback) => {
-          // Quitar espacios y caracteres raros del nombre original
           const originalName = file.originalname
             .split('.')
             .slice(0, -1)
@@ -33,15 +40,11 @@ export class EgresadosController {
             .replace(/\s+/g, '_')
             .replace(/[^a-zA-Z0-9_-]/g, '');
 
-          // Extensión original
           const extension = extname(file.originalname);
+          const randomId =
+            Math.floor(Math.random() * 90000000) + 10000000;
 
-          // Número aleatorio entre 10M - 99M (estilo que quieres)
-          const randomId = Math.floor(Math.random() * 90000000) + 10000000;
-
-          // *** Nombre final estilo solicitado ***
           const fileName = `${randomId}-${originalName}${extension}`;
-
           callback(null, fileName);
         },
       }),
@@ -52,9 +55,8 @@ export class EgresadosController {
     @Body() updatedData: Partial<Egresados>,
     @UploadedFile() imagen?: Express.Multer.File,
   ): Promise<Egresados> {
-    
+
     if (imagen) {
-      // Guardar en BD con la ruta completa como lo solicitaste
       updatedData.imagen = `uploads/egresados/${imagen.filename}`;
     }
 

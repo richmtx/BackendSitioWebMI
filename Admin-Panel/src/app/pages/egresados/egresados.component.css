@@ -1,0 +1,205 @@
+
+/* Foto de Egresados */
+
+.egresados-foto-section {
+    padding: 40px 0;
+    background-color: #f8f9fa;
+}
+
+.tabla-imagen {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.tabla-imagen img {
+    width: 100%;
+    height: auto;
+    max-height: 700px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* SECCIÓN SEGUIMIENTO DE EGRESADOS */
+
+.egresados-enlace-section {
+    background: #ffffff;
+    padding: 60px 20px;
+}
+
+.about-text {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-text h4 {
+  margin-top: 130px;
+    text-align: center;
+    color: #000;
+    font-size: 1.3rem;
+    line-height: 1.4;
+    margin-bottom: 5px;
+}
+
+/* Enlace estilo profesional */
+
+.enlace-egresados a {
+    font-size: 1.2rem;
+    color: #0056b3;
+    font-weight: 500;
+    text-decoration: none;
+    word-break: break-all;
+    padding: 8px 14px;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.enlace-egresados a:hover {
+    color: #003d80;
+    border-bottom: 2px solid #003d80;
+    background-color: #f0f4ff;
+}
+
+/* MODAL DEBAJO DE LA IMAGEN (ya NO cubre toda la pantalla) */
+.modal-egresado {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.modal-content-egresado {
+  background: #ffffff;
+  width: 90%;
+  max-width: 380px;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+  animation: slideDown 0.25s ease-out;
+  position: relative;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #555;
+}
+
+.modal-close:hover {
+  color: #000;
+}
+
+.acciones-egresado {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.btn-editar-img {
+  padding: 8px 16px;
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-editar-img:hover {
+  background-color: #e0a800;
+}
+
+.botones-formulario {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-guardar {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-guardar:hover {
+  background-color: #0056b3;
+}
+
+.btn-cancelar {
+  background-color: #dc3545;
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background-color: #c82333;
+}
+
+.preview-img {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.input-url-modal {
+  width: 100%;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 15px;
+  font-size: 1rem;
+  margin-bottom: 50px;
+}
+
+.about-section {
+  padding-bottom: 60px;
+  margin-bottom: 40px;
+}
+
+.acciones-egresado {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.btn-editar {
+  padding: 8px 16px;
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-editar:hover {
+  background-color: #e0a800;
+}

@@ -1,0 +1,85 @@
+<!-- Foto de Egresados -->
+<section>
+
+    <table id="tabla1" class="tabla-imagen">
+        <thead></thead>
+
+        <tbody>
+            <tr>
+                <td style="text-align:center">
+                    <img *ngIf="egresado?.imagen" [src]="'http://localhost:3000/' + egresado.imagen"
+                        alt="Imagen Egresados" class="img-egresado">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="acciones-egresado">
+        <button class="btn-editar-img" (click)="abrirFormularioImagen()">
+            Editar imagen
+        </button>
+    </div>
+
+    <div class="modal-egresado" *ngIf="formularioImagenVisible">
+        <div class="modal-content-egresado">
+
+            <span class="modal-close" (click)="cancelarEdicionImagen()">&times;</span>
+
+            <h3>Actualizar imagen</h3>
+
+            <input type="file" (change)="onFileSelected($event)" accept="image/*">
+
+            <img *ngIf="previewImagen" [src]="previewImagen" alt="Vista previa" class="preview-img">
+
+            <div class="botones-formulario">
+                <button class="btn-guardar" (click)="guardarNuevaImagen()">Guardar</button>
+                <button class="btn-cancelar" (click)="cancelarEdicionImagen()">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+
+<!-- URL -->
+<section class="about-section">
+    <div class="about-text">
+        <h4>Consultar Formulario:</h4>
+
+        <p style="text-align:center; font-size:1.1rem;">
+            <a *ngIf="egresado?.url"
+               [href]="egresado.url"
+               target="_blank"
+               rel="noopener noreferrer">
+                {{ egresado.url }}
+            </a>
+        </p>
+
+        <div class="acciones-egresado">
+            <button class="btn-editar" (click)="abrirEdicionUrl()">
+                Editar URL
+            </button>
+        </div>
+
+        <div class="modal-egresado" *ngIf="formularioUrlVisible">
+            <div class="modal-content-egresado">
+
+                <span class="modal-close" (click)="cancelarEdicionUrl()">&times;</span>
+
+                <h3>Editar URL</h3>
+
+                <input type="text"
+                       [(ngModel)]="nuevaUrl"
+                       placeholder="Ingresa la nueva URL"
+                       class="input-url-modal">
+
+                <div class="botones-formulario">
+                    <button class="btn-guardar" (click)="guardarNuevaUrl()">Guardar</button>
+                    <button class="btn-cancelar" (click)="cancelarEdicionUrl()">Cancelar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
