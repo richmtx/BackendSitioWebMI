@@ -1,29 +1,63 @@
-import { Controller, Get, Param, Put, Body } from '@nestjs/common';
+import { Controller, Get, Param, Put, Body, UploadedFile, UseInterceptors, } from '@nestjs/common';
 import { EgresadosService } from './egresados.service';
 import { Egresados } from './egresados.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('egresados')
 export class EgresadosController {
   constructor(private readonly egresadosService: EgresadosService) {}
 
-  // GET /egresados
   @Get()
   async getAll(): Promise<Egresados[]> {
     return this.egresadosService.findAll();
   }
 
-  // GET /egresados/:id
   @Get(':id')
   async getById(@Param('id') id: number): Promise<Egresados> {
     return this.egresadosService.findOne(id);
   }
 
-  // PUT /egresados/:id
   @Put(':id')
+  @UseInterceptors(
+    FileInterceptor('imagen', {
+      storage: diskStorage({
+        destination: './uploads/egresados',
+        filename: (req, file, callback) => {
+          // Quitar espacios y caracteres raros del nombre original
+          const originalName = file.originalname
+            .split('.')
+            .slice(0, -1)
+            .join('.')
+            .replace(/\s+/g, '_')
+            .replace(/[^a-zA-Z0-9_-]/g, '');
+
+          // Extensión original
+          const extension = extname(file.originalname);
+
+          // Número aleatorio entre 10M - 99M (estilo que quieres)
+          const randomId = Math.floor(Math.random() * 90000000) + 10000000;
+
+          // *** Nombre final estilo solicitado ***
+          const fileName = `${randomId}-${originalName}${extension}`;
+
+          callback(null, fileName);
+        },
+      }),
+    }),
+  )
   async update(
     @Param('id') id: number,
     @Body() updatedData: Partial<Egresados>,
+    @UploadedFile() imagen?: Express.Multer.File,
   ): Promise<Egresados> {
+    
+    if (imagen) {
+      // Guardar en BD con la ruta completa como lo solicitaste
+      updatedData.imagen = `uploads/egresados/${imagen.filename}`;
+    }
+
     return this.egresadosService.update(id, updatedData);
   }
 }

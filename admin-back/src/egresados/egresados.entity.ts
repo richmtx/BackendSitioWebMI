@@ -7,4 +7,7 @@ export class Egresados {
 
   @Column('text')
   url: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  imagen: string;
 }

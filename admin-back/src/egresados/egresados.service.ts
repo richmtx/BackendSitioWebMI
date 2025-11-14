@@ -15,20 +15,28 @@ export class EgresadosService {
   }
 
   async findOne(id: number): Promise<Egresados> {
-    const egresado = await this.egresadosRepository.findOneBy({ id_egresados: id });
+    const egresado = await this.egresadosRepository.findOneBy({
+      id_egresados: id,
+    });
+
     if (!egresado) {
       throw new NotFoundException(`Egresado con ID ${id} no encontrado`);
     }
+
     return egresado;
   }
 
   async update(id: number, updatedData: Partial<Egresados>): Promise<Egresados> {
-    const egresado = await this.egresadosRepository.findOneBy({ id_egresados: id });
+    const egresado = await this.egresadosRepository.findOneBy({
+      id_egresados: id,
+    });
+
     if (!egresado) {
       throw new NotFoundException(`Egresado con ID ${id} no encontrado`);
     }
 
     Object.assign(egresado, updatedData);
+
     return this.egresadosRepository.save(egresado);
   }
 }
