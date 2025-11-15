@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 // Servicios
 import { EventosService, Evento } from './eventos.service';
 import { PodcastService, Podcast } from './podcast.service';
 import { PortadaService, Portada } from './portada.service';
 import { GaleriaService, Galeria } from './galeria.service';
+import { CarruselService } from './carrusel.service';
 
 @Component({
   selector: 'app-index',
@@ -18,6 +21,15 @@ import { GaleriaService, Galeria } from './galeria.service';
   imports: [CommonModule, FormsModule]
 })
 export class IndexComponent implements OnInit {
+  // ====== CARRUSEL =======
+  carrusel: any[] = [];
+  currentIndexCarrusel = 0;
+  autoSlideIntervalCarrusel: any;
+
+  modoEdicionCarrusel = false;
+  previewTemporal: { [key: number]: string } = {};
+  imagenesSeleccionadas: { [key: number]: File } = {};
+
   // ======= GALERÍA =======
   galeria: Galeria[] = [];
 
@@ -32,6 +44,10 @@ export class IndexComponent implements OnInit {
   podcasts: Podcast[] = [];
 
   constructor(
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: Object,
+
+    private carruselService: CarruselService,
     private eventosService: EventosService,
     private podcastService: PodcastService,
     private portadaService: PortadaService,
@@ -40,6 +56,7 @@ export class IndexComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.cargarCarrusel();
     this.cargarEventos();
     this.cargarPodcasts();
     this.cargarPortada();
@@ -577,5 +594,140 @@ export class IndexComponent implements OnInit {
         });
       }
     });
+  }
+
+  // ======================================================
+  // ======================= CARRUSEL =====================
+  // ======================================================
+  cargarCarrusel(): void {
+    this.carruselService.getCarrusel().subscribe({
+      next: (data) => {
+        this.carrusel = data;
+
+        setTimeout(() => {
+          this.iniciarAutoSlideCarrusel();
+        }, 500);
+      },
+      error: (err) => console.error('Error al cargar carrusel:', err)
+    });
+  }
+
+  iniciarAutoSlideCarrusel(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    if (this.autoSlideIntervalCarrusel) {
+      clearInterval(this.autoSlideIntervalCarrusel);
+    }
+
+    this.autoSlideIntervalCarrusel = setInterval(() => {
+      this.nextSlideCarrusel();
+    }, 3000);
+  }
+
+  nextSlideCarrusel(): void {
+    if (this.carrusel.length === 0) return;
+
+    this.currentIndexCarrusel++;
+
+    if (this.currentIndexCarrusel >= this.carrusel.length) {
+      this.currentIndexCarrusel = 0;
+    }
+
+    this.actualizarPosicionCarrusel();
+  }
+
+  actualizarPosicionCarrusel(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const slide = this.document.getElementById('carousel-slide');
+    if (!slide) return;
+
+    slide.style.transform = `translateX(-${this.currentIndexCarrusel * 100}vw)`;
+  }
+
+  toggleEditarCarrusel() {
+
+    if (this.autoSlideIntervalCarrusel) {
+      clearInterval(this.autoSlideIntervalCarrusel);
+      this.autoSlideIntervalCarrusel = null;
+    }
+
+    this.modoEdicionCarrusel = !this.modoEdicionCarrusel;
+
+    if (!this.modoEdicionCarrusel) {
+      setTimeout(() => {
+        this.iniciarAutoSlideCarrusel();
+      }, 300);
+    }
+  }
+  onSeleccionarImagen(event: any, id: number) {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      this.imagenesSeleccionadas[id] = file;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewTemporal[id] = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  guardarCambiosCarrusel() {
+    const cambios = Object.keys(this.imagenesSeleccionadas);
+
+    if (cambios.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin cambios',
+        text: 'No seleccionaste ninguna imagen para actualizar.',
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: 'Guardando cambios...',
+      text: 'Por favor espera',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const peticiones = cambios.map((id) => {
+      const file = this.imagenesSeleccionadas[Number(id)];
+      return this.carruselService.updateCarrusel(Number(id), file);
+    });
+
+    Promise.all(peticiones.map((req) => req.toPromise()))
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Actualizado',
+          text: 'Las imágenes del carrusel se actualizaron correctamente.',
+          timer: 5000,
+          showConfirmButton: true,
+        });
+
+        setTimeout(() => {
+          this.cargarCarrusel();
+          this.modoEdicionCarrusel = false;
+          this.imagenesSeleccionadas = {};
+        }, 1500);
+      })
+      .catch((err) => {
+        console.error('Error al actualizar:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al actualizar una o más imágenes.',
+          showConfirmButton: true,
+        });
+      });
+  }
+
+  cancelarEdicionCarrusel() {
+    this.modoEdicionCarrusel = false;
+    this.imagenesSeleccionadas = {};
+    this.previewTemporal = {};
   }
 }

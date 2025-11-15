@@ -52,42 +52,44 @@
 <div class="separator"></div>
 
 
+<!-- ============================================== -->
+<!-- SECCIÓN CARRUSEL - PANEL ADMIN -->
+<!-- ============================================== -->
+<div class="carousel-container">
+  <div class="carousel-slide" id="carousel-slide">
+    <img *ngFor="let item of carrusel" [src]="'http://localhost:3000/' + item.imagen" />
+  </div>
+</div>
 
+<div class="editar-carrusel-container">
+  <button class="btn-editar-carrusel" (click)="toggleEditarCarrusel()">
+    Editar Imagenes
+  </button>
+</div>
 
+<div class="formulario-carrusel" *ngIf="modoEdicionCarrusel">
+  <h3>Editar Imágenes</h3>
 
+  <div class="grupo-imagen" *ngFor="let item of carrusel; let i = index">
+    <p><strong>Imagen {{ i + 1 }}:</strong></p>
 
+    <img class="preview-img" [src]="previewTemporal[item.id_carrusel] || ('http://localhost:3000/' + item.imagen)"
+      alt="Vista previa" />
 
+    <input type="file" accept="image/*" (change)="onSeleccionarImagen($event, item.id_carrusel)" />
+  </div>
 
+  <div class="acciones-formulario">
+    <button class="btn-guardar-carrusel" (click)="guardarCambiosCarrusel()">
+      Guardar cambios
+    </button>
+    <button class="btn-cancelar-carrusel" (click)="cancelarEdicionCarrusel()">
+      Cancelar
+    </button>
+  </div>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div class="separator"></div>
 
 
 <!-- ===================================================== -->
