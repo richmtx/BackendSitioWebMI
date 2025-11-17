@@ -54,15 +54,11 @@ export class NucleoBasicoService {
 
     const { cvu_enlaces, ...nucleoData } = datos;
 
-    // 1️⃣ Actualizar los campos del núcleo básico
     await this.nucleoRepository.update(id, nucleoData);
 
-    // 2️⃣ Si hay enlaces nuevos, reemplazamos los existentes
     if (cvu_enlaces) {
-      // Primero eliminamos los enlaces antiguos
       await this.cvuRepository.delete({ nucleo: { id } });
 
-      // Luego insertamos los nuevos
       const nuevosEnlaces = cvu_enlaces.map((enlace) =>
         this.cvuRepository.create({
           enlace: enlace.enlace,
@@ -72,19 +68,17 @@ export class NucleoBasicoService {
       await this.cvuRepository.save(nuevosEnlaces);
     }
 
-    // 3️⃣ Retornar el registro actualizado
     return await this.nucleoRepository.findOne({
       where: { id },
       relations: ['cvu_enlaces'],
     });
   }
 
-  // DELETE - eliminar registro
   async delete(id: number) {
-    const resultado = await this.nucleoRepository.delete(id); // 👈 nombre correcto del repo
+    const resultado = await this.nucleoRepository.delete(id);
 
     if (resultado.affected === 0) {
-      throw new NotFoundException(`No se encontró el registro con id ${id}`); // 👈 usamos la excepción ya importada
+      throw new NotFoundException(`No se encontró el registro con id ${id}`);
     }
 
     return { mensaje: 'Registro eliminado correctamente' };

@@ -15,7 +15,7 @@ export class NucleoBasico {
   @Column({ length: 50, nullable: true })
   cedula_profesional: string;
 
-  @Column({ length: 150, nullable: true }) // 👈 aquí quitamos unique
+  @Column({ length: 150, nullable: true }) 
   correo: string;
 
   @Column({ length: 150, nullable: true })
