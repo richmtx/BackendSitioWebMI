@@ -1,0 +1,188 @@
+<!-- Núcleo Académico Básico -->
+<div class="perfil-wrapper">
+
+    <div class="perfil-container">
+        <h2>Núcleo Académico Básico</h2>
+
+        <!-- LISTA DE PROFESORES -->
+        <ng-container *ngFor="let prof of nucleoBasico; let i = index">
+
+            <table id="tabla1" class="perfil">
+
+                <tbody>
+                    <tr>
+
+                        <!-- FOTO -->
+                        <td class="imagen">
+                            <img *ngIf="prof.imagen" [src]="'http://localhost:3000/' + prof.imagen"
+                                alt="Foto de perfil" />
+
+                            <img *ngIf="!prof.imagen" src="assets/sin-foto.png" alt="Sin imagen" />
+                        </td>
+
+                        <!-- DATOS -->
+                        <td class="datos">
+
+                            <h3>{{ prof.nombre }}</h3>
+
+                            <strong>Grado Máximo Obtenido:</strong> {{ prof.grado_maximo }}<br />
+                            <strong>Especialidad:</strong> {{ prof.especialidad }}<br />
+                            <strong>Cédula Profesional:</strong> {{ prof.cedula_profesional }}<br />
+
+                            <!-- DETALLES OCULTOS -->
+                            <div class="detalles" [class.oculto]="ocultos[i]">
+
+                                <strong>Nivel SNII:</strong> {{ prof.nivel_snii }}<br />
+                                <strong>Cargo:</strong> Profesor Investigador<br />
+                                <strong>Unidad de Adscripción:</strong> {{ prof.unidad_adscripcion }}<br />
+                                <strong>Correo Electrónico:</strong> {{ prof.correo }}<br />
+
+                                <strong>Semblanza:</strong> {{ prof.semblanza }}<br />
+
+                                <strong>Líneas de Investigación:</strong>
+                                {{ prof.lineas_investigacion }}<br />
+
+                                <strong>CVU:</strong><br>
+
+                                <div *ngIf="prof?.cvu_enlaces && prof.cvu_enlaces.length > 0">
+                                    <ng-container *ngFor="let cvu of prof.cvu_enlaces; let idx = index">
+                                        <a [href]="cvu.enlace" target="_blank" rel="noopener noreferrer">
+                                            CVU{{ idx + 1 }}
+                                        </a><br />
+                                    </ng-container>
+                                </div>
+
+                                <div *ngIf="prof?.cvu_enlaces && prof.cvu_enlaces.length === 0">
+                                    <em>Sin enlaces CVU</em>
+                                </div>
+
+                            </div>
+
+                            <!-- BOTÓN VER MÁS -->
+                            <span class="toggle-btn" (click)="toggleDetalles(i)">
+                                {{ ocultos[i] ? 'Ver más...' : 'Ver menos...' }}
+                            </span>
+
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <div class="separator"></div>
+
+        </ng-container>
+
+
+
+        <!-- =============================================== -->
+        <!-- BOTÓN PARA ABRIR FORMULARIO (SOLO UNA VEZ) -->
+        <!-- =============================================== -->
+        <div class="agregar-profesor-container">
+            <button class="btn-agregar-profesor" (click)="toggleFormulario()">
+                Agregar Profesor
+            </button>
+        </div>
+
+        <!-- =============================================== -->
+        <!-- FORMULARIO PARA AGREGAR PROFESOR (UNA VEZ) -->
+        <!-- =============================================== -->
+        <div class="formulario-registro" *ngIf="formVisible">
+
+            <h3>Registrar Nuevo Profesor</h3>
+
+            <div class="form-grid">
+
+                <!-- Nombre -->
+                <div class="form-group full">
+                    <label>Nombre:</label>
+                    <input type="text" [(ngModel)]="nuevoProfesor.nombre">
+                </div>
+
+                <!-- Imagen -->
+                <div class="form-group full">
+                    <label>Imagen:</label>
+                    <input type="file" accept="image/*" (change)="onSeleccionarImagen($event)">
+                </div>
+
+                <div class="preview-container" *ngIf="previewImagen">
+                    <p><strong>Vista previa:</strong></p>
+                    <img [src]="previewImagen" class="preview-img" />
+                </div>
+
+                <!-- Grado máximo y especialidad -->
+                <div class="form-group">
+                    <label>Grado Máximo Obtenido:</label>
+                    <input type="text" [(ngModel)]="nuevoProfesor.grado_maximo">
+                </div>
+
+                <div class="form-group">
+                    <label>Especialidad:</label>
+                    <input type="text" [(ngModel)]="nuevoProfesor.especialidad">
+                </div>
+
+                <!-- Cédula y Nivel SNII -->
+                <div class="form-group">
+                    <label>Cédula Profesional:</label>
+                    <input type="text" [(ngModel)]="nuevoProfesor.cedula_profesional">
+                </div>
+
+                <div class="form-group">
+                    <label>Nivel SNII:</label>
+                    <input type="text" [(ngModel)]="nuevoProfesor.nivel_snii">
+                </div>
+
+                <!-- Cargo y Unidad -->
+                <div class="form-group">
+                    <label>Cargo:</label>
+                    <input type="text" [(ngModel)]="nuevoProfesor.cargo">
+                </div>
+
+                <div class="form-group">
+                    <label>Unidad Adscripción:</label>
+                    <input type="text" [(ngModel)]="nuevoProfesor.unidad_adscripcion">
+                </div>
+
+                <!-- Correo -->
+                <div class="form-group full">
+                    <label>Correo Electrónico:</label>
+                    <input type="email" [(ngModel)]="nuevoProfesor.correo">
+                </div>
+
+                <!-- Semblanza -->
+                <div class="form-group full">
+                    <label>Semblanza:</label>
+                    <textarea rows="3" [(ngModel)]="nuevoProfesor.semblanza"></textarea>
+                </div>
+
+                <!-- Líneas de investigación -->
+                <div class="form-group full">
+                    <label>Líneas de Investigación:</label>
+                    <textarea rows="2" [(ngModel)]="nuevoProfesor.lineas_investigacion"></textarea>
+                </div>
+
+                <!-- CVUs -->
+                <div class="form-group full">
+                    <label>CVUs:</label>
+
+                    <div *ngFor="let cvu of nuevoProfesor.cvu_enlaces; let idx = index" class="cvu-item">
+                        <input type="text" [(ngModel)]="nuevoProfesor.cvu_enlaces[idx].enlace" placeholder="Link CVU">
+                    </div>
+
+                    <button type="button" class="btn-add-cvu" (click)="agregarCvu()">
+                        + Añadir otro CVU
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="acciones-form">
+                <button class="btn-guardar" (click)="guardarProfesor()">Guardar</button>
+                <button class="btn-cancelar" (click)="cancelarFormulario()">Cancelar</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>

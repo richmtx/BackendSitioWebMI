@@ -42,6 +42,6 @@ export class NucleoBasico {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   fecha_registro: Date;
 
-  @OneToMany(() => CvuEnlace, (cvu) => cvu.nucleo, { cascade: true })
+  @OneToMany(() => CvuEnlace, (cvu) => cvu.nucleo)
   cvu_enlaces: CvuEnlace[];
 }

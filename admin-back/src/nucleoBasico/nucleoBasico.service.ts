@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DeepPartial } from 'typeorm';
 import { NucleoBasico } from './nucleoBasico.entity';
 import { CvuEnlace } from './cvuEnlace.entity';
 
@@ -21,22 +21,31 @@ export class NucleoBasicoService {
     });
   }
 
-  // ===========================
-  // CREATE
-  // ===========================
-  async crearRegistro(datos: NucleoBasico) {
-    const { cvu_enlaces, ...nucleoData } = datos;
+  async crearRegistro(datos: any) {
+    let enlacesArray: any[] = [];
 
-    const nuevo = this.nucleoRepository.create(nucleoData);
-    const guardado = await this.nucleoRepository.save(nuevo);
+    if (typeof datos.cvu_enlaces === 'string') {
+      try {
+        enlacesArray = JSON.parse(datos.cvu_enlaces);
+      } catch (error) {
+        console.error('Error al parsear cvu_enlaces:', error);
+      }
+    }
 
-    if (cvu_enlaces && cvu_enlaces.length > 0) {
-      const enlaces = cvu_enlaces.map((enlace) =>
+    const { cvu_enlaces, ...soloNucleo } = datos;
+    const soloNucleoTyped: DeepPartial<NucleoBasico> = soloNucleo;
+
+    const nuevo = this.nucleoRepository.create(soloNucleoTyped);
+    const guardado = (await this.nucleoRepository.save(nuevo)) as NucleoBasico;
+
+    if (Array.isArray(enlacesArray) && enlacesArray.length > 0) {
+      const enlaces = enlacesArray.map((e) =>
         this.cvuRepository.create({
-          enlace: enlace.enlace,
-          nucleo: guardado,
+          enlace: e.enlace,
+          nucleo: { id: guardado.id },
         }),
       );
+
       await this.cvuRepository.save(enlaces);
     }
 
@@ -46,10 +55,7 @@ export class NucleoBasicoService {
     });
   }
 
-  // ===========================
-  // UPDATE
-  // ===========================
-  async actualizarRegistro(id: number, datos: NucleoBasico) {
+  async actualizarRegistro(id: number, datos: any) {
     const existente = await this.nucleoRepository.findOne({
       where: { id },
       relations: ['cvu_enlaces'],
@@ -59,20 +65,29 @@ export class NucleoBasicoService {
       throw new NotFoundException(`No se encontró el registro con id ${id}`);
     }
 
-    const { cvu_enlaces, ...nucleoData } = datos;
+    let enlacesArray: any[] = [];
 
-    await this.nucleoRepository.update(id, nucleoData);
+    if (typeof datos.cvu_enlaces === 'string') {
+      try {
+        enlacesArray = JSON.parse(datos.cvu_enlaces);
+      } catch (error) {
+        console.error('Error al parsear cvu_enlaces:', error);
+      }
+    }
 
-    if (cvu_enlaces) {
-      await this.cvuRepository.delete({ nucleo: { id } });
+    const { cvu_enlaces, ...soloNucleo } = datos;
 
-      const nuevos = cvu_enlaces.map((enlace) =>
+    await this.nucleoRepository.update(id, soloNucleo as DeepPartial<NucleoBasico>);
+
+    await this.cvuRepository.delete({ nucleo: { id } });
+
+    if (Array.isArray(enlacesArray) && enlacesArray.length > 0) {
+      const nuevos = enlacesArray.map((e) =>
         this.cvuRepository.create({
-          enlace: enlace.enlace,
+          enlace: e.enlace,
           nucleo: { id },
         }),
       );
-
       await this.cvuRepository.save(nuevos);
     }
 
@@ -82,9 +97,6 @@ export class NucleoBasicoService {
     });
   }
 
-  // ===========================
-  // DELETE
-  // ===========================
   async delete(id: number) {
     const resultado = await this.nucleoRepository.delete(id);
 

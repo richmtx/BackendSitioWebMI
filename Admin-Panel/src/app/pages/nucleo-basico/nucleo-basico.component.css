@@ -1,0 +1,275 @@
+
+/* Núcleo Académico Básico */
+
+.perfil-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.perfil-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.perfil-container h2 {
+    margin-top: 35px;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+table.perfil {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+}
+
+td.imagen {
+    width: 160px;
+    padding: 10px;
+    vertical-align: top;
+}
+
+td.imagen img {
+    width: 100%;
+    height: auto;
+}
+
+td.datos {
+    padding: 10px 20px;
+    vertical-align: top;
+    font-size: 1rem;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+.separator {
+    width: 1000%; 
+    max-width: 900px !important;       
+    height: 2px;
+    background-color: #ccc;
+    margin: 40px auto;   
+}
+
+.toggle-btn {
+    color: #007BFF;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.toggle-btn:hover {
+    text-decoration: underline;
+}
+
+.oculto {
+    display: none;
+}
+
+/*---------------------------------------------------------------------*/
+
+/* CONTENEDOR DEL BOTÓN AGREGAR PROFESOR */
+
+.agregar-profesor-container {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.btn-agregar-profesor {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-agregar-profesor:hover {
+  opacity: 0.8;
+}
+
+/* Contenedor general del formulario */
+
+.formulario-registro {
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px 20px;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.formulario-registro h3 {
+    text-align: center;
+    font-size: 1.7rem;
+    margin-bottom: 25px;
+    color: #333;
+    font-weight: 600;
+}
+
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+}
+
+.form-group.full {
+    width: 100%;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    max-width: 800px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #d4d4d4;
+    font-size: 1rem;
+    background: #fafafa;
+}
+
+.form-group input[type="file"] {
+    padding: 10px;
+    background: #fafafa;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #0056b3;
+    background: #fff;
+    box-shadow: 0 0 6px rgba(0,86,179,0.3);
+}
+
+.form-grid,
+.form-group {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group label {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.form-group {
+    padding: 0 5px;
+}
+
+.form-group input[type="file"] {
+    padding: 10px;
+    background: #fafafa;
+    border-radius: 10px;
+}
+
+.preview-container {
+    text-align: center;
+}
+
+.preview-img {
+    width: 140px;
+    border-radius: 12px;
+    border: 2px solid #e7e7e7;
+    margin: 12px auto 0 auto;
+}
+
+
+.preview-container p {
+    font-size: 0.95rem;
+}
+
+.cvu-item {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.form-group.full {
+    position: relative;
+}
+
+.btn-add-cvu {
+    display: inline-block;
+    width: fit-content !important;
+    padding: 8px 16px;
+    background: #0056b3;
+    color: #fff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin: 10px 0 0 0;
+}
+
+.btn-add-cvu:hover {
+    background: #003f82;
+}
+
+.acciones-form {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.btn-guardar,
+.btn-cancelar {
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    transition: 0.25s ease;
+}
+
+.btn-guardar {
+    background: #007bff;
+    color: white;
+}
+
+.btn-guardar:hover {
+    opacity: 0.8;
+}
+
+.btn-cancelar {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-cancelar:hover {
+    opacity: 0.8;
+}

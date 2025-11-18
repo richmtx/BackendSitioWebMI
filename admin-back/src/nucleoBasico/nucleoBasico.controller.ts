@@ -7,19 +7,13 @@ import { NucleoBasico } from './nucleoBasico.entity';
 
 @Controller('nucleo-basico')
 export class NucleoBasicoController {
-  constructor(private readonly nucleoBasicoService: NucleoBasicoService) {}
+  constructor(private readonly nucleoBasicoService: NucleoBasicoService) { }
 
-  // =========================
-  // GET
-  // =========================
   @Get()
   async obtenerTodos() {
     return await this.nucleoBasicoService.obtenerTodos();
   }
 
-  // =========================
-  // POST (Crear con imagen)
-  // =========================
   @Post()
   @UseInterceptors(
     FileInterceptor('imagen', {
@@ -37,7 +31,7 @@ export class NucleoBasicoController {
     }),
   )
   async crearRegistro(
-    @Body() datos: NucleoBasico,
+    @Body() datos: any,
     @UploadedFile() imagen: Express.Multer.File,
   ) {
     if (imagen) {
@@ -46,9 +40,6 @@ export class NucleoBasicoController {
     return await this.nucleoBasicoService.crearRegistro(datos);
   }
 
-  // =========================
-  // PUT (Actualizar con imagen)
-  // =========================
   @Put(':id')
   @UseInterceptors(
     FileInterceptor('imagen', {
@@ -67,7 +58,7 @@ export class NucleoBasicoController {
   )
   async actualizarRegistro(
     @Param('id') id: number,
-    @Body() datos: NucleoBasico,
+    @Body() datos: any,
     @UploadedFile() imagen: Express.Multer.File,
   ) {
     if (imagen) {
@@ -76,9 +67,6 @@ export class NucleoBasicoController {
     return await this.nucleoBasicoService.actualizarRegistro(id, datos);
   }
 
-  // =========================
-  // DELETE
-  // =========================
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return this.nucleoBasicoService.delete(+id);
