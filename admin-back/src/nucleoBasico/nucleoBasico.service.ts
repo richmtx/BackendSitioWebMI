@@ -12,7 +12,7 @@ export class NucleoBasicoService {
 
     @InjectRepository(CvuEnlace)
     private readonly cvuRepository: Repository<CvuEnlace>,
-  ) { }
+  ) {}
 
   async obtenerTodos() {
     return await this.nucleoRepository.find({
@@ -21,34 +21,41 @@ export class NucleoBasicoService {
     });
   }
 
+  // ===========================
+  // CREATE
+  // ===========================
   async crearRegistro(datos: NucleoBasico) {
     const { cvu_enlaces, ...nucleoData } = datos;
-    const nuevoNucleo = this.nucleoRepository.create(nucleoData);
-    const nucleoGuardado = await this.nucleoRepository.save(nuevoNucleo);
+
+    const nuevo = this.nucleoRepository.create(nucleoData);
+    const guardado = await this.nucleoRepository.save(nuevo);
 
     if (cvu_enlaces && cvu_enlaces.length > 0) {
-      const enlacesConRelacion = cvu_enlaces.map((enlace) =>
+      const enlaces = cvu_enlaces.map((enlace) =>
         this.cvuRepository.create({
           enlace: enlace.enlace,
-          nucleo: nucleoGuardado,
+          nucleo: guardado,
         }),
       );
-      await this.cvuRepository.save(enlacesConRelacion);
+      await this.cvuRepository.save(enlaces);
     }
 
     return await this.nucleoRepository.findOne({
-      where: { id: nucleoGuardado.id },
+      where: { id: guardado.id },
       relations: ['cvu_enlaces'],
     });
   }
 
+  // ===========================
+  // UPDATE
+  // ===========================
   async actualizarRegistro(id: number, datos: NucleoBasico) {
-    const nucleoExistente = await this.nucleoRepository.findOne({
+    const existente = await this.nucleoRepository.findOne({
       where: { id },
       relations: ['cvu_enlaces'],
     });
 
-    if (!nucleoExistente) {
+    if (!existente) {
       throw new NotFoundException(`No se encontró el registro con id ${id}`);
     }
 
@@ -59,13 +66,14 @@ export class NucleoBasicoService {
     if (cvu_enlaces) {
       await this.cvuRepository.delete({ nucleo: { id } });
 
-      const nuevosEnlaces = cvu_enlaces.map((enlace) =>
+      const nuevos = cvu_enlaces.map((enlace) =>
         this.cvuRepository.create({
           enlace: enlace.enlace,
           nucleo: { id },
         }),
       );
-      await this.cvuRepository.save(nuevosEnlaces);
+
+      await this.cvuRepository.save(nuevos);
     }
 
     return await this.nucleoRepository.findOne({
@@ -74,6 +82,9 @@ export class NucleoBasicoService {
     });
   }
 
+  // ===========================
+  // DELETE
+  // ===========================
   async delete(id: number) {
     const resultado = await this.nucleoRepository.delete(id);
 

@@ -15,7 +15,7 @@ export class NucleoBasico {
   @Column({ length: 50, nullable: true })
   cedula_profesional: string;
 
-  @Column({ length: 150, nullable: true }) 
+  @Column({ length: 150, nullable: true })
   correo: string;
 
   @Column({ length: 150, nullable: true })
@@ -35,6 +35,9 @@ export class NucleoBasico {
 
   @Column({ length: 150, nullable: true })
   unidad_adscripcion: string;
+
+  @Column({ length: 255, nullable: true })
+  imagen: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   fecha_registro: Date;
