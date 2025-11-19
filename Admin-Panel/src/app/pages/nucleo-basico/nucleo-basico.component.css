@@ -47,6 +47,20 @@ td.datos {
     text-align: justify;
 }
 
+.texto-semblanza {
+  white-space: pre-line;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 5px 0 15px 0;
+}
+
+.texto-semblanza-inline {
+  white-space: pre-line;
+  display: inline;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
 .separator {
     width: 1000%; 
     max-width: 900px !important;       
@@ -250,7 +264,7 @@ td.datos {
 .btn-cancelar {
     padding: 12px 24px;
     font-size: 1rem;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     border: none;
     transition: 0.25s ease;
@@ -272,4 +286,148 @@ td.datos {
 
 .btn-cancelar:hover {
     opacity: 0.8;
+}
+
+.acciones-profesor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 12px;
+}
+
+.btn-editar {
+    background: #ffc107;
+    color: black;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: 0.25s ease;
+}
+
+.btn-editar:hover {
+    opacity: 0.8;
+}
+
+.btn-eliminar {
+    background: #dc3545;
+    color: white;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-top: 6px;
+    transition: 0.25s ease;
+}
+
+.btn-eliminar:hover {
+    opacity: 0.8;
+}
+
+.formulario-edicion {
+    width: 100%;
+    background: #ffffff;
+    padding: 20px 22px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.formulario-edicion h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 18px;
+}
+
+.formulario-edicion .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+}
+
+.formulario-edicion .form-group.full {
+    grid-column: span 2;
+}
+
+.formulario-edicion .form-group {
+    grid-column: 1 / -1 !important;
+}
+
+.formulario-edicion input[type="text"],
+.formulario-edicion input[type="email"],
+.formulario-edicion input[type="file"],
+.formulario-edicion textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.25s ease;
+    background: #fafafa;
+}
+
+.formulario-edicion input[type="text"],
+.formulario-edicion input[type="email"],
+.formulario-edicion input[type="file"],
+.formulario-edicion textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.25s ease;
+    background: #fafafa;
+}
+
+.formulario-edicion input:focus,
+.formulario-edicion textarea:focus {
+    border-color: #4a6cf7;
+    background: #ffffff;
+    box-shadow: 0 0 6px rgba(74, 108, 247, 0.25);
+}
+
+.formulario-edicion label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 4px;
+    display: inline-block;
+}
+
+.preview-container {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.preview-img {
+    width: 200px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.cvu-item input {
+    margin-bottom: 8px;
 }

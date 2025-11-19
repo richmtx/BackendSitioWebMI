@@ -4,15 +4,10 @@
     <div class="perfil-container">
         <h2>Núcleo Académico Básico</h2>
 
-        <!-- LISTA DE PROFESORES -->
         <ng-container *ngFor="let prof of nucleoBasico; let i = index">
-
             <table id="tabla1" class="perfil">
-
                 <tbody>
                     <tr>
-
-                        <!-- FOTO -->
                         <td class="imagen">
                             <img *ngIf="prof.imagen" [src]="'http://localhost:3000/' + prof.imagen"
                                 alt="Foto de perfil" />
@@ -20,7 +15,6 @@
                             <img *ngIf="!prof.imagen" src="assets/sin-foto.png" alt="Sin imagen" />
                         </td>
 
-                        <!-- DATOS -->
                         <td class="datos">
 
                             <h3>{{ prof.nombre }}</h3>
@@ -29,7 +23,6 @@
                             <strong>Especialidad:</strong> {{ prof.especialidad }}<br />
                             <strong>Cédula Profesional:</strong> {{ prof.cedula_profesional }}<br />
 
-                            <!-- DETALLES OCULTOS -->
                             <div class="detalles" [class.oculto]="ocultos[i]">
 
                                 <strong>Nivel SNII:</strong> {{ prof.nivel_snii }}<br />
@@ -37,10 +30,15 @@
                                 <strong>Unidad de Adscripción:</strong> {{ prof.unidad_adscripcion }}<br />
                                 <strong>Correo Electrónico:</strong> {{ prof.correo }}<br />
 
-                                <strong>Semblanza:</strong> {{ prof.semblanza }}<br />
+                                <strong>Semblanza:</strong>
+                                <span class="texto-semblanza-inline">
+                                    {{ prof.semblanza }}
+                                </span><br />
 
                                 <strong>Líneas de Investigación:</strong>
-                                {{ prof.lineas_investigacion }}<br />
+                                <span class="texto-semblanza-inline">
+                                    {{ prof.lineas_investigacion }}
+                                </span><br>
 
                                 <strong>CVU:</strong><br>
 
@@ -58,49 +56,127 @@
 
                             </div>
 
-                            <!-- BOTÓN VER MÁS -->
                             <span class="toggle-btn" (click)="toggleDetalles(i)">
                                 {{ ocultos[i] ? 'Ver más...' : 'Ver menos...' }}
                             </span>
 
-                        </td>
+                            <div class="acciones-profesor">
+                                <button class="btn-editar" (click)="editarProfesor(prof)">Editar</button>
+                                <button class="btn-eliminar" (click)="eliminarProfesor(prof)">Eliminar</button>
+                            </div>
 
+                            <div class="formulario-edicion" *ngIf="profesorEditandoId === prof.id">
+
+                                <h3>Editar Profesor</h3>
+
+                                <div class="form-grid">
+
+                                    <div class="form-group full">
+                                        <label>Nombre:</label>
+                                        <input type="text" [(ngModel)]="nuevoProfesor.nombre">
+                                    </div>
+
+                                    <div class="form-group full">
+                                        <label>Nueva Imagen (opcional):</label>
+                                        <input type="file" accept="image/*" (change)="onSeleccionarImagen($event)">
+                                    </div>
+
+                                    <div class="preview-container" *ngIf="previewImagen || imagenActual">
+                                        <p><strong>Vista previa:</strong></p>
+                                        <img [src]="previewImagen || imagenActual" class="preview-img" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Grado Máximo Obtenido:</label>
+                                        <input type="text" [(ngModel)]="nuevoProfesor.grado_maximo">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Especialidad:</label>
+                                        <input type="text" [(ngModel)]="nuevoProfesor.especialidad">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Cédula Profesional:</label>
+                                        <input type="text" [(ngModel)]="nuevoProfesor.cedula_profesional">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Nivel SNII:</label>
+                                        <input type="text" [(ngModel)]="nuevoProfesor.nivel_snii">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Cargo:</label>
+                                        <input type="text" [(ngModel)]="nuevoProfesor.cargo">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Unidad Adscripción:</label>
+                                        <input type="text" [(ngModel)]="nuevoProfesor.unidad_adscripcion">
+                                    </div>
+
+                                    <div class="form-group full">
+                                        <label>Correo Electrónico:</label>
+                                        <input type="email" [(ngModel)]="nuevoProfesor.correo">
+                                    </div>
+
+                                    <div class="form-group full">
+                                        <label>Semblanza:</label>
+                                        <textarea rows="3" [(ngModel)]="nuevoProfesor.semblanza"></textarea>
+                                    </div>
+
+                                    <div class="form-group full">
+                                        <label>Líneas de Investigación:</label>
+                                        <textarea rows="2" [(ngModel)]="nuevoProfesor.lineas_investigacion"></textarea>
+                                    </div>
+
+                                    <div class="form-group full">
+                                        <label>CVUs:</label>
+
+                                        <div *ngFor="let cvu of nuevoProfesor.cvu_enlaces; let idx = index"
+                                            class="cvu-item">
+                                            <input type="text" [(ngModel)]="nuevoProfesor.cvu_enlaces[idx].enlace"
+                                                placeholder="Link CVU">
+                                        </div>
+
+                                        <button type="button" class="btn-add-cvu" (click)="agregarCvu()">
+                                            + Añadir otro CVU
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div class="acciones-form">
+                                    <button class="btn-guardar" (click)="guardarEdicion()">Guardar cambios</button>
+                                    <button class="btn-cancelar" (click)="cancelarEdicion()">Cancelar</button>
+                                </div>
+
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
-
             </table>
 
             <div class="separator"></div>
 
         </ng-container>
 
-
-
-        <!-- =============================================== -->
-        <!-- BOTÓN PARA ABRIR FORMULARIO (SOLO UNA VEZ) -->
-        <!-- =============================================== -->
         <div class="agregar-profesor-container">
             <button class="btn-agregar-profesor" (click)="toggleFormulario()">
                 Agregar Profesor
             </button>
         </div>
 
-        <!-- =============================================== -->
-        <!-- FORMULARIO PARA AGREGAR PROFESOR (UNA VEZ) -->
-        <!-- =============================================== -->
         <div class="formulario-registro" *ngIf="formVisible">
-
             <h3>Registrar Nuevo Profesor</h3>
 
             <div class="form-grid">
-
-                <!-- Nombre -->
                 <div class="form-group full">
                     <label>Nombre:</label>
                     <input type="text" [(ngModel)]="nuevoProfesor.nombre">
                 </div>
 
-                <!-- Imagen -->
                 <div class="form-group full">
                     <label>Imagen:</label>
                     <input type="file" accept="image/*" (change)="onSeleccionarImagen($event)">
@@ -111,7 +187,6 @@
                     <img [src]="previewImagen" class="preview-img" />
                 </div>
 
-                <!-- Grado máximo y especialidad -->
                 <div class="form-group">
                     <label>Grado Máximo Obtenido:</label>
                     <input type="text" [(ngModel)]="nuevoProfesor.grado_maximo">
@@ -122,7 +197,6 @@
                     <input type="text" [(ngModel)]="nuevoProfesor.especialidad">
                 </div>
 
-                <!-- Cédula y Nivel SNII -->
                 <div class="form-group">
                     <label>Cédula Profesional:</label>
                     <input type="text" [(ngModel)]="nuevoProfesor.cedula_profesional">
@@ -133,7 +207,6 @@
                     <input type="text" [(ngModel)]="nuevoProfesor.nivel_snii">
                 </div>
 
-                <!-- Cargo y Unidad -->
                 <div class="form-group">
                     <label>Cargo:</label>
                     <input type="text" [(ngModel)]="nuevoProfesor.cargo">
@@ -144,25 +217,21 @@
                     <input type="text" [(ngModel)]="nuevoProfesor.unidad_adscripcion">
                 </div>
 
-                <!-- Correo -->
                 <div class="form-group full">
                     <label>Correo Electrónico:</label>
                     <input type="email" [(ngModel)]="nuevoProfesor.correo">
                 </div>
 
-                <!-- Semblanza -->
                 <div class="form-group full">
                     <label>Semblanza:</label>
                     <textarea rows="3" [(ngModel)]="nuevoProfesor.semblanza"></textarea>
                 </div>
 
-                <!-- Líneas de investigación -->
                 <div class="form-group full">
                     <label>Líneas de Investigación:</label>
                     <textarea rows="2" [(ngModel)]="nuevoProfesor.lineas_investigacion"></textarea>
                 </div>
 
-                <!-- CVUs -->
                 <div class="form-group full">
                     <label>CVUs:</label>
 
@@ -174,7 +243,6 @@
                         + Añadir otro CVU
                     </button>
                 </div>
-
             </div>
 
             <div class="acciones-form">
@@ -183,6 +251,5 @@
             </div>
 
         </div>
-
     </div>
 </div>
