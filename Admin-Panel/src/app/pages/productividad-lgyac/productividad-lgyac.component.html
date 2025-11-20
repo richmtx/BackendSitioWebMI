@@ -1,0 +1,26 @@
+<!-- Tabla LGAC: Ingeniería en Sistemas (ARTÍCULOS) -->
+<section class="articulos-container">
+    <h2 class="h2Productividad">LGAC: Ingeniería en Sistemas</h2>
+    <h2 class="titulo-articulos">Artículos</h2>
+
+    <table id="tablaArticulos" class="articulos-tabla">
+        <tbody>
+
+            <!-- LISTA DINÁMICA DE ARTÍCULOS -->
+            <ng-container *ngFor="let art of articulos">
+
+                <tr class="fila-articulo">
+                    <td (click)="abrirArticulo(art.url)">
+                        <strong class="titulo-articulo">{{ art.titulo }}</strong><br>
+                        <span class="descripcion-articulo">• {{ art.descripcion }}</span>
+                    </td>
+                </tr>
+
+                <!-- Espaciador -->
+                <tr class="espacio separator"></tr>
+
+            </ng-container>
+
+        </tbody>
+    </table>
+</section>

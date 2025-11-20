@@ -1,0 +1,222 @@
+
+/*-------------------------------------------------------------------------------*/
+
+/* Estilos para tabla Articulos */
+.articulos-container {
+    padding: 20px;
+}
+
+.articulos-tabla {
+    width: 80%;
+    border-collapse: separate;
+    border-spacing: 0 20px;
+    margin: 0 auto;
+    margin-top: 35px;
+}
+
+.h2Productividad {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: -25px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.titulo-articulos {
+    color: #b29140;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: -30px;
+    font-size: 2em;
+}
+
+.titulo {
+    margin-bottom: 5px;
+}
+
+.fila-articulo {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fila-articulo:hover {
+    background-color: #ebdaa9;
+}
+
+.titulo-articulo {
+    color: #000;
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.descripcion-articulo {
+    font-size: 0.9em;
+    color: #666;
+    display: block;
+    text-align: justify;
+    margin-top: -7px;
+}
+
+.fila-articulo td {
+    padding: 20px;
+    text-align: justify;
+    vertical-align: middle;
+}
+
+.espacio {
+    height: 20px;
+}
+
+/* Línea espaciadora */
+.separator {
+    display: block !important;
+    width: 100% !important;
+    height: 2px !important;
+    background-color: #ccc !important;
+    margin: 10px 0 !important;
+}
+
+/*-------------------------------------------------------------------------------*/
+
+/* Estilos para tabla Capitulos */
+.capitulos-container {
+    padding: 20px;
+}
+
+.capitulos-tabla {
+    width: 80%;
+    border-collapse: separate;
+    border-spacing: 0 20px;
+    margin: 0 auto;
+    margin-top: 35px;
+}
+
+
+.titulo-capitulos2 {
+    color: #003366;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: -25px;
+}
+
+.titulo {
+    margin-bottom: 5px;
+}
+
+.fila-capitulos {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fila-capitulos:hover {
+    background-color: #bdd7ee;
+}
+
+.titulo-capitulos {
+    color: #000;
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.descripcion-capitulos {
+    font-size: 0.9em;
+    color: #666;
+    display: block;
+    text-align: justify;
+    margin-top: -7px;
+}
+
+.fila-capitulos td {
+    padding: 20px;
+    text-align: justify;
+    vertical-align: middle;
+}
+
+.espacio {
+    height: 20px;
+}
+
+/* Línea espaciadora */
+.separator {
+    display: block !important;
+    width: 100% !important;
+    height: 2px !important;
+    background-color: #ccc !important;
+    margin: 10px 0 !important;
+}
+
+/*-------------------------------------------------------------------------------*/
+
+/* Estilos para tabla proyectos */
+.proyectos-container {
+    padding: 20px;
+}
+
+.proyectos-tabla {
+    width: 80%;
+    border-collapse: separate;
+    border-spacing: 0 20px;
+    margin: 0 auto;
+    margin-top: 35px;
+}
+
+
+.titulo-proyectos2 {
+    color: #089949;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: -25px;
+}
+
+.titulo {
+    margin-bottom: 5px;
+}
+
+.fila-proyectos {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fila-proyectos:hover {
+    background-color: #c5e0b4;
+}
+
+.titulo-proyectos {
+    color: #000;
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.descripcion-proyectos {
+    font-size: 0.9em;
+    color: #666;
+    display: block;
+    text-align: justify;
+    margin-top: -7px;
+}
+
+.fila-proyectos td {
+    padding: 20px;
+    text-align: justify;
+    vertical-align: middle;
+}
+
+.espacio {
+    height: 20px;
+}
+
+/* Línea espaciadora */
+.separator {
+    display: block !important;
+    width: 100% !important;
+    height: 2px !important;
+    background-color: #ccc !important;
+    margin: 10px 0 !important;
+}
