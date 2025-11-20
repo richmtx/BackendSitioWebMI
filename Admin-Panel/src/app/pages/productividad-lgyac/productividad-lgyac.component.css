@@ -220,3 +220,113 @@
     background-color: #ccc !important;
     margin: 10px 0 !important;
 }
+
+/*-------------------------------------------------------------------------------*/
+
+/* Estilos para formulularios y botones */
+
+.agregar-articulo-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-agregar {
+    background: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-agregar:hover {
+    opacity: 0.8;
+}
+
+.formulario-articulo {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+}
+
+.formulario-articulo input,
+.formulario-articulo textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+}
+
+.acciones-formulario {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-guardar {
+    background: #007bff;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-guardar:hover {
+    opacity: 0.8;
+}
+
+.btn-cancelar {
+    background: #dc3545;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-cancelar:hover {
+    opacity: 0.8;
+}
+
+.acciones-articulo {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+.btn-editar-articulo {
+    background: #ffc107;
+    color: black;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-editar-articulo:hover {
+    opacity: 0.8;
+}
+
+.btn-eliminar-articulo {
+    background: #dc3545;
+    color: white;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: 0.2s ease;
+}
+
+.btn-eliminar-articulo:hover {
+    opacity: 0.8;
+}

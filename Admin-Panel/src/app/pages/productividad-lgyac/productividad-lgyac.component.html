@@ -16,11 +16,100 @@
                     </td>
                 </tr>
 
-                <!-- Espaciador -->
+                <!-- Botones de Editar y Eliminar -->
+                <tr>
+                    <td class="acciones-articulo">
+                        <button class="btn-editar-articulo" (click)="editarArticulo(art)">
+                            Editar
+                        </button>
+
+                        <button class="btn-eliminar-articulo" (click)="confirmarEliminar(art.id_articulo)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- FORMULARIO DE EDICIÓN -->
+                <tr *ngIf="art.id_articulo === articuloEditando?.id_articulo">
+                    <ng-container *ngIf="articuloEditando as artEditando">
+                        <td>
+                            <div class="formulario-articulo">
+                                <h3>Editar Artículo</h3>
+
+                                <form>
+
+                                    <label>Título:</label>
+                                    <input type="text" [(ngModel)]="artEditando.titulo" name="tituloEditar" />
+
+                                    <label>Descripción:</label>
+                                    <textarea [(ngModel)]="artEditando.descripcion" name="descripcionEditar"
+                                        rows="4"></textarea>
+
+                                    <label>URL del artículo:</label>
+                                    <input type="text" [(ngModel)]="artEditando.url" name="urlEditar" />
+
+                                    <div class="acciones-formulario">
+                                        <button class="btn-guardar" type="button" (click)="actualizarArticulo()">
+                                            Guardar Cambios
+                                        </button>
+
+                                        <button class="btn-cancelar" type="button" (click)="cancelarEdicion()">
+                                            Cancelar
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+
+                <!-- separador -->
                 <tr class="espacio separator"></tr>
 
             </ng-container>
 
         </tbody>
     </table>
+
+    <!-- Botón para agregar artículo -->
+    <div class="agregar-articulo-container">
+        <button class="btn-agregar" (click)="toggleFormulario()">
+            + Agregar Artículo
+        </button>
+    </div>
+
+    <!-- FORMULARIO PARA CREAR ARTÍCULO -->
+    <div class="formulario-articulo" *ngIf="mostrarFormulario">
+        <h3>Nuevo Artículo</h3>
+
+        <form>
+
+            <!-- TÍTULO -->
+            <label>Título:</label>
+            <input type="text" [(ngModel)]="nuevoArticulo.titulo" name="titulo" placeholder="Título del artículo" />
+
+            <!-- DESCRIPCIÓN -->
+            <label>Descripción:</label>
+            <textarea [(ngModel)]="nuevoArticulo.descripcion" name="descripcion" rows="4"
+                placeholder="Descripción del artículo"></textarea>
+
+            <!-- URL -->
+            <label>URL del artículo:</label>
+            <input type="text" [(ngModel)]="nuevoArticulo.url" name="url" placeholder="https://ejemplo.com" />
+
+            <!-- BOTONES -->
+            <div class="acciones-formulario">
+                <button class="btn-guardar" type="button" (click)="guardarArticulo()">
+                    Guardar
+                </button>
+
+                <button class="btn-cancelar" type="button" (click)="cancelar()">
+                    Cancelar
+                </button>
+            </div>
+
+        </form>
+    </div>
+
 </section>
