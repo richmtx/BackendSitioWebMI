@@ -6,7 +6,6 @@ export interface LgacArticulo {
   id_articulo: number;
   titulo: string;
   descripcion: string;
-  fecha_publicacion: string;
   url: string;
 }
 
