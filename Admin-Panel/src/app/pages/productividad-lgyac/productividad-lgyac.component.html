@@ -37,7 +37,6 @@
                                 <h3>Editar Artículo</h3>
 
                                 <form>
-
                                     <label>Título:</label>
                                     <input type="text" [(ngModel)]="artEditando.titulo" name="tituloEditar" />
 
@@ -57,7 +56,6 @@
                                             Cancelar
                                         </button>
                                     </div>
-
                                 </form>
                             </div>
                         </td>
@@ -84,7 +82,6 @@
         <h3>Nuevo Artículo</h3>
 
         <form>
-
             <!-- TÍTULO -->
             <label>Título:</label>
             <input type="text" [(ngModel)]="nuevoArticulo.titulo" name="titulo" placeholder="Título del artículo" />
@@ -108,8 +105,246 @@
                     Cancelar
                 </button>
             </div>
-
         </form>
+
     </div>
 
 </section>
+
+
+<!-- ============================================== -->
+<!-- Tabla LGAC: Ingeniería en Sistemas (CAPÍTULOS) -->
+<!-- ============================================== -->
+<section class="capitulos-container">
+    <h2 class="titulo-capitulos2">Capítulos</h2>
+
+    <table id="tablaCapitulos" class="capitulos-tabla">
+        <tbody>
+
+            <!-- LISTA DINÁMICA DE CAPÍTULOS -->
+            <ng-container *ngFor="let cap of capitulos">
+
+                <tr class="fila-capitulos" (click)="abrirCapitulo(cap.url)">
+                    <td>
+                        <strong class="titulo-capitulos">{{ cap.titulo }}</strong><br>
+                        <span class="descripcion-capitulos">• {{ cap.descripcion }}</span>
+                    </td>
+                </tr>
+
+                <!-- BOTÓN EDITAR CAPÍTULO -->
+                <tr>
+                    <td class="acciones-articulo">
+                        <button class="btn-editar-articulo" (click)="editarCapitulo(cap)">
+                            Editar
+                        </button>
+                        <button class="btn-eliminar-articulo" (click)="confirmarEliminarCapitulo(cap.id_capitulo)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- FORMULARIO DE EDICIÓN DE CAPÍTULO -->
+                <tr *ngIf="cap.id_capitulo === capituloEditando?.id_capitulo">
+                    <ng-container *ngIf="capituloEditando as capEditando">
+                        <td>
+                            <div class="formulario-articulo">
+                                <h3>Editar Capítulo</h3>
+
+                                <form>
+
+                                    <label>Título:</label>
+                                    <input type="text" [(ngModel)]="capEditando.titulo" name="tituloEditarCap" />
+
+                                    <label>Descripción:</label>
+                                    <textarea [(ngModel)]="capEditando.descripcion" name="descripcionEditarCap"
+                                        rows="4"></textarea>
+
+                                    <label>URL del capítulo:</label>
+                                    <input type="text" [(ngModel)]="capEditando.url" name="urlEditarCap" />
+
+                                    <div class="acciones-formulario">
+                                        <button class="btn-guardar" type="button" (click)="actualizarCapitulo()">
+                                            Guardar Cambios
+                                        </button>
+
+                                        <button class="btn-cancelar" type="button" (click)="cancelarEdicionCapitulo()">
+                                            Cancelar
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+
+                <!-- Espaciador -->
+                <tr class="espacio separator"></tr>
+
+            </ng-container>
+
+        </tbody>
+    </table>
+</section>
+
+<!-- ================================================== -->
+<!-- BOTÓN PARA AGREGAR CAPÍTULO -->
+<!-- ================================================== -->
+<div class="agregar-articulo-container">
+    <button class="btn-agregar" (click)="toggleFormularioCapitulos()">
+        + Agregar Capítulo
+    </button>
+</div>
+
+<!-- ================================================== -->
+<!-- FORMULARIO PARA CREAR CAPÍTULO -->
+<!-- ================================================== -->
+<div class="formulario-articulo" *ngIf="mostrarFormularioCapitulos">
+    <h3>Nuevo Capítulo</h3>
+
+    <form>
+
+        <!-- TÍTULO -->
+        <label>Título:</label>
+        <input type="text" [(ngModel)]="nuevoCapitulo.titulo" name="tituloCap" placeholder="Título del capítulo" />
+
+        <!-- DESCRIPCIÓN -->
+        <label>Descripción:</label>
+        <textarea [(ngModel)]="nuevoCapitulo.descripcion" name="descripcionCap" rows="4"
+            placeholder="Descripción del capítulo"></textarea>
+
+        <!-- URL -->
+        <label>URL del capítulo:</label>
+        <input type="text" [(ngModel)]="nuevoCapitulo.url" name="urlCap" placeholder="https://ejemplo.com" />
+
+        <!-- BOTONES -->
+        <div class="acciones-formulario">
+            <button class="btn-guardar" type="button" (click)="guardarCapitulo()">
+                Guardar
+            </button>
+
+            <button class="btn-cancelar" type="button" (click)="cancelarCapitulo()">
+                Cancelar
+            </button>
+        </div>
+
+    </form>
+</div>
+
+
+<!-- ============================================== -->
+<!-- Tabla LGAC: Ingeniería en Sistemas (PROYECTOS) -->
+<!-- ============================================== -->
+<section class="proyectos-container">
+    <h2 class="titulo-proyectos2">Proyectos de Investigación</h2>
+
+    <table id="tablaProyectos" class="proyectos-tabla">
+        <tbody>
+
+            <!-- LISTA DINÁMICA DE PROYECTOS -->
+            <ng-container *ngFor="let proy of proyectos">
+
+                <tr class="fila-proyectos" (click)="abrirProyecto(proy.url)">
+                    <td>
+                        <strong class="titulo-proyectos">{{ proy.titulo }}</strong><br>
+                        <span class="descripcion-proyectos">• {{ proy.descripcion }}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="acciones-articulo">
+                        <button class="btn-editar-articulo" (click)="editarProyecto(proy)">
+                            Editar
+                        </button>
+                        <button class="btn-eliminar-articulo" (click)="confirmarEliminarProyecto(proy.id_proyecto)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+
+                <tr *ngIf="proy.id_proyecto === proyectoEditando?.id_proyecto">
+                    <ng-container *ngIf="proyectoEditando as proyEditando">
+                        <td>
+                            <div class="formulario-articulo">
+                                <h3>Editar Proyecto</h3>
+
+                                <form>
+
+                                    <label>Título:</label>
+                                    <input type="text" [(ngModel)]="proyEditando.titulo" name="tituloEditarProyecto" />
+
+                                    <label>Descripción:</label>
+                                    <textarea [(ngModel)]="proyEditando.descripcion" name="descripcionEditarProyecto"
+                                        rows="4"></textarea>
+
+                                    <label>URL del proyecto:</label>
+                                    <input type="text" [(ngModel)]="proyEditando.url" name="urlEditarProyecto" />
+
+                                    <div class="acciones-formulario">
+                                        <button class="btn-guardar" type="button" (click)="actualizarProyecto()">
+                                            Guardar Cambios
+                                        </button>
+
+                                        <button class="btn-cancelar" type="button" (click)="cancelarEdicionProyecto()">
+                                            Cancelar
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+
+                <!-- Espaciador -->
+                <tr class="espacio separator"></tr>
+
+            </ng-container>
+
+        </tbody>
+    </table>
+</section>
+
+<!-- ============================================== -->
+<!-- BOTÓN PARA AGREGAR PROYECTO -->
+<!-- ============================================== -->
+<div class="agregar-articulo-container">
+    <button class="btn-agregar" (click)="toggleFormularioProyectos()">
+        + Agregar Proyecto
+    </button>
+</div>
+
+<!-- ============================================== -->
+<!-- FORMULARIO PARA CREAR PROYECTO -->
+<!-- ============================================== -->
+<div class="formulario-articulo" *ngIf="mostrarFormularioProyectos">
+    <h3>Nuevo Proyecto</h3>
+
+    <form>
+
+        <!-- TÍTULO -->
+        <label>Título:</label>
+        <input type="text" [(ngModel)]="nuevoProyecto.titulo" name="tituloProyecto" placeholder="Título del proyecto" />
+
+        <!-- DESCRIPCIÓN -->
+        <label>Descripción:</label>
+        <textarea [(ngModel)]="nuevoProyecto.descripcion" name="descripcionProyecto" rows="4"
+            placeholder="Descripción del proyecto"></textarea>
+
+        <!-- URL -->
+        <label>URL del proyecto:</label>
+        <input type="text" [(ngModel)]="nuevoProyecto.url" name="urlProyecto" placeholder="https://ejemplo.com" />
+
+        <!-- BOTONES -->
+        <div class="acciones-formulario">
+            <button class="btn-guardar" type="button" (click)="guardarProyecto()">
+                Guardar
+            </button>
+
+            <button class="btn-cancelar" type="button" (click)="cancelarProyecto()">
+                Cancelar
+            </button>
+        </div>
+
+    </form>
+</div>
