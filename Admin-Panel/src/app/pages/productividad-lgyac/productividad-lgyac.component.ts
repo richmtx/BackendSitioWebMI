@@ -7,9 +7,14 @@ import Swal from 'sweetalert2';
 import { LgacArticulosService, LgacArticulo } from './lgacArticulos.service';
 import { LgacCapitulosService, LgacCapitulo } from './lgacCapitulos.service';
 import { LgacProyectosService, LgacProyecto } from './lgacProyectos.service';
+
 import { LgacArticulos2Service, LgacArticulo2 } from './lgacArticulos2.service';
 import { LgacCapitulos2Service, LgacCapitulo2 } from './lgacCapitulos2.service';
 import { LgacProyectos2Service, LgacProyecto2 } from './lgacProyectos2.service';
+
+import { LgacArticulos3Service, LgacArticulo3 } from './lgacArticulos3.service';
+import { LgacCapitulos3Service, LgacCapitulo3 } from './lgacCapitulos3.service';
+import { LgacProyectos3Service, LgacProyecto3 } from './lgacProyectos3.service';
 
 @Component({
   selector: 'app-productividad-lgyac',
@@ -30,6 +35,9 @@ export class ProductividadLgyacComponent implements OnInit {
   articulos2: LgacArticulo2[] = [];
   capitulos2: LgacCapitulo2[] = [];
   proyectos2: LgacProyecto2[] = [];
+  articulos3: LgacArticulo3[] = [];
+  capitulos3: LgacCapitulo3[] = [];
+  proyectos3: LgacProyecto3[] = [];
 
   // =====================================================
   // =================== ESTADOS FORMULARIOS =============
@@ -41,6 +49,9 @@ export class ProductividadLgyacComponent implements OnInit {
   mostrarFormularioArticulos2 = false;
   mostrarFormularioCapitulos2 = false;
   mostrarFormularioProyectos2 = false;
+  mostrarFormularioArticulos3 = false;
+  mostrarFormularioCapitulos3 = false;
+  mostrarFormularioProyectos3 = false;
 
   // =====================================================
   // =================== NUEVOS REGISTROS ================
@@ -52,6 +63,9 @@ export class ProductividadLgyacComponent implements OnInit {
   nuevoArticulo2 = { titulo: '', descripcion: '', url: '' };
   nuevoCapitulo2 = { titulo: '', descripcion: '', url: '' };
   nuevoProyecto2 = { titulo: '', descripcion: '', url: '' };
+  nuevoArticulo3 = { titulo: '', descripcion: '', url: '' };
+  nuevoCapitulo3 = { titulo: '', descripcion: '', url: '' };
+  nuevoProyecto3 = { titulo: '', descripcion: '', url: '' };
 
   // =====================================================
   // =================== EDICIONES: ARTÍCULOS ============
@@ -61,6 +75,8 @@ export class ProductividadLgyacComponent implements OnInit {
   articuloOriginal: LgacArticulo | null = null;
   articulo2Editando: LgacArticulo2 | null = null;
   articulo2Original: LgacArticulo2 | null = null;
+  articulo3Editando: LgacArticulo3 | null = null;
+  articulo3Original: LgacArticulo3 | null = null;
 
   // =====================================================
   // =================== EDICIONES: CAPÍTULOS ============
@@ -70,6 +86,8 @@ export class ProductividadLgyacComponent implements OnInit {
   capituloOriginal: LgacCapitulo | null = null;
   capitulo2Editando: LgacCapitulo2 | null = null;
   capitulo2Original: LgacCapitulo2 | null = null;
+  capitulo3Editando: LgacCapitulo3 | null = null;
+  capitulo3Original: LgacCapitulo3 | null = null;
 
   // =====================================================
   // =================== EDICIONES: PROYECTOS ============
@@ -79,6 +97,8 @@ export class ProductividadLgyacComponent implements OnInit {
   proyectoOriginal: LgacProyecto | null = null;
   proyecto2Editando: LgacProyecto2 | null = null;
   proyecto2Original: LgacProyecto2 | null = null;
+  proyecto3Editando: LgacProyecto3 | null = null;
+  proyecto3Original: LgacProyecto3 | null = null;
 
   // =====================================================
   // =================== CONSTRUCTOR =====================
@@ -90,7 +110,10 @@ export class ProductividadLgyacComponent implements OnInit {
     private proyectosService: LgacProyectosService,
     private lgacArticulos2Service: LgacArticulos2Service,
     private lgacCapitulos2Service: LgacCapitulos2Service,
-    private lgacProyectos2Service: LgacProyectos2Service
+    private lgacProyectos2Service: LgacProyectos2Service,
+    private articulos3Service: LgacArticulos3Service,
+    private LgacCapitulos3Service: LgacCapitulos3Service,
+    private LgacProyectos3Service: LgacProyectos3Service
   ) { }
 
   // =====================================================
@@ -104,6 +127,9 @@ export class ProductividadLgyacComponent implements OnInit {
     this.cargarArticulos2();
     this.cargarCapitulos2();
     this.cargarProyectos2();
+    this.cargarArticulos3();
+    this.cargarCapitulos3();
+    this.cargarProyectos3();
   }
 
   // =====================================================
@@ -1004,6 +1030,473 @@ export class ProductividadLgyacComponent implements OnInit {
         }
 
         this.cargarProyectos2();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo eliminar el proyecto. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+
+  // =====================================================
+  // ======================= ARTÍCULOS 3 =================
+  // =====================================================
+
+  cargarArticulos3(): void {
+    this.articulos3Service.getArticulos().subscribe({
+      next: (data) => this.articulos3 = data,
+      error: (err) => console.error('Error al obtener artículos:', err)
+    });
+  }
+
+  abrirArticulo3(url: string): void {
+    if (url) window.open(url, '_blank');
+  }
+
+  // ----- FORMULARIO NUEVO ARTÍCULO -----
+
+  toggleFormularioArticulo3(): void {
+    this.mostrarFormularioArticulos3 = !this.mostrarFormularioArticulos3;
+  }
+
+  cancelarArticulo3(): void {
+    this.mostrarFormularioArticulos3 = false;
+    this.nuevoArticulo3 = { titulo: '', descripcion: '', url: '' };
+  }
+
+  guardarArticulo3(): void {
+    if (!this.nuevoArticulo3.titulo || !this.nuevoArticulo3.descripcion || !this.nuevoArticulo3.url) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos antes de guardar.',
+        confirmButtonColor: '#7066e0'
+      });
+      return;
+    }
+
+    this.articulos3Service.crearArticulo(this.nuevoArticulo3).subscribe({
+      next: () => {
+        this.cargarArticulos3();
+        this.cancelarArticulo3();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Artículo agregado',
+          text: 'El artículo se ha agregado correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al guardar el artículo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  // ----- EDICIÓN ARTÍCULO -----
+
+  editarArticulo3(art: LgacArticulo3): void {
+    this.articulo3Editando = { ...art };
+    this.articulo3Original = { ...art };
+  }
+
+  cancelarEdicionArticulo3(): void {
+    this.articulo3Editando = null;
+    this.articulo3Original = null;
+  }
+
+  actualizarArticulo3(): void {
+    if (!this.articulo3Editando || !this.articulo3Original) return;
+
+    const noHayCambios =
+      this.articulo3Editando.titulo === this.articulo3Original.titulo &&
+      this.articulo3Editando.descripcion === this.articulo3Original.descripcion &&
+      this.articulo3Editando.url === this.articulo3Original.url;
+
+    if (noHayCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ningún cambio en el artículo.',
+        confirmButtonColor: '#7066e0'
+      });
+      this.cancelarEdicionArticulo3();
+      return;
+    }
+
+    this.articulos3Service.actualizarArticulo(
+      this.articulo3Editando.id_articulo,
+      this.articulo3Editando
+    ).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Artículo actualizado',
+          text: 'Los cambios se guardaron correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        this.cancelarEdicionArticulo3();
+        this.cargarArticulos3();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el artículo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  // ----- ELIMINAR ARTÍCULO 3 -----
+
+  confirmarEliminarArticulo3(id: number): void {
+    Swal.fire({
+      title: '¿Eliminar artículo?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((r) => r.isConfirmed && this.eliminarArticulo3(id));
+  }
+
+  eliminarArticulo3(id: number): void {
+    this.articulos3Service.eliminarArticulo(id).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Artículo eliminado',
+          text: 'El artículo se eliminó correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        if (this.articulo3Editando?.id_articulo === id) {
+          this.cancelarEdicionArticulo3();
+        }
+
+        this.cargarArticulos3();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo eliminar el artículo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+
+  // =====================================================
+  // ======================= CAPÍTULOS 3 =================
+  // =====================================================
+
+  cargarCapitulos3(): void {
+    this.LgacCapitulos3Service.getCapitulos().subscribe({
+      next: (data) => this.capitulos3 = data,
+      error: (err) => console.error('Error al obtener capítulos LGAC3:', err)
+    });
+  }
+
+  abrirCapitulo3(url: string): void {
+    if (url) window.open(url, '_blank');
+  }
+
+  toggleFormularioCapitulos3(): void {
+    this.mostrarFormularioCapitulos3 = !this.mostrarFormularioCapitulos3;
+  }
+
+  cancelarCapitulo3(): void {
+    this.mostrarFormularioCapitulos3 = false;
+    this.nuevoCapitulo3 = { titulo: '', descripcion: '', url: '' };
+  }
+
+  guardarCapitulo3(): void {
+    if (!this.nuevoCapitulo3.titulo || !this.nuevoCapitulo3.descripcion || !this.nuevoCapitulo3.url) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos antes de guardar.',
+        confirmButtonColor: '#7066e0'
+      });
+      return;
+    }
+
+    this.LgacCapitulos3Service.crearCapitulo(this.nuevoCapitulo3).subscribe({
+      next: () => {
+        this.cargarCapitulos3();
+        this.cancelarCapitulo3();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Capítulo agregado',
+          text: 'El capítulo se ha agregado correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al guardar el capítulo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  editarCapitulo3(cap: LgacCapitulo3): void {
+    this.capitulo3Editando = { ...cap };
+    this.capitulo3Original = { ...cap };
+  }
+
+  cancelarEdicionCapitulo3(): void {
+    this.capitulo3Editando = null;
+    this.capitulo3Original = null;
+  }
+
+  actualizarCapitulo3(): void {
+    if (!this.capitulo3Editando || !this.capitulo3Original) return;
+
+    const noHayCambios =
+      this.capitulo3Editando.titulo === this.capitulo3Original.titulo &&
+      this.capitulo3Editando.descripcion === this.capitulo3Original.descripcion &&
+      this.capitulo3Editando.url === this.capitulo3Original.url;
+
+    if (noHayCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ningún cambio en el capítulo.',
+        confirmButtonColor: '#7066e0'
+      });
+      this.cancelarEdicionCapitulo3();
+      return;
+    }
+
+    this.LgacCapitulos3Service.actualizarCapitulo(
+      this.capitulo3Editando.id_capitulo,
+      this.capitulo3Editando
+    ).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Capítulo actualizado',
+          text: 'Los cambios se guardaron correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        this.cancelarEdicionCapitulo3();
+        this.cargarCapitulos3();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el capítulo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  confirmarEliminarCapitulo3(id: number): void {
+    Swal.fire({
+      title: '¿Eliminar capítulo?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((r) => r.isConfirmed && this.eliminarCapitulo3(id));
+  }
+
+  eliminarCapitulo3(id: number): void {
+    this.LgacCapitulos3Service.eliminarCapitulo(id).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Capítulo eliminado',
+          text: 'El capítulo se eliminó correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        if (this.capitulo3Editando?.id_capitulo === id) {
+          this.cancelarEdicionCapitulo3();
+        }
+
+        this.cargarCapitulos3();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo eliminar el capítulo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  // =====================================================
+  // ======================= PROYECTOS 3 =================
+  // =====================================================
+
+  cargarProyectos3(): void {
+    this.LgacProyectos3Service.getProyectos().subscribe({
+      next: (data) => this.proyectos3 = data,
+      error: (err) => console.error('Error al obtener proyectos LGAC3:', err)
+    });
+  }
+
+  abrirProyecto3(url: string): void {
+    if (url) window.open(url, '_blank');
+  }
+
+  toggleFormularioProyectos3(): void {
+    this.mostrarFormularioProyectos3 = !this.mostrarFormularioProyectos3;
+  }
+
+  cancelarProyecto3(): void {
+    this.mostrarFormularioProyectos3 = false;
+    this.nuevoProyecto3 = { titulo: '', descripcion: '', url: '' };
+  }
+
+  guardarProyecto3(): void {
+    if (!this.nuevoProyecto3.titulo || !this.nuevoProyecto3.descripcion || !this.nuevoProyecto3.url) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos antes de guardar.',
+        confirmButtonColor: '#7066e0'
+      });
+      return;
+    }
+
+    this.LgacProyectos3Service.crearProyecto(this.nuevoProyecto3).subscribe({
+      next: () => {
+        this.cargarProyectos3();
+        this.cancelarProyecto3();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Proyecto agregado',
+          text: 'El proyecto se agregó correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al guardar el proyecto. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  editarProyecto3(proy: LgacProyecto3): void {
+    this.proyecto3Editando = { ...proy };
+    this.proyecto3Original = { ...proy };
+  }
+
+  cancelarEdicionProyecto3(): void {
+    this.proyecto3Editando = null;
+    this.proyecto3Original = null;
+  }
+
+  actualizarProyecto3(): void {
+    if (!this.proyecto3Editando || !this.proyecto3Original) return;
+
+    const noHayCambios =
+      this.proyecto3Editando.titulo === this.proyecto3Original.titulo &&
+      this.proyecto3Editando.descripcion === this.proyecto3Original.descripcion &&
+      this.proyecto3Editando.url === this.proyecto3Original.url;
+
+    if (noHayCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ningún cambio en el proyecto.',
+        confirmButtonColor: '#7066e0'
+      });
+      this.cancelarEdicionProyecto3();
+      return;
+    }
+
+    this.LgacProyectos3Service.actualizarProyecto(
+      this.proyecto3Editando.id_proyecto,
+      this.proyecto3Editando
+    ).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Proyecto actualizado',
+          text: 'Los cambios se guardaron correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        this.cancelarEdicionProyecto3();
+        this.cargarProyectos3();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el proyecto. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  confirmarEliminarProyecto3(id: number): void {
+    Swal.fire({
+      title: '¿Eliminar proyecto?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((r) => r.isConfirmed && this.eliminarProyecto3(id));
+  }
+
+  eliminarProyecto3(id: number): void {
+    this.LgacProyectos3Service.eliminarProyecto(id).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Proyecto eliminado',
+          text: 'El proyecto se eliminó correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        if (this.proyecto3Editando?.id_proyecto === id) {
+          this.cancelarEdicionProyecto3();
+        }
+
+        this.cargarProyectos3();
       },
       error: () => {
         Swal.fire({

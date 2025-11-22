@@ -695,3 +695,349 @@
     </div>
 
 </section>
+
+
+<!-- LGAC: Desarrollo y Gestión de Proyectos de Ingeniería para el Desarrollo Regional (ARTICULOS) -->
+<section class="articulos-container">
+    <h2 class="h2Productividad">LGAC: Desarrollo y Gestión de Proyectos de Ingeniería para el Desarrollo Regional</h2>
+    <h2 class="titulo-articulos">Artículos</h2>
+
+    <table id="tablaArticulos3" class="articulos-tabla">
+        <tbody>
+
+            <!-- LISTA DINÁMICA DE ARTÍCULOS -->
+            <ng-container *ngFor="let art of articulos3">
+
+                <tr class="fila-articulo" (click)="abrirArticulo3(art.url)">
+                    <td>
+                        <strong class="titulo-articulo">{{ art.titulo }}</strong><br>
+                        <span class="descripcion-articulo">• {{ art.descripcion }}</span>
+                    </td>
+                </tr>
+
+                <!-- Botones de Editar -->
+                <tr>
+                    <td class="acciones-articulo">
+                        <button class="btn-editar-articulo" (click)="editarArticulo3(art)">
+                            Editar
+                        </button>
+                        <button class="btn-eliminar-articulo" (click)="confirmarEliminarArticulo3(art.id_articulo)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- FORMULARIO DE EDICIÓN -->
+                <tr *ngIf="art.id_articulo === articulo3Editando?.id_articulo">
+                    <ng-container *ngIf="articulo3Editando as artEditando3">
+                        <td>
+                            <div class="formulario-articulo">
+                                <h3>Editar Artículo</h3>
+
+                                <form>
+
+                                    <label>Título:</label>
+                                    <input type="text" [(ngModel)]="artEditando3.titulo" name="tituloEditar3" />
+
+                                    <label>Descripción:</label>
+                                    <textarea [(ngModel)]="artEditando3.descripcion" name="descripcionEditar3"
+                                        rows="4"></textarea>
+
+                                    <label>URL del artículo:</label>
+                                    <input type="text" [(ngModel)]="artEditando3.url" name="urlEditar3" />
+
+                                    <div class="acciones-formulario">
+                                        <button class="btn-guardar" type="button" (click)="actualizarArticulo3()">
+                                            Guardar Cambios
+                                        </button>
+
+                                        <button class="btn-cancelar" type="button" (click)="cancelarEdicionArticulo3()">
+                                            Cancelar
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+
+                <!-- Separador -->
+                <tr class="espacio separator"></tr>
+
+            </ng-container>
+
+        </tbody>
+    </table>
+
+    <!-- Botón para agregar artículo -->
+    <div class="agregar-articulo-container">
+        <button class="btn-agregar" (click)="toggleFormularioArticulo3()">
+            + Agregar Artículo
+        </button>
+    </div>
+
+    <!-- FORMULARIO PARA CREAR ARTÍCULO -->
+    <div class="formulario-articulo" *ngIf="mostrarFormularioArticulos3">
+        <h3>Nuevo Artículo</h3>
+
+        <form>
+
+            <!-- TÍTULO -->
+            <label>Título:</label>
+            <input type="text" [(ngModel)]="nuevoArticulo3.titulo" name="titulo3" placeholder="Título del artículo" />
+
+            <!-- DESCRIPCIÓN -->
+            <label>Descripción:</label>
+            <textarea [(ngModel)]="nuevoArticulo3.descripcion" name="descripcion3" rows="4"
+                placeholder="Descripción del artículo"></textarea>
+
+            <!-- URL -->
+            <label>URL del artículo:</label>
+            <input type="text" [(ngModel)]="nuevoArticulo3.url" name="url3" placeholder="https://ejemplo.com" />
+
+            <!-- BOTONES -->
+            <div class="acciones-formulario">
+                <button class="btn-guardar" type="button" (click)="guardarArticulo3()">
+                    Guardar
+                </button>
+
+                <button class="btn-cancelar" type="button" (click)="cancelarArticulo3()">
+                    Cancelar
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</section>
+
+
+<!-- LGAC: Desarrollo y Gestión de Proyectos de Ingeniería para el Desarrollo Regional (CAPITULOS) -->
+<section class="capitulos-container">
+    <h2 class="titulo-capitulos2">Capítulos</h2>
+
+    <table id="tablaCapitulos3" class="capitulos-tabla">
+        <tbody>
+
+            <!-- LISTA DINÁMICA DE CAPÍTULOS -->
+            <ng-container *ngFor="let cap of capitulos3">
+
+                <tr class="fila-capitulos" (click)="abrirCapitulo3(cap.url)">
+                    <td>
+                        <strong class="titulo-capitulos">{{ cap.titulo }}</strong><br>
+                        <span class="descripcion-capitulos">• {{ cap.descripcion }}</span>
+                    </td>
+                </tr>
+
+                <!-- Botón Editar -->
+                <tr>
+                    <td class="acciones-articulo">
+                        <button class="btn-editar-articulo" (click)="editarCapitulo3(cap)">
+                            Editar
+                        </button>
+                        <button class="btn-eliminar-articulo" (click)="confirmarEliminarCapitulo3(cap.id_capitulo)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- FORMULARIO DE EDICIÓN DE CAPÍTULOS 3 -->
+                <tr *ngIf="cap.id_capitulo === capitulo3Editando?.id_capitulo">
+                    <ng-container *ngIf="capitulo3Editando as capEditando3">
+                        <td>
+                            <div class="formulario-articulo">
+                                <h3>Editar Capítulo</h3>
+
+                                <form>
+
+                                    <label>Título:</label>
+                                    <input type="text" [(ngModel)]="capEditando3.titulo" name="tituloEditarCap3" />
+
+                                    <label>Descripción:</label>
+                                    <textarea [(ngModel)]="capEditando3.descripcion" name="descripcionEditarCap3"
+                                        rows="4"></textarea>
+
+                                    <label>URL del capítulo:</label>
+                                    <input type="text" [(ngModel)]="capEditando3.url" name="urlEditarCap3" />
+
+                                    <div class="acciones-formulario">
+                                        <button class="btn-guardar" type="button" (click)="actualizarCapitulo3()">
+                                            Guardar Cambios
+                                        </button>
+
+                                        <button class="btn-cancelar" type="button" (click)="cancelarEdicionCapitulo3()">
+                                            Cancelar
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+
+                <!-- Separador -->
+                <tr class="espacio separator"></tr>
+
+            </ng-container>
+
+        </tbody>
+    </table>
+
+    <!-- Botón para agregar Capítulo 2 -->
+    <div class="agregar-articulo-container">
+        <button class="btn-agregar" (click)="toggleFormularioCapitulos3()">
+            + Agregar Capítulo
+        </button>
+    </div>
+
+    <!-- FORMULARIO PARA CREAR CAPÍTULO 2 -->
+    <div class="formulario-articulo" *ngIf="mostrarFormularioCapitulos3">
+        <h3>Nuevo Capítulo</h3>
+
+        <form>
+
+            <!-- TÍTULO -->
+            <label>Título:</label>
+            <input type="text" [(ngModel)]="nuevoCapitulo3.titulo" name="tituloCap3"
+                placeholder="Título del capítulo" />
+
+            <!-- DESCRIPCIÓN -->
+            <label>Descripción:</label>
+            <textarea [(ngModel)]="nuevoCapitulo3.descripcion" name="descripcionCap3" rows="4"
+                placeholder="Descripción del capítulo"></textarea>
+
+            <!-- URL -->
+            <label>URL del capítulo:</label>
+            <input type="text" [(ngModel)]="nuevoCapitulo3.url" name="urlCap3" placeholder="https://ejemplo.com" />
+
+            <!-- BOTONES -->
+            <div class="acciones-formulario">
+                <button class="btn-guardar" type="button" (click)="guardarCapitulo3()">
+                    Guardar
+                </button>
+
+                <button class="btn-cancelar" type="button" (click)="cancelarCapitulo3()">
+                    Cancelar
+                </button>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+
+<!-- LGAC: Desarrollo y Gestión de Proyectos de Ingeniería para el Desarrollo Regional (PROYECTOS) -->
+<section class="proyectos-container">
+    <h2 class="titulo-proyectos2">Proyectos de Investigación</h2>
+
+    <table id="tablaProyectos3" class="proyectos-tabla">
+        <tbody>
+
+            <!-- LISTA DINÁMICA DE PROYECTOS -->
+            <ng-container *ngFor="let proy of proyectos3">
+
+                <tr class="fila-proyectos" (click)="abrirProyecto3(proy.url)">
+                    <td>
+                        <strong class="titulo-proyectos">{{ proy.titulo }}</strong><br>
+                        <span class="descripcion-proyectos">• {{ proy.descripcion }}</span>
+                    </td>
+                </tr>
+
+                <!-- Botón de Editar -->
+                <tr>
+                    <td class="acciones-articulo">
+                        <button class="btn-editar-articulo" (click)="editarProyecto3(proy)">
+                            Editar
+                        </button>
+                        <button class="btn-eliminar-articulo" (click)="confirmarEliminarProyecto3(proy.id_proyecto)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- FORMULARIO DE EDICIÓN -->
+                <tr *ngIf="proy.id_proyecto === proyecto3Editando?.id_proyecto">
+                    <ng-container *ngIf="proyecto3Editando as proyEditando">
+                        <td>
+                            <div class="formulario-articulo">
+                                <h3>Editar Proyecto</h3>
+
+                                <form>
+
+                                    <label>Título:</label>
+                                    <input type="text" [(ngModel)]="proyEditando.titulo" name="tituloProyecto3Editar" />
+
+                                    <label>Descripción:</label>
+                                    <textarea [(ngModel)]="proyEditando.descripcion" name="descripcionProyecto3Editar"
+                                        rows="4"></textarea>
+
+                                    <label>URL del proyecto:</label>
+                                    <input type="text" [(ngModel)]="proyEditando.url" name="urlProyecto3Editar" />
+
+                                    <div class="acciones-formulario">
+                                        <button class="btn-guardar" type="button" (click)="actualizarProyecto3()">
+                                            Guardar Cambios
+                                        </button>
+
+                                        <button class="btn-cancelar" type="button" (click)="cancelarEdicionProyecto3()">
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+
+                <!-- Separador -->
+                <tr class="espacio separator"></tr>
+
+            </ng-container>
+
+        </tbody>
+    </table>
+
+    <!-- Botón para agregar PROYECTO 3 -->
+    <div class="agregar-articulo-container">
+        <button class="btn-agregar" (click)="toggleFormularioProyectos3()">
+            + Agregar Proyecto
+        </button>
+    </div>
+
+    <!-- FORMULARIO PARA CREAR PROYECTO 3 -->
+    <div class="formulario-articulo" *ngIf="mostrarFormularioProyectos3">
+        <h3>Nuevo Proyecto</h3>
+
+        <form>
+
+            <!-- TÍTULO -->
+            <label>Título:</label>
+            <input type="text" [(ngModel)]="nuevoProyecto3.titulo" name="tituloProyecto3"
+                placeholder="Título del proyecto" />
+
+            <!-- DESCRIPCIÓN -->
+            <label>Descripción:</label>
+            <textarea [(ngModel)]="nuevoProyecto3.descripcion" name="descripcionProyecto3" rows="4"
+                placeholder="Descripción del proyecto"></textarea>
+
+            <!-- URL -->
+            <label>URL del proyecto:</label>
+            <input type="text" [(ngModel)]="nuevoProyecto3.url" name="urlProyecto3" placeholder="https://ejemplo.com" />
+
+            <!-- BOTONES -->
+            <div class="acciones-formulario">
+                <button class="btn-guardar" type="button" (click)="guardarProyecto3()">
+                    Guardar
+                </button>
+
+                <button class="btn-cancelar" type="button" (click)="cancelarProyecto3()">
+                    Cancelar
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</section>
