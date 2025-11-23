@@ -9,8 +9,7 @@
                 <tbody>
                     <tr>
                         <td class="imagen">
-                            <img *ngIf="prof.imagen" [src]="'http://localhost:3000/' + prof.imagen"
-                                alt="Foto de perfil" />
+                            <img *ngIf="prof.imagen" [src]="urlServer + '/' + prof.imagen" alt="Foto de perfil" />
 
                             <img *ngIf="!prof.imagen" src="assets/sin-foto.png" alt="Sin imagen" />
                         </td>

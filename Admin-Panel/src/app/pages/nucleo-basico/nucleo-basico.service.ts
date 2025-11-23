@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface CvuEnlace {
   id: number;
@@ -32,7 +33,8 @@ export interface NucleoBasico {
 })
 export class NucleoBasicoService {
 
-  private apiUrl = 'http://localhost:3000/nucleo-basico';
+  // URL GLOBAL
+  private apiUrl = `${URL_SERVER}/nucleo-basico`;
 
   constructor(private http: HttpClient) {}
 

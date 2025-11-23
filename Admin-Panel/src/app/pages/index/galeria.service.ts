@@ -15,7 +15,7 @@ export interface Galeria {
 })
 export class GaleriaService {
 
-  // Usar la URL global
+  // URL global
   private apiUrl = `${URL_SERVER}/galeria`;
 
   constructor(private http: HttpClient) { }

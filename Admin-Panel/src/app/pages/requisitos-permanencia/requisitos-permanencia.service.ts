@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface RequisitoPermanencia {
   id_requisito: number;
@@ -11,7 +12,9 @@ export interface RequisitoPermanencia {
   providedIn: 'root'
 })
 export class RequisitosPermanenciaService {
-  private apiUrl = 'http://localhost:3000/requisitos-permanencia';
+
+  // URL global
+  private apiUrl = `${URL_SERVER}/requisitos-permanencia`;
 
   constructor(private http: HttpClient) {}
 
@@ -24,10 +27,15 @@ export class RequisitosPermanenciaService {
   }
 
   actualizarRequisito(id_requisito: number, descripcion: string): Observable<{ updated: boolean }> {
-    return this.http.put<{ updated: boolean }>(`${this.apiUrl}/${id_requisito}`, { descripcion });
+    return this.http.put<{ updated: boolean }>(
+      `${this.apiUrl}/${id_requisito}`, 
+      { descripcion }
+    );
   }
 
   eliminarRequisito(id_requisito: number): Observable<{ deleted: boolean }> {
-    return this.http.delete<{ deleted: boolean }>(`${this.apiUrl}/${id_requisito}`);
+    return this.http.delete<{ deleted: boolean }>(
+      `${this.apiUrl}/${id_requisito}`
+    );
   }
 }

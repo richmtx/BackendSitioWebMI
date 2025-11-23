@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface AsignaturaOptativa {
   id_optativas: number;
@@ -12,7 +13,9 @@ export interface AsignaturaOptativa {
   providedIn: 'root'
 })
 export class AsignaturasOptativasService {
-  private apiUrl = 'http://localhost:3000/asignaturas-optativas';
+
+  // URL global
+  private apiUrl = `${URL_SERVER}/asignaturas-optativas`;
 
   constructor(private http: HttpClient) { }
 

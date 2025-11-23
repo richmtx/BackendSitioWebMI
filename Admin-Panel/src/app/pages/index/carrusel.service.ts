@@ -13,7 +13,7 @@ export interface Carrusel {
 })
 export class CarruselService {
 
-  // Uso de la URL global
+  // URL global
   private apiUrl = `${URL_SERVER}/carrusel`;
 
   constructor(private http: HttpClient) {}

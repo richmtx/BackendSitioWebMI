@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface Lgyac {
   id_lgyac: number;
@@ -13,7 +14,8 @@ export interface Lgyac {
 })
 export class LgyacService {
 
-  private baseUrl = 'http://localhost:3000/lgyac';
+  // URL global
+  private baseUrl = `${URL_SERVER}/lgyac`;
 
   constructor(private http: HttpClient) { }
 

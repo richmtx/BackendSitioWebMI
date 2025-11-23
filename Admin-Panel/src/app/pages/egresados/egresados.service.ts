@@ -8,7 +8,7 @@ import { URL_SERVER } from '../../config/server.config';
 })
 export class EgresadosService {
 
-  // Uso de la URL global
+  // URL global
   private apiUrl = `${URL_SERVER}/egresados`;
 
   constructor(private http: HttpClient) {}

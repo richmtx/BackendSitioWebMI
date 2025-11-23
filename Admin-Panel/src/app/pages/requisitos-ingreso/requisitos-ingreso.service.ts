@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface RequisitoIngreso {
   id_requisito: number;
@@ -12,7 +13,9 @@ export interface RequisitoIngreso {
   providedIn: 'root'
 })
 export class RequisitosIngresoService {
-  private apiUrl = 'http://localhost:3000/requisitos-ingreso';
+
+  // URL global
+  private apiUrl = `${URL_SERVER}/requisitos-ingreso`;
 
   constructor(private http: HttpClient) { }
 

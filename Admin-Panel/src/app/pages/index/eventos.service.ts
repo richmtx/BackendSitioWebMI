@@ -16,7 +16,7 @@ export interface Evento {
 })
 export class EventosService {
 
-  // Uso de la URL global
+  // URL global
   private apiUrl = `${URL_SERVER}/eventos`;
 
   constructor(private http: HttpClient) {}

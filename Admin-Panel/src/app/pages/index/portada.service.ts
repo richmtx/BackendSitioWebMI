@@ -14,7 +14,7 @@ export interface Portada {
 })
 export class PortadaService {
 
-  // Uso de la URL global
+  // URL global
   private apiUrl = `${URL_SERVER}/portada`;
 
   constructor(private http: HttpClient) { }

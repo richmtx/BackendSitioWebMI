@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NucleoBasicoService, NucleoBasico } from './nucleo-basico.service';
 import Swal from 'sweetalert2';
+import { URL_SERVER } from '../../config/server.config';
 
 @Component({
   selector: 'app-nucleo-basico',
@@ -12,6 +13,9 @@ import Swal from 'sweetalert2';
   styleUrl: './nucleo-basico.component.css'
 })
 export class NucleoBasicoComponent implements OnInit {
+
+  // URL Global
+  urlServer = URL_SERVER;
 
   nucleoBasico: NucleoBasico[] = [];
   ocultos: boolean[] = [];
@@ -182,7 +186,7 @@ export class NucleoBasicoComponent implements OnInit {
     this.imagenSeleccionada = null;
 
     this.imagenActual = prof.imagen
-      ? `http://localhost:3000/${prof.imagen}`
+      ? `${URL_SERVER}/${prof.imagen}`
       : 'assets/sin-foto.png';
   }
 

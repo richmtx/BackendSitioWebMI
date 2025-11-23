@@ -15,7 +15,7 @@ export interface Podcast {
 })
 export class PodcastService {
 
-  // Usar la URL global
+  // URL global
   private apiUrl = `${URL_SERVER}/podcast`;
 
   constructor(private http: HttpClient) {}

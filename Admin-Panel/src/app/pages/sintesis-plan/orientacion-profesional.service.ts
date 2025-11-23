@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface OrientacionProfesional {
   id_orientacion: number;
@@ -12,7 +13,9 @@ export interface OrientacionProfesional {
   providedIn: 'root'
 })
 export class OrientacionProfesionalService {
-  private apiUrl = 'http://localhost:3000/orientacion-profesional';
+
+  // URL Global
+  private apiUrl = `${URL_SERVER}/orientacion-profesional`;
 
   constructor(private http: HttpClient) { }
 

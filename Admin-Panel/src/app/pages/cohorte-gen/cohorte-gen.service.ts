@@ -14,7 +14,7 @@ export interface Cohorte {
 })
 export class CohorteGenService {
 
-  // Usar la URL global
+  // URL global
   private apiUrl = `${URL_SERVER}/cohorte`;
 
   constructor(private http: HttpClient) {}
