@@ -16,6 +16,10 @@ import { LgacArticulos3Service, LgacArticulo3 } from './lgacArticulos3.service';
 import { LgacCapitulos3Service, LgacCapitulo3 } from './lgacCapitulos3.service';
 import { LgacProyectos3Service, LgacProyecto3 } from './lgacProyectos3.service';
 
+import { LgacArticulos4Service, LgacArticulo4 } from './lgacArticulos4.service';
+import { LgacCapitulos4Service, LgacCapitulo4 } from './lgacCapitulos4.service';
+import { LgacProyectos4Service, LgacProyecto4 } from './lgacProyectos4.service';
+
 @Component({
   selector: 'app-productividad-lgyac',
   standalone: true,
@@ -38,6 +42,9 @@ export class ProductividadLgyacComponent implements OnInit {
   articulos3: LgacArticulo3[] = [];
   capitulos3: LgacCapitulo3[] = [];
   proyectos3: LgacProyecto3[] = [];
+  articulos4: LgacArticulo4[] = [];
+  capitulos4: LgacCapitulo4[] = [];
+  proyectos4: LgacProyecto4[] = [];
 
   // =====================================================
   // =================== ESTADOS FORMULARIOS =============
@@ -52,6 +59,9 @@ export class ProductividadLgyacComponent implements OnInit {
   mostrarFormularioArticulos3 = false;
   mostrarFormularioCapitulos3 = false;
   mostrarFormularioProyectos3 = false;
+  mostrarFormularioArticulos4 = false;
+  mostrarFormularioCapitulos4 = false;
+  mostrarFormularioProyectos4 = false;
 
   // =====================================================
   // =================== NUEVOS REGISTROS ================
@@ -66,6 +76,9 @@ export class ProductividadLgyacComponent implements OnInit {
   nuevoArticulo3 = { titulo: '', descripcion: '', url: '' };
   nuevoCapitulo3 = { titulo: '', descripcion: '', url: '' };
   nuevoProyecto3 = { titulo: '', descripcion: '', url: '' };
+  nuevoArticulo4 = { titulo: '', descripcion: '', url: '' };
+  nuevoCapitulo4 = { titulo: '', descripcion: '', url: '' };
+  nuevoProyecto4 = { titulo: '', descripcion: '', url: '' };
 
   // =====================================================
   // =================== EDICIONES: ARTÍCULOS ============
@@ -77,6 +90,8 @@ export class ProductividadLgyacComponent implements OnInit {
   articulo2Original: LgacArticulo2 | null = null;
   articulo3Editando: LgacArticulo3 | null = null;
   articulo3Original: LgacArticulo3 | null = null;
+  articulo4Editando: LgacArticulo4 | null = null;
+  articulo4Original: LgacArticulo4 | null = null;
 
   // =====================================================
   // =================== EDICIONES: CAPÍTULOS ============
@@ -88,6 +103,8 @@ export class ProductividadLgyacComponent implements OnInit {
   capitulo2Original: LgacCapitulo2 | null = null;
   capitulo3Editando: LgacCapitulo3 | null = null;
   capitulo3Original: LgacCapitulo3 | null = null;
+  capitulo4Editando: LgacCapitulo4 | null = null;
+  capitulo4Original: LgacCapitulo4 | null = null;
 
   // =====================================================
   // =================== EDICIONES: PROYECTOS ============
@@ -99,6 +116,8 @@ export class ProductividadLgyacComponent implements OnInit {
   proyecto2Original: LgacProyecto2 | null = null;
   proyecto3Editando: LgacProyecto3 | null = null;
   proyecto3Original: LgacProyecto3 | null = null;
+  proyecto4Editando: LgacProyecto4 | null = null;
+  proyecto4Original: LgacProyecto4 | null = null;
 
   // =====================================================
   // =================== CONSTRUCTOR =====================
@@ -113,7 +132,10 @@ export class ProductividadLgyacComponent implements OnInit {
     private lgacProyectos2Service: LgacProyectos2Service,
     private articulos3Service: LgacArticulos3Service,
     private LgacCapitulos3Service: LgacCapitulos3Service,
-    private LgacProyectos3Service: LgacProyectos3Service
+    private LgacProyectos3Service: LgacProyectos3Service,
+    private lgacArticulos4Service: LgacArticulos4Service,
+    private lgacCapitulos4Service: LgacCapitulos4Service,
+    private lgacProyectos4Service: LgacProyectos4Service
   ) { }
 
   // =====================================================
@@ -130,6 +152,9 @@ export class ProductividadLgyacComponent implements OnInit {
     this.cargarArticulos3();
     this.cargarCapitulos3();
     this.cargarProyectos3();
+    this.cargarArticulos4();
+    this.cargarCapitulos4();
+    this.cargarProyectos4();
   }
 
   // =====================================================
@@ -1497,6 +1522,473 @@ export class ProductividadLgyacComponent implements OnInit {
         }
 
         this.cargarProyectos3();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo eliminar el proyecto. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+
+  // =====================================================
+  // ======================= ARTÍCULOS 4 =================
+  // =====================================================
+
+  cargarArticulos4(): void {
+    this.lgacArticulos4Service.getArticulos().subscribe({
+      next: (data) => this.articulos4 = data,
+      error: (err) => console.error('Error al obtener artículos LGAC4:', err)
+    });
+  }
+
+  abrirArticulo4(url: string): void {
+    if (url) window.open(url, '_blank');
+  }
+
+  // ----- FORMULARIO NUEVO ARTÍCULO -----
+
+  toggleFormularioArticulos4(): void {
+    this.mostrarFormularioArticulos4 = !this.mostrarFormularioArticulos4;
+  }
+
+  cancelarArticulo4(): void {
+    this.mostrarFormularioArticulos4 = false;
+    this.nuevoArticulo4 = { titulo: '', descripcion: '', url: '' };
+  }
+
+  guardarArticulo4(): void {
+    if (!this.nuevoArticulo4.titulo || !this.nuevoArticulo4.descripcion || !this.nuevoArticulo4.url) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos antes de guardar.',
+        confirmButtonColor: '#7066e0'
+      });
+      return;
+    }
+
+    this.lgacArticulos4Service.crearArticulo(this.nuevoArticulo4).subscribe({
+      next: () => {
+        this.cargarArticulos4();
+        this.cancelarArticulo4();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Artículo agregado',
+          text: 'El artículo se ha agregado correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al guardar el artículo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  // ----- EDICIÓN ARTÍCULO -----
+
+  editarArticulo4(art: LgacArticulo4): void {
+    this.articulo4Editando = { ...art };
+    this.articulo4Original = { ...art };
+  }
+
+  cancelarEdicionArticulo4(): void {
+    this.articulo4Editando = null;
+    this.articulo4Original = null;
+  }
+
+  actualizarArticulo4(): void {
+    if (!this.articulo4Editando || !this.articulo4Original) return;
+
+    const noHayCambios =
+      this.articulo4Editando.titulo === this.articulo4Original.titulo &&
+      this.articulo4Editando.descripcion === this.articulo4Original.descripcion &&
+      this.articulo4Editando.url === this.articulo4Original.url;
+
+    if (noHayCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ningún cambio en el artículo.',
+        confirmButtonColor: '#7066e0'
+      });
+      this.cancelarEdicionArticulo4();
+      return;
+    }
+
+    this.lgacArticulos4Service.actualizarArticulo(
+      this.articulo4Editando.id_articulo,
+      this.articulo4Editando
+    ).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Artículo actualizado',
+          text: 'Los cambios se guardaron correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        this.cancelarEdicionArticulo4();
+        this.cargarArticulos4();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el artículo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  // ----- ELIMINAR ARTÍCULO -----
+
+  confirmarEliminarArticulo4(id: number): void {
+    Swal.fire({
+      title: '¿Eliminar artículo?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((r) => r.isConfirmed && this.eliminarArticulo4(id));
+  }
+
+  eliminarArticulo4(id: number): void {
+    this.lgacArticulos4Service.eliminarArticulo(id).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Artículo eliminado',
+          text: 'El artículo se eliminó correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        if (this.articulo4Editando?.id_articulo === id) {
+          this.cancelarEdicionArticulo4();
+        }
+
+        this.cargarArticulos4();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo eliminar el artículo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  // =====================================================
+  // ======================= CAPÍTULOS 4 =================
+  // =====================================================
+
+  cargarCapitulos4(): void {
+    this.lgacCapitulos4Service.getCapitulos().subscribe({
+      next: (data) => this.capitulos4 = data,
+      error: (err) => console.error('Error al obtener capítulos LGAC4:', err)
+    });
+  }
+
+  abrirCapitulo4(url: string): void {
+    if (url) window.open(url, '_blank');
+  }
+
+  toggleFormularioCapitulos4(): void {
+    this.mostrarFormularioCapitulos4 = !this.mostrarFormularioCapitulos4;
+  }
+
+  cancelarCapitulo4(): void {
+    this.mostrarFormularioCapitulos4 = false;
+    this.nuevoCapitulo4 = { titulo: '', descripcion: '', url: '' };
+  }
+
+  guardarCapitulo4(): void {
+    if (!this.nuevoCapitulo4.titulo || !this.nuevoCapitulo4.descripcion || !this.nuevoCapitulo4.url) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos antes de guardar.',
+        confirmButtonColor: '#7066e0'
+      });
+      return;
+    }
+
+    this.lgacCapitulos4Service.crearCapitulo(this.nuevoCapitulo4).subscribe({
+      next: () => {
+        this.cargarCapitulos4();
+        this.cancelarCapitulo4();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Capítulo agregado',
+          text: 'El capítulo se ha agregado correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al guardar el capítulo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  editarCapitulo4(cap: LgacCapitulo4): void {
+    this.capitulo4Editando = { ...cap };
+    this.capitulo4Original = { ...cap };
+  }
+
+  cancelarEdicionCapitulo4(): void {
+    this.capitulo4Editando = null;
+    this.capitulo4Original = null;
+  }
+
+  actualizarCapitulo4(): void {
+    if (!this.capitulo4Editando || !this.capitulo4Original) return;
+
+    const noHayCambios =
+      this.capitulo4Editando.titulo === this.capitulo4Original.titulo &&
+      this.capitulo4Editando.descripcion === this.capitulo4Original.descripcion &&
+      this.capitulo4Editando.url === this.capitulo4Original.url;
+
+    if (noHayCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ningún cambio en el capítulo.',
+        confirmButtonColor: '#7066e0'
+      });
+      this.cancelarEdicionCapitulo4();
+      return;
+    }
+
+    this.lgacCapitulos4Service.actualizarCapitulo(
+      this.capitulo4Editando.id_capitulo,
+      this.capitulo4Editando
+    ).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Capítulo actualizado',
+          text: 'Los cambios se guardaron correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        this.cancelarEdicionCapitulo4();
+        this.cargarCapitulos4();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el capítulo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  confirmarEliminarCapitulo4(id: number): void {
+    Swal.fire({
+      title: '¿Eliminar capítulo?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((r) => r.isConfirmed && this.eliminarCapitulo4(id));
+  }
+
+  eliminarCapitulo4(id: number): void {
+    this.lgacCapitulos4Service.eliminarCapitulo(id).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Capítulo eliminado',
+          text: 'El capítulo se eliminó correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        if (this.capitulo4Editando?.id_capitulo === id) {
+          this.cancelarEdicionCapitulo4();
+        }
+
+        this.cargarCapitulos4();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo eliminar el capítulo. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+
+  // =====================================================
+  // ======================= PROYECTOS 3 =================
+  // =====================================================
+
+  cargarProyectos4(): void {
+    this.lgacProyectos4Service.getProyectos().subscribe({
+      next: (data) => this.proyectos4 = data,
+      error: (err) => console.error('Error al obtener proyectos LGAC4:', err)
+    });
+  }
+
+  abrirProyecto4(url: string): void {
+    if (url) window.open(url, '_blank');
+  }
+
+  toggleFormularioProyectos4(): void {
+    this.mostrarFormularioProyectos4 = !this.mostrarFormularioProyectos4;
+  }
+
+  cancelarProyecto4(): void {
+    this.mostrarFormularioProyectos4 = false;
+    this.nuevoProyecto4 = { titulo: '', descripcion: '', url: '' };
+  }
+
+  guardarProyecto4(): void {
+    if (!this.nuevoProyecto4.titulo || !this.nuevoProyecto4.descripcion || !this.nuevoProyecto4.url) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos antes de guardar.',
+        confirmButtonColor: '#7066e0'
+      });
+      return;
+    }
+
+    this.lgacProyectos4Service.crearProyecto(this.nuevoProyecto4).subscribe({
+      next: () => {
+        this.cargarProyectos4();
+        this.cancelarProyecto4();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Proyecto agregado',
+          text: 'El proyecto se agregó correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al guardar el proyecto. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  editarProyecto4(proy: LgacProyecto4): void {
+    this.proyecto4Editando = { ...proy };
+    this.proyecto4Original = { ...proy };
+  }
+
+  cancelarEdicionProyecto4(): void {
+    this.proyecto4Editando = null;
+    this.proyecto4Original = null;
+  }
+
+  actualizarProyecto4(): void {
+    if (!this.proyecto4Editando || !this.proyecto4Original) return;
+
+    const noHayCambios =
+      this.proyecto4Editando.titulo === this.proyecto4Original.titulo &&
+      this.proyecto4Editando.descripcion === this.proyecto4Original.descripcion &&
+      this.proyecto4Editando.url === this.proyecto4Original.url;
+
+    if (noHayCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ningún cambio en el proyecto.',
+        confirmButtonColor: '#7066e0'
+      });
+      this.cancelarEdicionProyecto4();
+      return;
+    }
+
+    this.lgacProyectos4Service.actualizarProyecto(
+      this.proyecto4Editando.id_proyecto,
+      this.proyecto4Editando
+    ).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Proyecto actualizado',
+          text: 'Los cambios se guardaron correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        this.cancelarEdicionProyecto4();
+        this.cargarProyectos4();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el proyecto. Intenta nuevamente.',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  confirmarEliminarProyecto4(id: number): void {
+    Swal.fire({
+      title: '¿Eliminar proyecto?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((r) => r.isConfirmed && this.eliminarProyecto4(id));
+  }
+
+  eliminarProyecto4(id: number): void {
+    this.lgacProyectos4Service.eliminarProyecto(id).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Proyecto eliminado',
+          text: 'El proyecto se eliminó correctamente.',
+          confirmButtonColor: '#7066e0'
+        });
+
+        if (this.proyecto4Editando?.id_proyecto === id) {
+          this.cancelarEdicionProyecto4();
+        }
+
+        this.cargarProyectos4();
       },
       error: () => {
         Swal.fire({
