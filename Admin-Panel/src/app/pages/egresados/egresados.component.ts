@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EgresadosService } from './egresados.service';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
+import { URL_SERVER } from '../../config/server.config';
 
 @Component({
   selector: 'app-egresados',
@@ -14,6 +15,9 @@ import { FormsModule } from '@angular/forms';
 export class EgresadosComponent implements OnInit {
 
   egresado: any = null;
+
+  // Varibale Global
+  urlServer = URL_SERVER;
 
   formularioImagenVisible = false;
   imagenSeleccionada: File | null = null;

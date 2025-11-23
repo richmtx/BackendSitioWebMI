@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface Podcast {
   id_podcast: number;
@@ -13,7 +14,9 @@ export interface Podcast {
   providedIn: 'root'
 })
 export class PodcastService {
-  private apiUrl = `http://localhost:3000/podcast`; 
+
+  // Usar la URL global
+  private apiUrl = `${URL_SERVER}/podcast`;
 
   constructor(private http: HttpClient) {}
 

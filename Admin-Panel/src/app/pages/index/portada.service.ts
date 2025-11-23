@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface Portada {
   id_portada: number;
@@ -12,7 +13,9 @@ export interface Portada {
   providedIn: 'root'
 })
 export class PortadaService {
-  private apiUrl = `http://localhost:3000/portada`;
+
+  // Uso de la URL global
+  private apiUrl = `${URL_SERVER}/portada`;
 
   constructor(private http: HttpClient) { }
 

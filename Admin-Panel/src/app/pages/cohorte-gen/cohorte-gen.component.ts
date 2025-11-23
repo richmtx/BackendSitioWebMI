@@ -15,7 +15,10 @@ import { URL_SERVER } from '../../config/server.config';
 export class CohorteGenComponent implements OnInit {
 
   cohorte: Cohorte[] = [];
+
+  // Variable Global
   urlServer = URL_SERVER;
+
   mostrarFormulario = false;
   nuevoTitulo: string = '';
   nuevaImagen: File | null = null;

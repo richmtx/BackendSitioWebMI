@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EgresadosService {
 
-  private apiUrl = 'http://localhost:3000/egresados';
+  // Uso de la URL global
+  private apiUrl = `${URL_SERVER}/egresados`;
 
   constructor(private http: HttpClient) {}
 

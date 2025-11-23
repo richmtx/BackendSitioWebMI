@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface Galeria {
   id_galeria: number;
@@ -13,7 +14,9 @@ export interface Galeria {
   providedIn: 'root'
 })
 export class GaleriaService {
-  private apiUrl = `http://localhost:3000/galeria`;
+
+  // Usar la URL global
+  private apiUrl = `${URL_SERVER}/galeria`;
 
   constructor(private http: HttpClient) { }
 

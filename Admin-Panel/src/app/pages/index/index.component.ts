@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
+import { URL_SERVER } from '../../config/server.config';
 
 // Servicios
 import { EventosService, Evento } from './eventos.service';
@@ -21,6 +22,10 @@ import { CarruselService } from './carrusel.service';
   imports: [CommonModule, FormsModule]
 })
 export class IndexComponent implements OnInit {
+
+  // Variable Global
+  urlServer = URL_SERVER;
+
   // ====== CARRUSEL =======
   carrusel: any[] = [];
   currentIndexCarrusel = 0;

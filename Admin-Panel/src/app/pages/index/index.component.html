@@ -8,7 +8,7 @@
       <thead>
         <tr>
           <td>
-            <img *ngIf="portadaSeleccionada" [src]="'http://localhost:3000/' + portadaSeleccionada.imagen"
+            <img *ngIf="portadaSeleccionada" [src]="urlServer + '/' + portadaSeleccionada.imagen"
               alt="Imagen de portada" class="imagen-portada" />
           </td>
         </tr>
@@ -57,7 +57,8 @@
 <!-- ============================================== -->
 <div class="carousel-container">
   <div class="carousel-slide" id="carousel-slide">
-    <img *ngFor="let item of carrusel" [src]="'http://localhost:3000/' + item.imagen" />
+    <img *ngFor="let item of carrusel" [src]="urlServer + '/' + item.imagen"
+      [alt]="'Imagen carrusel ' + item.id_carrusel">
   </div>
 </div>
 
@@ -73,8 +74,8 @@
   <div class="grupo-imagen" *ngFor="let item of carrusel; let i = index">
     <p><strong>Imagen {{ i + 1 }}:</strong></p>
 
-    <img class="preview-img" [src]="previewTemporal[item.id_carrusel] || ('http://localhost:3000/' + item.imagen)"
-      alt="Vista previa" />
+    <img class="preview-img" [src]="previewTemporal[item.id_carrusel] || (urlServer + '/' + item.imagen)"
+      alt="Vista previa">
 
     <input type="file" accept="image/*" (change)="onSeleccionarImagen($event, item.id_carrusel)" />
   </div>
@@ -98,7 +99,9 @@
 <section class="galeria-becas">
   <div class="card" *ngFor="let item of galeria">
     <div class="imagen-contenedor">
-      <img [src]="'http://localhost:3000/' + item.imagen" [alt]="item.titulo" />
+
+      <img [src]="urlServer + '/' + item.imagen" [alt]="item.titulo" />
+
       <div class="overlay">
         <h3>{{ item.titulo }}</h3>
         <a [href]="item.url" target="_blank">Ver más ↗</a>
