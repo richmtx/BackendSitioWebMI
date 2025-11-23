@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CohorteGenService, Cohorte } from './cohorte-gen.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { URL_SERVER } from '../../config/server.config';
 
 @Component({
   selector: 'app-cohorte-gen',
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2';
 export class CohorteGenComponent implements OnInit {
 
   cohorte: Cohorte[] = [];
-
+  urlServer = URL_SERVER;
   mostrarFormulario = false;
   nuevoTitulo: string = '';
   nuevaImagen: File | null = null;

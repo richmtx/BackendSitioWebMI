@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface Cohorte {
   id_cohorte: number;
@@ -13,7 +14,8 @@ export interface Cohorte {
 })
 export class CohorteGenService {
 
-  private apiUrl = 'http://localhost:3000/cohorte';
+  // Usar la URL global
+  private apiUrl = `${URL_SERVER}/cohorte`;
 
   constructor(private http: HttpClient) {}
 

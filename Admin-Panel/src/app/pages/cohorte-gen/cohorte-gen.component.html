@@ -13,8 +13,8 @@
 
                         <h3 class="titulo-cohorte">{{ item.titulo }}</h3>
 
-                        <img *ngIf="item.imagen" [src]="'http://localhost:3000/uploads/' + item.imagen"
-                            [alt]="item.titulo" class="imagen-cohorte">
+                        <img *ngIf="item.imagen" [src]="urlServer + '/uploads/' + item.imagen" [alt]="item.titulo"
+                            class="imagen-cohorte">
 
                         <p *ngIf="!item.imagen">Sin imagen disponible</p>
 
