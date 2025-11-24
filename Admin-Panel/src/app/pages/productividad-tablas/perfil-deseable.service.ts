@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-const API_URL = 'http://localhost:3000/perfil-deseable';
+import { URL_SERVER } from '../../config/server.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PerfilDeseableService {
+
+  // URL Global
+  private apiUrl = `${URL_SERVER}/perfil-deseable`;
+
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<any[]> {
-    return this.http.get<any[]>(API_URL);
+    return this.http.get<any[]>(this.apiUrl);
   }
 
   update(id: number, data: any): Observable<any> {
-    return this.http.put<any>(`${API_URL}/${id}`, data);
+    return this.http.put<any>(`${this.apiUrl}/${id}`, data);
   }
 }

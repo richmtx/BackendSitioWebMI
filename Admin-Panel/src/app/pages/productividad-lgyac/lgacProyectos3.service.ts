@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface LgacProyecto3 {
   id_proyecto: number;
@@ -14,7 +15,8 @@ export interface LgacProyecto3 {
 })
 export class LgacProyectos3Service {
 
-  private apiUrl = 'http://localhost:3000/lgac-proyectos3';
+  // URL Global
+  private apiUrl = `${URL_SERVER}/lgac-proyectos3`;
 
   constructor(private http: HttpClient) {}
 
