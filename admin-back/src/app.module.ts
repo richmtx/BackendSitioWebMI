@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -39,22 +40,29 @@ import { LgacProyectos3Module } from './productividadLGAC/lgacProyectos3/lgacPro
 import { LgacProyectos4Module } from './productividadLGAC/lgacProyectos4/lgacProyectos4.module';
 import { NucleoBasicoModule } from './nucleoBasico/nucleoBasico.module';
 import { CarruselModule } from './index/carrusel/carrusel.module';
- 
+
 @Module({
   imports: [
+
+    // Cargar variables del archivo .env
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+
+    // Conexión TypeORM usando variables de entorno
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'California29',
-      database: 'maestria',
-      synchronize: false, 
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+      synchronize: false,
       autoLoadEntities: true,
       logging: true,
     }),
 
-    // Registro de módulo para habilitar sus controladores y servicios
+    // Registro de módulos del proyecto
     ContactoModule,
     AsignaturasBasicasModule,
     AsignaturasOptativasModule,
