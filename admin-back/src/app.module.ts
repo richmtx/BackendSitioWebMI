@@ -40,6 +40,7 @@ import { LgacProyectos3Module } from './productividadLGAC/lgacProyectos3/lgacPro
 import { LgacProyectos4Module } from './productividadLGAC/lgacProyectos4/lgacProyectos4.module';
 import { NucleoBasicoModule } from './nucleoBasico/nucleoBasico.module';
 import { CarruselModule } from './index/carrusel/carrusel.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
 
 @Module({
   imports: [
@@ -98,6 +99,7 @@ import { CarruselModule } from './index/carrusel/carrusel.module';
     LgacProyectos4Module,
     NucleoBasicoModule,
     CarruselModule,
+    UsuariosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

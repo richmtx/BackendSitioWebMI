@@ -12,13 +12,21 @@ import { RequisitosGradoComponent } from './pages/requisitos-grado/requisitos-gr
 import { RequisitosIngresoComponent } from './pages/requisitos-ingreso/requisitos-ingreso.component';
 import { RequisitosPermanenciaComponent } from './pages/requisitos-permanencia/requisitos-permanencia.component';
 import { SintesisPlanComponent } from './pages/sintesis-plan/sintesis-plan.component';
+import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/Dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/Login', pathMatch: 'full' },
+
+  // LOGIN
+  { path: 'Login', component: LoginComponent },
+
+  // PANEL PRINCIPAL (antes /Dashboard)
+  { path: 'panel', component: DashboardComponent },
+
+  // PÁGINAS DEL ADMIN
   { path: 'index', component: IndexComponent },
   { path: 'CohorteGen', component: CohorteGenComponent },
   { path: 'Contacto', component: ContactoComponent },
-  { path: 'Dashboard', component: DashboardComponent },
   { path: 'Egresados', component: EgresadosComponent },
   { path: 'lgyac', component: LgyacComponent },
   { path: 'NucleoBasico', component: NucleoBasicoComponent },
