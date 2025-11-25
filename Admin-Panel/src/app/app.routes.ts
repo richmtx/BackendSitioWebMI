@@ -15,10 +15,10 @@ import { SintesisPlanComponent } from './pages/sintesis-plan/sintesis-plan.compo
 import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/Login', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   // LOGIN
-  { path: 'Login', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
 
   // PANEL PRINCIPAL (antes /Dashboard)
   { path: 'panel', component: DashboardComponent },
