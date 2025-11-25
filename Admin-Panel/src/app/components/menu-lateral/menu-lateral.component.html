@@ -13,6 +13,51 @@
     <a routerLink="/CohorteGen">Cohorte Generacional</a>
     <a routerLink="/Contacto">Contacto</a>
 
+    <!-- BOTÓN CAMBIAR USUARIO -->
+    <button class="change-user-btn" (click)="abrirModalCambiarUsuario()">
+        Cambiar usuario
+    </button>
+
     <!-- BOTÓN DE CERRAR SESIÓN -->
     <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
+</div>
+
+<!-- MODAL CAMBIAR USUARIO -->
+<div class="modal-backdrop" *ngIf="mostrarModal">
+  <div class="modal">
+    <h3>Cambiar usuario</h3>
+
+    <label for="nuevoCorreo">Nuevo correo</label>
+    <input
+      id="nuevoCorreo"
+      type="email"
+      [(ngModel)]="nuevoCorreo"
+      placeholder="Ingresa el nuevo correo"
+    />
+
+    <label for="nuevaContrasena">Nueva contraseña</label>
+    <input
+      id="nuevaContrasena"
+      type="password"
+      [(ngModel)]="nuevaContrasena"
+      placeholder="Ingresa la nueva contraseña"
+    />
+
+    <label for="confirmarContrasena">Confirmar contraseña</label>
+    <input
+      id="confirmarContrasena"
+      type="password"
+      [(ngModel)]="confirmarContrasena"
+      placeholder="Confirma la contraseña"
+    />
+
+    <div class="modal-actions">
+      <button (click)="guardarCambiosUsuario()" [disabled]="cargando">
+        {{ cargando ? 'Guardando...' : 'Guardar cambios' }}
+      </button>
+      <button class="btn-cancelar" (click)="cerrarModal()" [disabled]="cargando">
+        Cancelar
+      </button>
+    </div>
+  </div>
 </div>
