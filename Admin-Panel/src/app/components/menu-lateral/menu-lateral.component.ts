@@ -18,6 +18,8 @@ export class MenuLateralComponent {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
 
+    alert("Sesión cerrada correctamente");
+
     this.router.navigate(['/login']);
   }
 }

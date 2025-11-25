@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { URL_SERVER } from '../../config/server.config';
 
 export interface LoginResponse {
   ok: boolean;
@@ -10,8 +11,8 @@ export interface LoginResponse {
     correo: string;
     rol: string;
   };
-  accessToken?: string;   // 👈 NUEVO
-  refreshToken?: string;  // 👈 NUEVO
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 @Injectable({
@@ -19,7 +20,8 @@ export interface LoginResponse {
 })
 export class LoginService {
 
-  private apiUrl = 'http://localhost:3000/usuarios';
+  // URL Global
+  private apiUrl = `${URL_SERVER}/usuarios`;
 
   constructor(private http: HttpClient) {}
 
@@ -30,7 +32,6 @@ export class LoginService {
     });
   }
 
-  // ✅ Guardar tokens
   guardarSesion(res: LoginResponse) {
     if (res.usuario && res.accessToken && res.refreshToken) {
       localStorage.setItem('usuario', JSON.stringify(res.usuario));
@@ -39,7 +40,6 @@ export class LoginService {
     }
   }
 
-  // ✅ Obtener token
   getAccessToken(): string | null {
     return localStorage.getItem('accessToken');
   }
@@ -48,7 +48,6 @@ export class LoginService {
     return localStorage.getItem('refreshToken');
   }
 
-  // ✅ Cerrar sesión
   logout(): void {
     localStorage.removeItem('usuario');
     localStorage.removeItem('accessToken');

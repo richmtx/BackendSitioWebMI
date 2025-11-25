@@ -27,15 +27,25 @@ export class LoginComponent {
 
     this.loginService.login(this.correo, this.contrasena).subscribe({
       next: (res) => {
+
         if (res.ok && res.accessToken && res.refreshToken) {
           this.loginService.guardarSesion(res);
+
+          alert("Inicio de sesión exitoso");
+
           this.router.navigate(['/panel']);
+
         } else {
           this.error = res.mensaje || 'Credenciales incorrectas';
+
+          alert("Credenciales incorrectas");
         }
       },
+
       error: () => {
         this.error = 'Error en el servidor';
+
+        alert("Error en el servidor");
       }
     });
   }
