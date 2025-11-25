@@ -14,26 +14,22 @@ import { RequisitosPermanenciaComponent } from './pages/requisitos-permanencia/r
 import { SintesisPlanComponent } from './pages/sintesis-plan/sintesis-plan.component';
 import { LoginComponent } from './pages/login/login.component';
 
+import { authGuard } from './auth.guard';
+
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-
-  // LOGIN
   { path: 'login', component: LoginComponent },
-
-  // PANEL PRINCIPAL (antes /Dashboard)
-  { path: 'panel', component: DashboardComponent },
-
-  // PÁGINAS DEL ADMIN
-  { path: 'index', component: IndexComponent },
-  { path: 'CohorteGen', component: CohorteGenComponent },
-  { path: 'Contacto', component: ContactoComponent },
-  { path: 'Egresados', component: EgresadosComponent },
-  { path: 'lgyac', component: LgyacComponent },
-  { path: 'NucleoBasico', component: NucleoBasicoComponent },
-  { path: 'ProductividadLGyAC', component: ProductividadLgyacComponent },
-  { path: 'ProductividadTablas', component: ProductividadTablasComponent },
-  { path: 'RequisitosGrado', component: RequisitosGradoComponent },
-  { path: 'RequisitosIngreso', component: RequisitosIngresoComponent },
-  { path: 'RequisitosPermanencia', component: RequisitosPermanenciaComponent },
-  { path: 'SintesisPlan', component: SintesisPlanComponent },
+  { path: 'panel', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'index', component: IndexComponent, canActivate: [authGuard] },
+  { path: 'CohorteGen', component: CohorteGenComponent, canActivate: [authGuard] },
+  { path: 'Contacto', component: ContactoComponent, canActivate: [authGuard] },
+  { path: 'Egresados', component: EgresadosComponent, canActivate: [authGuard] },
+  { path: 'lgyac', component: LgyacComponent, canActivate: [authGuard] },
+  { path: 'NucleoBasico', component: NucleoBasicoComponent, canActivate: [authGuard] },
+  { path: 'ProductividadLGyAC', component: ProductividadLgyacComponent, canActivate: [authGuard] },
+  { path: 'ProductividadTablas', component: ProductividadTablasComponent, canActivate: [authGuard] },
+  { path: 'RequisitosGrado', component: RequisitosGradoComponent, canActivate: [authGuard] },
+  { path: 'RequisitosIngreso', component: RequisitosIngresoComponent, canActivate: [authGuard] },
+  { path: 'RequisitosPermanencia', component: RequisitosPermanenciaComponent, canActivate: [authGuard] },
+  { path: 'SintesisPlan', component: SintesisPlanComponent, canActivate: [authGuard] },
 ];

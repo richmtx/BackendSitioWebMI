@@ -1,46 +1,74 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  body {
-    display: flex;
-    min-height: 100vh;
-    background-color: #f4f6f8;
-  }
+body {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
 
-  /* Sidebar */
-  .sidebar {
-    width: 320px;
-    background-color: #003366;
-    color: white;
-    padding: 20px;
-    height: 100vh;
-    overflow-y: auto;
-    position: fixed;
-    left: 0;
-    top: 0;
-  }
+/* Sidebar */
+.sidebar {
+  width: 320px;
+  background-color: #003366;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+  overflow-y: auto;
+  position: fixed;
+  left: 0;
+  top: 0;
 
-  .sidebar h2 {
-    font-size: 22px;
-    margin-bottom: 30px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding-bottom: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-bottom: 20px;
+}
 
-  .sidebar a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 12px 10px;
-    border-radius: 8px;
-    transition: background-color 0.3s;
-  }
+.sidebar h2 {
+  font-size: 22px;
+  margin-bottom: 30px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 10px;
+}
 
-  .sidebar a:hover {
-    background-color: #002244;
-  }
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #002244;
+}
+
+/* Botón de Cerrar Sesión */
+.logout-btn {
+  margin-top: auto; /* 👈 Esto lo manda hasta abajo */
+  width: 100%;
+  padding: 12px;
+  background: #7a0f0f; /* rojo oscuro elegante */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #5e0b0b; /* rojo aún más oscuro */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}

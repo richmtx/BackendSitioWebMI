@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,5 +9,15 @@ import { CommonModule } from '@angular/common';
   templateUrl: './menu-lateral.component.html',
   styleUrls: ['./menu-lateral.component.css']
 })
+export class MenuLateralComponent {
 
-export class MenuLateralComponent { }
+  constructor(private router: Router) {}
+
+  logout() {
+    localStorage.removeItem('usuario');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+
+    this.router.navigate(['/login']);
+  }
+}

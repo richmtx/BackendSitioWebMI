@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -63,6 +64,18 @@ import { UsuariosModule } from './usuarios/usuarios.module';
       logging: true,
     }),
 
+    // Configuración global de JWT
+    JwtModule.registerAsync({
+      global: true,
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: parseInt(config.get<string>('JWT_EXPIRES_IN') || '900'),
+        },
+      }),
+    }),
+
     // Registro de módulos del proyecto
     ContactoModule,
     AsignaturasBasicasModule,
@@ -104,4 +117,4 @@ import { UsuariosModule } from './usuarios/usuarios.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

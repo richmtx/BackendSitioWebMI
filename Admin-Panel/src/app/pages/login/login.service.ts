@@ -10,6 +10,8 @@ export interface LoginResponse {
     correo: string;
     rol: string;
   };
+  accessToken?: string;   // 👈 NUEVO
+  refreshToken?: string;  // 👈 NUEVO
 }
 
 @Injectable({
@@ -26,5 +28,30 @@ export class LoginService {
       correo,
       contraseña
     });
+  }
+
+  // ✅ Guardar tokens
+  guardarSesion(res: LoginResponse) {
+    if (res.usuario && res.accessToken && res.refreshToken) {
+      localStorage.setItem('usuario', JSON.stringify(res.usuario));
+      localStorage.setItem('accessToken', res.accessToken);
+      localStorage.setItem('refreshToken', res.refreshToken);
+    }
+  }
+
+  // ✅ Obtener token
+  getAccessToken(): string | null {
+    return localStorage.getItem('accessToken');
+  }
+
+  getRefreshToken(): string | null {
+    return localStorage.getItem('refreshToken');
+  }
+
+  // ✅ Cerrar sesión
+  logout(): void {
+    localStorage.removeItem('usuario');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   }
 }

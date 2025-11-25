@@ -23,13 +23,15 @@ export class LoginComponent {
   ) {}
 
   iniciarSesion() {
+    this.error = '';
+
     this.loginService.login(this.correo, this.contrasena).subscribe({
       next: (res) => {
-        if (res.ok) {
-          localStorage.setItem('usuario', JSON.stringify(res.usuario));
+        if (res.ok && res.accessToken && res.refreshToken) {
+          this.loginService.guardarSesion(res);
           this.router.navigate(['/panel']);
         } else {
-          this.error = 'Credenciales incorrectas';
+          this.error = res.mensaje || 'Credenciales incorrectas';
         }
       },
       error: () => {
