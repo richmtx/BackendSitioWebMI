@@ -245,6 +245,13 @@
     opacity: 0.8;
 }
 
+.agregar-proyectos-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 100px;
+}
+
 .formulario-articulo {
     margin-top: 20px;
     padding: 20px;
