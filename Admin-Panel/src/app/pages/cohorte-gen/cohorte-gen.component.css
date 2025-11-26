@@ -175,3 +175,48 @@
 .btn-eliminar:hover {
     background-color: #c82333;
 }
+
+/*------------------------------------------------------------*/
+
+/* Indicaciones para el manejo de imágenes */
+
+.indicaciones {
+    background-color: #f4f4f9;
+    border-radius: 12px;
+    padding: 20px 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 40px auto;
+    max-width: 800px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.indicaciones h3 {
+    color: #2c3e50;
+    font-size: 24px;
+    margin-bottom: 0;
+    border-left: 5px solid #3498db;
+    padding-left: 12px;
+}
+
+.indicaciones ol {
+    padding-left: 24px;
+    color: #34495e;
+    line-height: 1.8;
+    margin: 0;
+}
+
+.indicaciones li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.indicaciones strong {
+    color: #2c3e50;
+}
+
+.indicaciones p {
+    text-align: justify;
+}
