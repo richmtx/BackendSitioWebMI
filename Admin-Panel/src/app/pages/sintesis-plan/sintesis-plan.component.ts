@@ -89,7 +89,7 @@ export class SintesisPlanComponent implements OnInit {
           icon: 'success',
           title: 'Guardado correctamente',
           text: 'La nueva materia fue agregada.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
         this.nuevaFilaActiva = false;
         this.nuevaMateria = '';
@@ -143,7 +143,7 @@ export class SintesisPlanComponent implements OnInit {
           icon: 'success',
           title: 'Guardado correctamente',
           text: 'La nueva asignatura fue agregada.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
         this.nuevaFilaActivaDistribucion = false;
         this.nuevaMateriaDistribucion = '';
@@ -197,7 +197,7 @@ export class SintesisPlanComponent implements OnInit {
           icon: 'success',
           title: 'Guardado correctamente',
           text: 'La nueva asignatura básica fue agregada.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
         this.nuevaFilaActivaBasicas = false;
         this.nuevaMateriaBasica = '';
@@ -251,7 +251,7 @@ export class SintesisPlanComponent implements OnInit {
           icon: 'success',
           title: 'Guardado correctamente',
           text: 'La nueva asignatura optativa fue agregada.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
         this.nuevaFilaActivaOptativas = false;
         this.nuevaMateriaOptativa = '';
@@ -271,12 +271,15 @@ export class SintesisPlanComponent implements OnInit {
 
 
   // === PUT (editar) ===
+  orientacionOriginal: OrientacionProfesional | null = null;
   filaEditando: number | null = null;
   editMateria = '';
   editCreditos: number | null = null;
 
   editarFila(item: OrientacionProfesional): void {
     this.filaEditando = item.id_orientacion;
+    this.orientacionOriginal = { ...item };
+
     this.editMateria = item.materia;
     this.editCreditos = item.creditos;
   }
@@ -285,15 +288,21 @@ export class SintesisPlanComponent implements OnInit {
     this.filaEditando = null;
     this.editMateria = '';
     this.editCreditos = null;
+    this.orientacionOriginal = null;
   }
 
   guardarEdicion(id_orientacion: number): void {
-    if (!this.editMateria || !this.editCreditos) {
+    if (!this.editMateria || this.editCreditos === null) {
       Swal.fire({
         icon: 'warning',
         title: 'Campos incompletos',
         text: 'Por favor completa todos los campos.'
       });
+      return;
+    }
+
+    if (!this.orientacionOriginal) {
+      console.error('No hay datos originales para comparar.');
       return;
     }
 
@@ -302,15 +311,32 @@ export class SintesisPlanComponent implements OnInit {
       creditos: this.editCreditos
     };
 
+    const sinCambios =
+      datosActualizados.materia === this.orientacionOriginal.materia &&
+      datosActualizados.creditos === this.orientacionOriginal.creditos;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones a este registro.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      return;
+    }
+
     this.orientacionService.update(id_orientacion, datosActualizados).subscribe({
       next: () => {
         Swal.fire({
           icon: 'success',
           title: 'Actualizado correctamente',
           text: 'Los datos se han guardado exitosamente.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
+
         this.filaEditando = null;
+        this.orientacionOriginal = null;
         this.cargarDatos();
       },
       error: (err) => {
@@ -324,13 +350,16 @@ export class SintesisPlanComponent implements OnInit {
     });
   }
 
+
   // === PUT - Distribución de Asignaturas ===
+  distribucionOriginal: DistribucionAsignatura | null = null;
   filaEditandoDistribucion: number | null = null;
   editMateriaDistribucion = '';
   editCreditosDistribucion: number | null = null;
 
   editarFilaDistribucion(item: DistribucionAsignatura): void {
     this.filaEditandoDistribucion = item.id_asignatura;
+    this.distribucionOriginal = { ...item };
     this.editMateriaDistribucion = item.materia;
     this.editCreditosDistribucion = item.creditos;
   }
@@ -339,10 +368,11 @@ export class SintesisPlanComponent implements OnInit {
     this.filaEditandoDistribucion = null;
     this.editMateriaDistribucion = '';
     this.editCreditosDistribucion = null;
+    this.distribucionOriginal = null;
   }
 
   guardarEdicionDistribucion(id_asignatura: number): void {
-    if (!this.editMateriaDistribucion || !this.editCreditosDistribucion) {
+    if (!this.editMateriaDistribucion || this.editCreditosDistribucion === null) {
       Swal.fire({
         icon: 'warning',
         title: 'Campos incompletos',
@@ -351,10 +381,30 @@ export class SintesisPlanComponent implements OnInit {
       return;
     }
 
+    if (!this.distribucionOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
     const datosActualizados = {
       materia: this.editMateriaDistribucion,
       creditos: this.editCreditosDistribucion
     };
+
+    const sinCambios =
+      datosActualizados.materia === this.distribucionOriginal.materia &&
+      datosActualizados.creditos === this.distribucionOriginal.creditos;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en esta asignatura.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      return;
+    }
 
     this.distribucionService.update(id_asignatura, datosActualizados).subscribe({
       next: () => {
@@ -362,9 +412,11 @@ export class SintesisPlanComponent implements OnInit {
           icon: 'success',
           title: 'Actualizado correctamente',
           text: 'La asignatura fue actualizada exitosamente.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
+
         this.filaEditandoDistribucion = null;
+        this.distribucionOriginal = null;
         this.cargarDatos();
       },
       error: (err) => {
@@ -378,13 +430,17 @@ export class SintesisPlanComponent implements OnInit {
     });
   }
 
+
   // === PUT - Asignaturas Básicas ===
+  basicaOriginal: AsignaturaBasica | null = null;
   filaEditandoBasicas: number | null = null;
   editMateriaBasicas = '';
   editCreditosBasicas: number | null = null;
 
   editarFilaBasicas(item: AsignaturaBasica): void {
     this.filaEditandoBasicas = item.id_asignatura;
+    this.basicaOriginal = { ...item };
+
     this.editMateriaBasicas = item.materia;
     this.editCreditosBasicas = item.creditos;
   }
@@ -393,10 +449,11 @@ export class SintesisPlanComponent implements OnInit {
     this.filaEditandoBasicas = null;
     this.editMateriaBasicas = '';
     this.editCreditosBasicas = null;
+    this.basicaOriginal = null;
   }
 
   guardarEdicionBasicas(id_asignatura: number): void {
-    if (!this.editMateriaBasicas || !this.editCreditosBasicas) {
+    if (!this.editMateriaBasicas || this.editCreditosBasicas === null) {
       Swal.fire({
         icon: 'warning',
         title: 'Campos incompletos',
@@ -405,10 +462,30 @@ export class SintesisPlanComponent implements OnInit {
       return;
     }
 
+    if (!this.basicaOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
     const datosActualizados = {
       materia: this.editMateriaBasicas,
       creditos: this.editCreditosBasicas
     };
+
+    const sinCambios =
+      datosActualizados.materia === this.basicaOriginal.materia &&
+      datosActualizados.creditos === this.basicaOriginal.creditos;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones a esta asignatura básica.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      return;
+    }
 
     this.basicasService.update(id_asignatura, datosActualizados).subscribe({
       next: () => {
@@ -416,9 +493,11 @@ export class SintesisPlanComponent implements OnInit {
           icon: 'success',
           title: 'Actualizado correctamente',
           text: 'La asignatura básica fue actualizada exitosamente.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
+
         this.filaEditandoBasicas = null;
+        this.basicaOriginal = null;
         this.cargarDatos();
       },
       error: (err) => {
@@ -434,12 +513,15 @@ export class SintesisPlanComponent implements OnInit {
 
 
   // === PUT - Asignaturas Optativas ===
+  optativaOriginal: AsignaturaOptativa | null = null;
   filaEditandoOptativas: number | null = null;
   editMateriaOptativas = '';
   editCreditosOptativas: number | null = null;
 
   editarFilaOptativas(item: AsignaturaOptativa): void {
     this.filaEditandoOptativas = item.id_optativas;
+    this.optativaOriginal = { ...item };
+
     this.editMateriaOptativas = item.materia;
     this.editCreditosOptativas = item.creditos;
   }
@@ -448,10 +530,11 @@ export class SintesisPlanComponent implements OnInit {
     this.filaEditandoOptativas = null;
     this.editMateriaOptativas = '';
     this.editCreditosOptativas = null;
+    this.optativaOriginal = null;
   }
 
   guardarEdicionOptativas(id_optativas: number): void {
-    if (!this.editMateriaOptativas || !this.editCreditosOptativas) {
+    if (!this.editMateriaOptativas || this.editCreditosOptativas === null) {
       Swal.fire({
         icon: 'warning',
         title: 'Campos incompletos',
@@ -460,10 +543,30 @@ export class SintesisPlanComponent implements OnInit {
       return;
     }
 
+    if (!this.optativaOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
     const datosActualizados = {
       materia: this.editMateriaOptativas,
       creditos: this.editCreditosOptativas
     };
+
+    const sinCambios =
+      datosActualizados.materia === this.optativaOriginal.materia &&
+      datosActualizados.creditos === this.optativaOriginal.creditos;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones a esta asignatura optativa.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      return;
+    }
 
     this.optativasService.update(id_optativas, datosActualizados).subscribe({
       next: () => {
@@ -471,9 +574,11 @@ export class SintesisPlanComponent implements OnInit {
           icon: 'success',
           title: 'Actualizado correctamente',
           text: 'La asignatura optativa fue actualizada exitosamente.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
+
         this.filaEditandoOptativas = null;
+        this.optativaOriginal = null;
         this.cargarDatos();
       },
       error: (err) => {
