@@ -103,17 +103,40 @@ export class IndexComponent implements OnInit {
   }
 
   // ======= EDITAR (PUT) EVENTOS =======
+  backupEvento: Evento | null = null;
+
   editarEvento(evento: Evento): void {
     this.eventoEditandoId = evento.id_evento;
     this.editEvento = { ...evento };
+    this.backupEvento = { ...evento };
   }
 
   guardarEdicionEvento(eventoOriginal: Evento): void {
-    if (!this.eventoEditandoId) return;
+    if (!this.eventoEditandoId || !this.backupEvento) return;
 
     const { titulo, fecha, lugar, descripcion } = this.editEvento;
+
     if (!titulo || !fecha || !lugar || !descripcion) {
       Swal.fire('Campos incompletos', 'Por favor completa todos los campos.', 'warning');
+      return;
+    }
+
+    const sinCambios =
+      this.editEvento.titulo === this.backupEvento.titulo &&
+      this.editEvento.fecha === this.backupEvento.fecha &&
+      this.editEvento.lugar === this.backupEvento.lugar &&
+      this.editEvento.descripcion === this.backupEvento.descripcion;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ninguna modificación.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+
+      this.cancelarEdicion();
       return;
     }
 
@@ -123,8 +146,10 @@ export class IndexComponent implements OnInit {
         if (index !== -1) this.eventos[index] = eventoActualizado;
 
         Swal.fire('Evento actualizado', 'Los cambios se guardaron correctamente.', 'success');
+
         this.eventoEditandoId = null;
         this.editEvento = { titulo: '', fecha: '', lugar: '', descripcion: '' };
+        this.backupEvento = null;
       },
       error: () => Swal.fire('Error', 'No se pudo actualizar el evento.', 'error')
     });
@@ -133,6 +158,7 @@ export class IndexComponent implements OnInit {
   cancelarEdicion(): void {
     this.eventoEditandoId = null;
     this.editEvento = { titulo: '', fecha: '', lugar: '', descripcion: '' };
+    this.backupEvento = null;
   }
 
   // ======= ELIMINAR (DELETE) EVENTOS =======
@@ -228,24 +254,45 @@ export class IndexComponent implements OnInit {
   }
 
   // ======= EDITAR (PUT) PODCAST =======
+  backupPodcast: Podcast | null = null;
   podcastEditandoId: number | null = null;
   editPodcast: Partial<Podcast> = { titulo: '', url: '', descripcion: '' };
 
   editarPodcast(podcast: Podcast): void {
     this.podcastEditandoId = podcast.id_podcast;
     this.editPodcast = { ...podcast };
+    this.backupPodcast = { ...podcast };
   }
 
   guardarEdicionPodcast(podcastOriginal: Podcast): void {
-    if (!this.podcastEditandoId) return;
+    if (!this.podcastEditandoId || !this.backupPodcast) return;
 
     const { titulo, url, descripcion } = this.editPodcast;
+
     if (!titulo || !url || !descripcion) {
       Swal.fire({
         icon: 'warning',
         title: 'Campos incompletos',
         text: 'Por favor completa todos los campos antes de guardar.'
       });
+      return;
+    }
+
+    const sinCambios =
+      titulo === this.backupPodcast.titulo &&
+      url === this.backupPodcast.url &&
+      descripcion === this.backupPodcast.descripcion;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ninguna modificación.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+
+      this.cancelarEdicionPodcast();
       return;
     }
 
@@ -259,8 +306,10 @@ export class IndexComponent implements OnInit {
           title: 'Podcast actualizado',
           text: 'Los cambios se guardaron correctamente.'
         });
+
         this.podcastEditandoId = null;
         this.editPodcast = { titulo: '', url: '', descripcion: '' };
+        this.backupPodcast = null;
       },
       error: (err) => {
         console.error('Error al actualizar el podcast:', err);
@@ -276,6 +325,7 @@ export class IndexComponent implements OnInit {
   cancelarEdicionPodcast(): void {
     this.podcastEditandoId = null;
     this.editPodcast = { titulo: '', url: '', descripcion: '' };
+    this.backupPodcast = null;
   }
 
   // ======= ELIMINAR (DELETE) PODCAST =======
@@ -494,7 +544,7 @@ export class IndexComponent implements OnInit {
     this.galeriaEditandoId = item.id_galeria;
     this.editGaleria = { titulo: item.titulo, url: item.url };
     this.mostrarFormularioEdicionGaleria = true;
-    this.previewImagenGaleria = 'http://localhost:3000/' + item.imagen;
+    this.previewImagenGaleria = `${this.urlServer}/${item.imagen}`;
   }
 
   onFileSelectedEdicionGaleria(event: Event): void {
@@ -531,7 +581,7 @@ export class IndexComponent implements OnInit {
         icon: 'info',
         title: 'Sin cambios',
         text: 'No se detectaron modificaciones para actualizar.',
-        confirmButtonColor: '#003366'
+        confirmButtonColor: '#7066e0'
       });
       return;
     }
@@ -539,6 +589,7 @@ export class IndexComponent implements OnInit {
     const formData = new FormData();
     formData.append('titulo', titulo);
     formData.append('url', url);
+
     if (this.imagenSeleccionadaEdicionGaleria) {
       formData.append('imagen', this.imagenSeleccionadaEdicionGaleria);
     }
