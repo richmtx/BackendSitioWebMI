@@ -1,4 +1,3 @@
-// contacto.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -136,12 +135,15 @@ export class ContactoComponent implements OnInit, OnDestroy {
     this.nuevoContacto = null;
   }
 
+  contactoOriginal: Contacto | null = null;
+
   editarContacto(contacto: Contacto): void {
+    this.contactoOriginal = { ...contacto };
     this.contactoEditando = { ...contacto };
   }
 
   guardarEdicion(): void {
-    if (!this.contactoEditando) return;
+    if (!this.contactoEditando || !this.contactoOriginal) return;
 
     const { id_contacto, nombre, puesto, correo, telefono } = this.contactoEditando;
 
@@ -150,6 +152,19 @@ export class ContactoComponent implements OnInit, OnDestroy {
         icon: 'warning',
         title: 'Campos incompletos',
         text: 'Por favor completa todos los campos',
+      });
+      return;
+    }
+
+    const sinCambios = JSON.stringify(this.contactoEditando) === JSON.stringify(this.contactoOriginal);
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en el contacto.',
+        timer: 2000,
+        showConfirmButton: true
       });
       return;
     }
@@ -165,7 +180,9 @@ export class ContactoComponent implements OnInit, OnDestroy {
             timer: 2000,
             showConfirmButton: true
           });
+
           this.contactoEditando = null;
+          this.contactoOriginal = null;
           this.cargarContactos();
         },
         error: (err) => {
@@ -181,6 +198,7 @@ export class ContactoComponent implements OnInit, OnDestroy {
 
   cancelarEdicion(): void {
     this.contactoEditando = null;
+    this.contactoOriginal = null;
   }
 
   ngOnDestroy(): void {

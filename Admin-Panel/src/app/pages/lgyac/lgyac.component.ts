@@ -22,7 +22,7 @@ export class LgyacComponent implements OnInit {
   editLgac = '';
   editObjetivo = '';
 
-  constructor(private lgyacService: LgyacService) {}
+  constructor(private lgyacService: LgyacService) { }
 
   ngOnInit(): void {
     this.cargarDatosTabla();
@@ -48,7 +48,7 @@ export class LgyacComponent implements OnInit {
         icon: 'warning',
         title: 'Campos incompletos',
         text: 'Por favor completa ambos campos.',
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#7066e0',
       });
       return;
     }
@@ -60,7 +60,7 @@ export class LgyacComponent implements OnInit {
             icon: 'success',
             title: '¡Guardado!',
             text: 'El registro se ha agregado correctamente.',
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#7066e0',
           });
           this.cargarDatosTabla();
           this.nuevaFilaActiva = false;
@@ -82,8 +82,13 @@ export class LgyacComponent implements OnInit {
   }
 
   // ---------- EDITAR ----------
+  lgyacOriginal: Lgyac | null = null;
+
   editarFila(item: Lgyac): void {
     this.filaEditando = item.id_lgyac;
+
+    this.lgyacOriginal = { ...item };
+
     this.editLgac = item.nombre;
     this.editObjetivo = item.objetivos;
   }
@@ -94,8 +99,13 @@ export class LgyacComponent implements OnInit {
         icon: 'warning',
         title: 'Campos incompletos',
         text: 'Por favor completa ambos campos.',
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#7066e0',
       });
+      return;
+    }
+
+    if (!this.lgyacOriginal) {
+      console.error("No hay datos originales para comparar.");
       return;
     }
 
@@ -104,15 +114,32 @@ export class LgyacComponent implements OnInit {
       objetivos: this.editObjetivo.trim(),
     };
 
+    const sinCambios =
+      actualizado.nombre === this.lgyacOriginal.nombre &&
+      actualizado.objetivos === this.lgyacOriginal.objetivos;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en este registro.',
+        timer: 2000,
+        showConfirmButton: true,
+      });
+      return;
+    }
+
     this.lgyacService.update(item.id_lgyac, actualizado).subscribe({
       next: () => {
         Swal.fire({
           icon: 'success',
           title: '¡Actualizado!',
           text: 'El registro se actualizó correctamente.',
-          confirmButtonColor: '#3085d6',
+          confirmButtonColor: '#7066e0',
         });
+
         this.filaEditando = null;
+        this.lgyacOriginal = null;
         this.cargarDatosTabla();
       },
       error: (err) => {
@@ -129,6 +156,7 @@ export class LgyacComponent implements OnInit {
 
   cancelarEdicion(): void {
     this.filaEditando = null;
+    this.lgyacOriginal = null;
   }
 
   // ---------- ELIMINAR ----------
@@ -150,7 +178,7 @@ export class LgyacComponent implements OnInit {
               icon: 'success',
               title: 'Eliminado',
               text: 'El registro se eliminó correctamente.',
-              confirmButtonColor: '#3085d6',
+              confirmButtonColor: '#7066e0',
             });
             this.cargarDatosTabla();
           },
