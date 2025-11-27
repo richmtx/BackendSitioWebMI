@@ -7,8 +7,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4200';
+  const port = process.env.PORT || 3000;
+
   app.enableCors({
-    origin: 'http://localhost:4200',
+    origin: frontendUrl,
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     credentials: true,
   });
@@ -19,8 +22,9 @@ async function bootstrap() {
     prefix: '/uploads/',
   });
 
-  await app.listen(3000);
-  console.log('🚀 Backend corriendo en http://localhost:3000');
+  await app.listen(port);
+  console.log(`🚀 Backend corriendo en http://localhost:${port}`);
+  console.log(`🌐 CORS habilitado para: ${frontendUrl}`);
 }
 
 bootstrap();
