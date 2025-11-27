@@ -80,23 +80,46 @@ export class RequisitosPermanenciaComponent implements OnInit {
     });
   }
 
+  requisitoPermanenciaOriginal: RequisitoPermanencia | null = null;
+
   editarRequisito(requisito: RequisitoPermanencia): void {
     this.editandoId = requisito.id_requisito;
+    this.requisitoPermanenciaOriginal = { ...requisito };
     this.editDescripcion = requisito.descripcion;
   }
 
   cancelarEdicion(): void {
     this.editandoId = null;
     this.editDescripcion = '';
+    this.requisitoPermanenciaOriginal = null;
   }
 
   guardarEdicion(requisito: RequisitoPermanencia): void {
     const nuevoTexto = this.editDescripcion.trim();
+
     if (!nuevoTexto) {
       Swal.fire({
         icon: 'warning',
         title: 'Campo vacío',
         text: 'El requisito no puede estar vacío'
+      });
+      return;
+    }
+
+    if (!this.requisitoPermanenciaOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
+    const sinCambios = nuevoTexto === this.requisitoPermanenciaOriginal.descripcion;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en este requisito de permanencia.',
+        timer: 2000,
+        showConfirmButton: true
       });
       return;
     }
@@ -108,8 +131,7 @@ export class RequisitosPermanenciaComponent implements OnInit {
           title: '¡Requisito actualizado!',
           text: 'El requisito se ha modificado correctamente',
         }).then(() => {
-          this.editandoId = null;
-          this.editDescripcion = '';
+          this.cancelarEdicion();
           this.cargarRequisitos();
         });
       },
@@ -123,6 +145,7 @@ export class RequisitosPermanenciaComponent implements OnInit {
       }
     });
   }
+
 
   eliminarRequisito(requisito: RequisitoPermanencia): void {
     Swal.fire({

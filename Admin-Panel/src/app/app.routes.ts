@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+
 import { IndexComponent } from './pages/index/index.component';
 import { CohorteGenComponent } from './pages/cohorte-gen/cohorte-gen.component';
 import { ContactoComponent } from './pages/contacto/contacto.component';
@@ -21,15 +22,15 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'panel', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'index', component: IndexComponent, canActivate: [authGuard] },
-  { path: 'CohorteGen', component: CohorteGenComponent, canActivate: [authGuard] },
-  { path: 'Contacto', component: ContactoComponent, canActivate: [authGuard] },
-  { path: 'Egresados', component: EgresadosComponent, canActivate: [authGuard] },
+  { path: 'cohorte-gen', component: CohorteGenComponent, canActivate: [authGuard] },
+  { path: 'contacto', component: ContactoComponent, canActivate: [authGuard] },
+  { path: 'egresados', component: EgresadosComponent, canActivate: [authGuard] },
   { path: 'lgyac', component: LgyacComponent, canActivate: [authGuard] },
-  { path: 'NucleoBasico', component: NucleoBasicoComponent, canActivate: [authGuard] },
-  { path: 'ProductividadLGyAC', component: ProductividadLgyacComponent, canActivate: [authGuard] },
-  { path: 'ProductividadTablas', component: ProductividadTablasComponent, canActivate: [authGuard] },
-  { path: 'RequisitosGrado', component: RequisitosGradoComponent, canActivate: [authGuard] },
-  { path: 'RequisitosIngreso', component: RequisitosIngresoComponent, canActivate: [authGuard] },
-  { path: 'RequisitosPermanencia', component: RequisitosPermanenciaComponent, canActivate: [authGuard] },
-  { path: 'SintesisPlan', component: SintesisPlanComponent, canActivate: [authGuard] },
+  { path: 'nucleo-basico', component: NucleoBasicoComponent, canActivate: [authGuard] },
+  { path: 'productividad-lgyac', component: ProductividadLgyacComponent, canActivate: [authGuard] },
+  { path: 'productividad-tablas', component: ProductividadTablasComponent, canActivate: [authGuard] },
+  { path: 'requisitos-grado', component: RequisitosGradoComponent, canActivate: [authGuard] },
+  { path: 'requisitos-ingreso', component: RequisitosIngresoComponent, canActivate: [authGuard] },
+  { path: 'requisitos-permanencia', component: RequisitosPermanenciaComponent, canActivate: [authGuard] },
+  { path: 'sintesis-plan', component: SintesisPlanComponent, canActivate: [authGuard] },
 ];

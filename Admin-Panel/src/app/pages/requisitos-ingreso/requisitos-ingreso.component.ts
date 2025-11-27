@@ -133,15 +133,37 @@ export class RequisitosIngresoComponent implements OnInit {
   }
 
   // === PUT: Antecedentes ===
+  antecedenteOriginal: RequisitoIngreso | null = null;
+
   editarAntecedente(item: RequisitoIngreso): void {
     this.editingId = item.id_requisito;
+    this.antecedenteOriginal = { ...item };
     this.editDescripcion = item.descripcion;
   }
 
   guardarEdicionAntecedente(item: RequisitoIngreso): void {
     const nuevoValor = this.editDescripcion.trim();
+
     if (!nuevoValor) {
       Swal.fire('Campo vacío', 'Por favor, ingresa un antecedente válido.', 'warning');
+      return;
+    }
+
+    if (!this.antecedenteOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
+    const sinCambios = nuevoValor === this.antecedenteOriginal.descripcion;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en este antecedente.',
+        timer: 2000,
+        showConfirmButton: true
+      });
       return;
     }
 
@@ -150,24 +172,50 @@ export class RequisitosIngresoComponent implements OnInit {
         if (res.updated) {
           const idx = this.antecedentes.findIndex(a => a.id_requisito === item.id_requisito);
           if (idx > -1) this.antecedentes[idx].descripcion = nuevoValor;
+
           Swal.fire('Actualizado', 'El antecedente fue actualizado correctamente.', 'success');
           this.cancelarEdicion();
+          this.antecedenteOriginal = null;
         }
       },
-      error: () => Swal.fire('Error', 'Hubo un problema al actualizar el antecedente.', 'error')
+      error: () =>
+        Swal.fire('Error', 'Hubo un problema al actualizar el antecedente.', 'error')
     });
   }
 
+
   // === PUT: Requisitos ===
+  requisitoOriginal: RequisitoIngreso | null = null;
+
   editarRequisito(item: RequisitoIngreso): void {
     this.editingId = item.id_requisito;
+    this.requisitoOriginal = { ...item };
     this.editDescripcion = item.descripcion;
   }
 
   guardarEdicionRequisito(item: RequisitoIngreso): void {
     const nuevoValor = this.editDescripcion.trim();
+
     if (!nuevoValor) {
       Swal.fire('Campo vacío', 'Por favor, ingresa un requisito válido.', 'warning');
+      return;
+    }
+
+    if (!this.requisitoOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
+    const sinCambios = nuevoValor === this.requisitoOriginal.descripcion;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en este requisito.',
+        timer: 2000,
+        showConfirmButton: true
+      });
       return;
     }
 
@@ -176,11 +224,14 @@ export class RequisitosIngresoComponent implements OnInit {
         if (res.updated) {
           const idx = this.requisitos.findIndex(r => r.id_requisito === item.id_requisito);
           if (idx > -1) this.requisitos[idx].descripcion = nuevoValor;
+
           Swal.fire('Actualizado', 'El requisito fue actualizado correctamente.', 'success');
           this.cancelarEdicion();
+          this.requisitoOriginal = null;
         }
       },
-      error: () => Swal.fire('Error', 'Hubo un problema al actualizar el requisito.', 'error')
+      error: () =>
+        Swal.fire('Error', 'Hubo un problema al actualizar el requisito.', 'error')
     });
   }
 
@@ -191,15 +242,38 @@ export class RequisitosIngresoComponent implements OnInit {
 
 
   // === PUT: Selección ===
+  seleccionOriginal: RequisitoIngreso | null = null;
+
   editarSeleccion(item: RequisitoIngreso): void {
     this.editingId = item.id_requisito;
+    this.seleccionOriginal = { ...item };
     this.editDescripcion = item.descripcion;
   }
 
+
   guardarEdicionSeleccion(item: RequisitoIngreso): void {
     const nuevoValor = this.editDescripcion.trim();
+
     if (!nuevoValor) {
       Swal.fire('Campo vacío', 'Por favor, ingresa un texto válido para la selección.', 'warning');
+      return;
+    }
+
+    if (!this.seleccionOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
+    const sinCambios = nuevoValor === this.seleccionOriginal.descripcion;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en este elemento de selección.',
+        timer: 2000,
+        showConfirmButton: true
+      });
       return;
     }
 
@@ -208,11 +282,15 @@ export class RequisitosIngresoComponent implements OnInit {
         if (res.updated) {
           const idx = this.seleccion.findIndex(s => s.id_requisito === item.id_requisito);
           if (idx > -1) this.seleccion[idx].descripcion = nuevoValor;
+
           Swal.fire('Actualizado', 'El elemento de selección fue actualizado correctamente.', 'success');
+
           this.cancelarEdicion();
+          this.seleccionOriginal = null;
         }
       },
-      error: () => Swal.fire('Error', 'Hubo un problema al actualizar el elemento de selección.', 'error')
+      error: () =>
+        Swal.fire('Error', 'Hubo un problema al actualizar el elemento de selección.', 'error')
     });
   }
 
@@ -310,21 +388,29 @@ export class RequisitosIngresoComponent implements OnInit {
     });
   }
 
+
   // === PUT: URLs ===
+  urlOriginal: RequisitoIngreso | null = null;
   editandoConvocatoria = false;
   editandoSolicitud = false;
   nuevaURL = '';
 
   editarConvocatoria(url: RequisitoIngreso): void {
     this.editandoConvocatoria = true;
-    this.nuevaURL = url.descripcion;
+    this.editandoSolicitud = false;
+
     this.editingId = url.id_requisito;
+    this.urlOriginal = { ...url };
+    this.nuevaURL = url.descripcion;
   }
 
   editarSolicitud(url: RequisitoIngreso): void {
     this.editandoSolicitud = true;
-    this.nuevaURL = url.descripcion;
+    this.editandoConvocatoria = false;
+
     this.editingId = url.id_requisito;
+    this.urlOriginal = { ...url };
+    this.nuevaURL = url.descripcion;
   }
 
   cancelarEdicionURL(): void {
@@ -332,10 +418,12 @@ export class RequisitosIngresoComponent implements OnInit {
     this.editandoSolicitud = false;
     this.nuevaURL = '';
     this.editingId = null;
+    this.urlOriginal = null;
   }
 
   guardarEdicionURL(): void {
     const nuevaDescripcion = this.nuevaURL.trim();
+
     if (!nuevaDescripcion) {
       Swal.fire('Campo vacío', 'Por favor, ingresa una URL válida.', 'warning');
       return;
@@ -346,11 +434,31 @@ export class RequisitosIngresoComponent implements OnInit {
       return;
     }
 
+    if (!this.urlOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
+    const sinCambios = nuevaDescripcion === this.urlOriginal.descripcion;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en esta URL.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      return;
+    }
+
     this.requisitosService.update(this.editingId, { descripcion: nuevaDescripcion }).subscribe({
       next: (res) => {
         if (res.updated) {
           const idx = this.urls.findIndex(u => u.id_requisito === this.editingId);
-          if (idx > -1) this.urls[idx].descripcion = nuevaDescripcion;
+          if (idx > -1) {
+            this.urls[idx].descripcion = nuevaDescripcion;
+          }
 
           Swal.fire('Actualizado', 'La URL fue actualizada correctamente.', 'success');
           this.cancelarEdicionURL();

@@ -58,6 +58,7 @@ export class ProductividadTablasComponent implements OnInit {
     this.participacionService.getAll().subscribe(data => (this.participacionRedes = data));
   }
 
+
   // ===== POST =====
   mostrarFormCuerpos(): void {
     this.mostrarFormularioCuerpos = true;
@@ -75,7 +76,7 @@ export class ProductividadTablasComponent implements OnInit {
         icon: 'warning',
         title: 'Campo vacío',
         text: 'Por favor ingresa el nombre del proyecto.',
-        confirmButtonColor: '#007bff'
+        confirmButtonColor: '#7066e0'
       });
       return;
     }
@@ -111,6 +112,7 @@ export class ProductividadTablasComponent implements OnInit {
     });
   }
 
+
   // ====== POST: OTROS RECONOCIMIENTOS ======
   mostrarFormularioReconocimientos = false;
   nuevoProfesor = '';
@@ -132,7 +134,7 @@ export class ProductividadTablasComponent implements OnInit {
         icon: 'warning',
         title: 'Campos incompletos',
         text: 'Por favor ingresa el nombre del profesor y el tipo de reconocimiento.',
-        confirmButtonColor: '#007bff'
+        confirmButtonColor: '#7066e0'
       });
       return;
     }
@@ -169,6 +171,7 @@ export class ProductividadTablasComponent implements OnInit {
     });
   }
 
+
   // ====== POST: PARTICIPACIÓN EN REDES ======
   mostrarFormularioRed = false;
   nuevoNombreRed = '';
@@ -188,7 +191,7 @@ export class ProductividadTablasComponent implements OnInit {
         icon: 'warning',
         title: 'Campo vacío',
         text: 'Por favor ingresa el nombre de la red.',
-        confirmButtonColor: '#007bff'
+        confirmButtonColor: '#7066e0'
       });
       return;
     }
@@ -222,9 +225,18 @@ export class ProductividadTablasComponent implements OnInit {
     });
   }
 
+
   // ===== PUT (Editar) =====
+  cuerpoOriginal: any = null;
+
   editarCuerpo(cuerpo: any): void {
     this.filaEditando = cuerpo.id_cuerpo;
+
+    this.cuerpoOriginal = {
+      nomProy: cuerpo.nomProy,
+      integrantes: cuerpo.integrantes.map((i: any) => ({ nombre: i.nombre }))
+    };
+
     this.editNomProy = cuerpo.nomProy;
     this.editIntegrantes = cuerpo.integrantes.map((i: any) => i.nombre).join('\n');
   }
@@ -233,6 +245,7 @@ export class ProductividadTablasComponent implements OnInit {
     this.filaEditando = null;
     this.editNomProy = '';
     this.editIntegrantes = '';
+    this.cuerpoOriginal = null;
   }
 
   guardarEdicion(id: number): void {
@@ -246,6 +259,30 @@ export class ProductividadTablasComponent implements OnInit {
       nomProy: this.editNomProy,
       integrantes: integrantesArray
     };
+
+    if (!this.cuerpoOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
+    const mismoNomProy =
+      cuerpoEditado.nomProy.trim() === this.cuerpoOriginal.nomProy.trim();
+
+    const mismosIntegrantes =
+      JSON.stringify(cuerpoEditado.integrantes) === JSON.stringify(this.cuerpoOriginal.integrantes);
+
+    const sinCambios = mismoNomProy && mismosIntegrantes;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en este cuerpo académico.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      return;
+    }
 
     this.cuerposService.update(id, cuerpoEditado).subscribe({
       next: () => {
@@ -272,17 +309,26 @@ export class ProductividadTablasComponent implements OnInit {
     });
   }
 
+
   // ===== PUT: SISTEMA NACIONAL =====
   filaEditandoSistema: number | null = null;
   editNumProfesores = 0;
   editNivelC = '';
   editNivel1 = '';
+  originalNumProfesores = 0;
+  originalNivelC = '';
+  originalNivel1 = '';
 
   editarSistema(snii: any): void {
     this.filaEditandoSistema = snii.id_sistema;
+
     this.editNumProfesores = snii.numProfesores;
     this.editNivelC = snii.nivelC;
     this.editNivel1 = snii.nivel1;
+
+    this.originalNumProfesores = snii.numProfesores;
+    this.originalNivelC = snii.nivelC;
+    this.originalNivel1 = snii.nivel1;
   }
 
   cancelarEdicionSistema(): void {
@@ -294,6 +340,23 @@ export class ProductividadTablasComponent implements OnInit {
 
   guardarEdicionSistema(): void {
     if (this.filaEditandoSistema === null) return;
+
+    const sinCambios =
+      this.editNumProfesores === this.originalNumProfesores &&
+      this.editNivelC === this.originalNivelC &&
+      this.editNivel1 === this.originalNivel1;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ninguna modificación.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      this.cancelarEdicionSistema();
+      return;
+    }
 
     const datosActualizados = {
       numProfesores: this.editNumProfesores,
@@ -329,13 +392,16 @@ export class ProductividadTablasComponent implements OnInit {
     });
   }
 
+
   // ===== PUT: PERFIL DESEABLE =====
+  originalNumProfesoresPerfil = 0;
   filaEditandoPerfil: number | null = null;
   editNumProfesoresPerfil = 0;
 
   editarPerfil(perfil: any): void {
     this.filaEditandoPerfil = perfil.id_perfil;
     this.editNumProfesoresPerfil = perfil.numProfesores;
+    this.originalNumProfesoresPerfil = perfil.numProfesores;
   }
 
   cancelarEdicionPerfil(): void {
@@ -345,6 +411,22 @@ export class ProductividadTablasComponent implements OnInit {
 
   guardarEdicionPerfil(): void {
     if (this.filaEditandoPerfil === null) return;
+
+    // Detectar si NO hubo cambios
+    const sinCambios =
+      this.editNumProfesoresPerfil === this.originalNumProfesoresPerfil;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ninguna modificación.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      this.cancelarEdicionPerfil();
+      return;
+    }
 
     const datosActualizados = {
       numProfesores: this.editNumProfesoresPerfil
@@ -357,7 +439,7 @@ export class ProductividadTablasComponent implements OnInit {
 
         Swal.fire({
           icon: 'success',
-          title: 'Proyecto actualizado',
+          title: 'Perfil actualizado',
           text: 'Los cambios se han guardado.',
           showConfirmButton: true,
           timer: 2000,
@@ -376,6 +458,7 @@ export class ProductividadTablasComponent implements OnInit {
       }
     });
   }
+
 
   // ====== PUT: OTROS RECONOCIMIENTOS ======
   filaEditandoReconocimiento: number | null = null;
@@ -418,6 +501,23 @@ export class ProductividadTablasComponent implements OnInit {
       return;
     }
 
+    const sinCambios =
+      this.reconocimientoEditando.profesor === this.backupReconocimiento.profesor &&
+      this.reconocimientoEditando.tipoRec === this.backupReconocimiento.tipoRec;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ninguna modificación.',
+        timer: 1800,
+        showConfirmButton: true
+      });
+
+      this.cancelarEdicionReconocimiento();
+      return;
+    }
+
     const reconocimientoEditado = {
       profesor: this.reconocimientoEditando.profesor,
       tipoRec: this.reconocimientoEditando.tipoRec
@@ -449,6 +549,7 @@ export class ProductividadTablasComponent implements OnInit {
       }
     });
   }
+
 
   // ====== PUT: CONVENIOS FIRMADOS ======
   filaEditandoConvenio: number | null = null;
@@ -490,6 +591,22 @@ export class ProductividadTablasComponent implements OnInit {
       return;
     }
 
+    const sinCambios =
+      Number(conv.empresaProd) === Number(this.backupConvenio.empresaProd);
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ninguna modificación.',
+        timer: 1800,
+        showConfirmButton: true
+      });
+
+      this.cancelarEdicionConvenio();
+      return;
+    }
+
     const convenioEditado = { empresaProd: Number(conv.empresaProd) };
 
     this.conveniosService.update(conv.id_convenios, convenioEditado).subscribe({
@@ -519,7 +636,9 @@ export class ProductividadTablasComponent implements OnInit {
     });
   }
 
+
   // ====== PUT: PARTICIPACIÓN EN REDES ======
+  originalNombreRed = '';
   filaEditandoRedId: number | null = null;
   editNombreRed = '';
   private redIdKeys = ['id_red', 'id_participacion', 'id_participacion_red', 'id'];
@@ -548,6 +667,7 @@ export class ProductividadTablasComponent implements OnInit {
 
     this.filaEditandoRedId = id;
     this.editNombreRed = red.nombre ?? '';
+    this.originalNombreRed = red.nombre ?? '';
   }
 
   cancelarEdicionRed(): void {
@@ -575,6 +695,21 @@ export class ProductividadTablasComponent implements OnInit {
         text: 'Por favor ingresa el nombre de la red antes de guardar.',
         confirmButtonColor: '#007bff'
       });
+      return;
+    }
+
+    const sinCambios = nombreLimpio === (this.originalNombreRed ?? '');
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No realizaste ninguna modificación.',
+        timer: 1600,
+        showConfirmButton: true
+      });
+
+      this.cancelarEdicionRed();
       return;
     }
 
@@ -606,6 +741,7 @@ export class ProductividadTablasComponent implements OnInit {
       }
     });
   }
+
 
   // ===== DELETE (Eliminar) =====
   eliminarCuerpo(id: number): void {
@@ -648,6 +784,7 @@ export class ProductividadTablasComponent implements OnInit {
     });
   }
 
+
   // ====== DELETE: OTROS RECONOCIMIENTOS ======
   eliminarReconocimiento(id: number): void {
     Swal.fire({
@@ -688,6 +825,7 @@ export class ProductividadTablasComponent implements OnInit {
       }
     });
   }
+
 
   // ====== DELETE: PARTICIPACIÓN EN REDES ======
   eliminarRed(red: any): void {

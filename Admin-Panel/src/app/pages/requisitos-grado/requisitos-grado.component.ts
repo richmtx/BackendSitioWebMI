@@ -78,14 +78,18 @@ export class RequisitosGradoComponent implements OnInit {
     });
   }
 
+  requisitoGradoOriginal: RequisitoGrado | null = null;
+
   editarRequisito(req: RequisitoGrado): void {
     this.editandoId = req.id_grado;
+    this.requisitoGradoOriginal = { ...req };
     this.editDescripcion = req.descripcion;
   }
 
   cancelarEdicion(): void {
     this.editandoId = null;
     this.editDescripcion = '';
+    this.requisitoGradoOriginal = null;
   }
 
   guardarEdicion(req: RequisitoGrado): void {
@@ -100,15 +104,36 @@ export class RequisitosGradoComponent implements OnInit {
       return;
     }
 
+    if (!this.requisitoGradoOriginal) {
+      console.error("No hay datos originales para comparar.");
+      return;
+    }
+
+    const sinCambios = nuevoTexto === this.requisitoGradoOriginal.descripcion;
+
+    if (sinCambios) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones en este requisito de grado.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      return;
+    }
+
     this.requisitosService.update(req.id_grado, { descripcion: nuevoTexto }).subscribe({
-      next: (data) => {
+      next: () => {
         Swal.fire({
           icon: 'success',
           title: '¡Requisito actualizado!',
           text: 'El requisito se ha modificado correctamente'
         }).then(() => {
           const index = this.requisitos.findIndex(r => r.id_grado === req.id_grado);
-          if (index !== -1) this.requisitos[index].descripcion = nuevoTexto;
+          if (index !== -1) {
+            this.requisitos[index].descripcion = nuevoTexto;
+          }
+
           this.cancelarEdicion();
         });
       },
