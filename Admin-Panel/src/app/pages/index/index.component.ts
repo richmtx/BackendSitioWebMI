@@ -6,6 +6,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { URL_SERVER } from '../../config/server.config';
+import { Renderer2 } from '@angular/core';
 
 // Servicios
 import { EventosService, Evento } from './eventos.service';
@@ -19,7 +20,8 @@ import { CarruselService } from './carrusel.service';
   standalone: true,
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
+  host: { ngSkipHydration: '' }
 })
 export class IndexComponent implements OnInit {
 
@@ -51,7 +53,7 @@ export class IndexComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: Object,
-
+    private renderer: Renderer2,
     private carruselService: CarruselService,
     private eventosService: EventosService,
     private podcastService: PodcastService,
@@ -192,17 +194,43 @@ export class IndexComponent implements OnInit {
   // =================== PODCASTS =========================
   // =====================================================
 
+  private cargarSpotifyIframes(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    setTimeout(() => {
+      const contenedores = this.document.querySelectorAll('.spotify-container');
+
+      contenedores.forEach((div: any) => {
+        const url = div.getAttribute('data-url');
+        if (!url) return;
+        if (div.childElementCount > 0) return;
+
+        const iframe = this.renderer.createElement('iframe');
+
+        this.renderer.setAttribute(iframe, 'src', url);
+        this.renderer.setStyle(iframe, 'border-radius', '12px');
+        this.renderer.setStyle(iframe, 'width', '100%');
+        this.renderer.setStyle(iframe, 'height', '152px');
+        this.renderer.setAttribute(iframe, 'frameBorder', '0');
+        this.renderer.setAttribute(
+          iframe,
+          'allow',
+          'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
+        );
+
+        this.renderer.appendChild(div, iframe);
+      });
+    }, 0);
+  }
+
   cargarPodcasts(): void {
     this.podcastService.getAllPodcast().subscribe({
       next: (data) => {
         this.podcasts = data;
+        this.cargarSpotifyIframes();
       },
       error: (err) => console.error('Error al obtener los podcasts:', err)
     });
-  }
-
-  sanitizarURL(url: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   mostrarFormularioPodcast: boolean = false;

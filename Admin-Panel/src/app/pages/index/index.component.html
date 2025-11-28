@@ -334,9 +334,8 @@
 
       <div *ngFor="let podcast of podcasts" class="podcast">
         <ng-container *ngIf="podcastEditandoId !== podcast.id_podcast; else modoEdicionPodcast">
-          <iframe style="border-radius:12px" [src]="sanitizarURL(podcast.url)" width="100%" height="152" frameBorder="0"
-            allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-          </iframe>
+          <div class="spotify-container" [attr.data-url]="podcast.url" id="spotify-{{ podcast.id_podcast }}">
+          </div>
 
           <h4>{{ podcast.titulo }}</h4>
           <p>{{ podcast.descripcion }}</p>
