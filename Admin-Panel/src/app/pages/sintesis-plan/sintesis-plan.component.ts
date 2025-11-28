@@ -6,6 +6,7 @@ import { OrientacionProfesionalService, OrientacionProfesional } from './orienta
 import { DistribucionAsignaturasService, DistribucionAsignatura } from './distribucion-asignaturas.service';
 import { AsignaturasBasicasService, AsignaturaBasica } from './asignaturas-basicas.service';
 import { AsignaturasOptativasService, AsignaturaOptativa } from './asignaturas-optativas.service';
+import { MapaCurricularService } from './mapa-curricular.service';
 
 @Component({
   selector: 'app-sintesis-plan',
@@ -24,11 +25,16 @@ export class SintesisPlanComponent implements OnInit {
   nuevaMateria = '';
   nuevosCreditos: number | null = null;
 
+  mapa: any = null;
+  editandoMapa = false;
+  nuevaURLMapa = '';
+
   constructor(
     private orientacionService: OrientacionProfesionalService,
     private distribucionService: DistribucionAsignaturasService,
     private basicasService: AsignaturasBasicasService,
-    private optativasService: AsignaturasOptativasService
+    private optativasService: AsignaturasOptativasService,
+    private mapaCurricularService: MapaCurricularService
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +60,14 @@ export class SintesisPlanComponent implements OnInit {
     this.optativasService.getAll().subscribe({
       next: data => this.optativas = data,
       error: err => console.error('Error al cargar optativas', err)
+    });
+
+    this.mapaCurricularService.obtenerMapa().subscribe({
+      next: data => {
+        this.mapa = data;
+        this.nuevaURLMapa = data?.url || '';
+      },
+      error: err => console.error('Error al cargar mapa curricular', err)
     });
   }
 
@@ -741,6 +755,60 @@ export class SintesisPlanComponent implements OnInit {
           }
         });
       } else {
+      }
+    });
+  }
+
+  // Mapa Curricular
+  editarMapa(): void {
+    this.editandoMapa = true;
+  }
+
+  cancelarEdicionMapa(): void {
+    this.editandoMapa = false;
+    this.nuevaURLMapa = this.mapa?.url || '';
+  }
+
+  guardarEdicionMapa(): void {
+
+    if (!this.nuevaURLMapa) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campo vacío',
+        text: 'Por favor ingresa una URL.'
+      });
+      return;
+    }
+
+    if (this.nuevaURLMapa === this.mapa.url) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios detectados',
+        text: 'No realizaste modificaciones a la URL.',
+        timer: 2000,
+        showConfirmButton: true
+      });
+      return;
+    }
+
+    this.mapaCurricularService.actualizarMapa(1, this.nuevaURLMapa).subscribe({
+      next: (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Mapa curricular actualizado',
+          text: 'La URL fue modificada exitosamente.'
+        });
+
+        this.mapa = res;
+        this.editandoMapa = false;
+      },
+      error: err => {
+        console.error('Error al actualizar mapa:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar la URL.'
+        });
       }
     });
   }

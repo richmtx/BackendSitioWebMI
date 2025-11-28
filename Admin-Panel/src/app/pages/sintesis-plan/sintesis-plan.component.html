@@ -272,3 +272,32 @@
         </div>
     </div>
 </section>
+
+
+<!-- =============================== -->
+<!-- SECCIÓN: URL MAPA CURRICULAR -->
+<!-- =============================== -->
+
+<h3 class="centrado">Mapa Curricular:</h3>
+
+<div class="mapa-container" *ngIf="mapa && !editandoMapa; else editarMapaTpl">
+    <a [href]="mapa.url" target="_blank">{{ mapa.url }}</a>
+
+    <div class="actions">
+        <button (click)="editarMapa()" class="editar-btn">
+            Editar URL
+        </button>
+    </div>
+</div>
+
+<ng-template #editarMapaTpl>
+    <div class="input-contenedor">
+        <input type="text" [(ngModel)]="nuevaURLMapa" class="input-requisito"
+            placeholder="Edita la URL del mapa curricular..." />
+
+        <div class="actions">
+            <button (click)="guardarEdicionMapa()" class="guardar-btn">Guardar</button>
+            <button (click)="cancelarEdicionMapa()" class="cancelar-btn">Cancelar</button>
+        </div>
+    </div>
+</ng-template>
