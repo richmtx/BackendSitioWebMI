@@ -7,11 +7,10 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4200';
   const port = process.env.PORT || 3000;
 
   app.enableCors({
-    origin: frontendUrl,
+    origin: true,
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     credentials: true,
   });
@@ -23,8 +22,9 @@ async function bootstrap() {
   });
 
   await app.listen(port);
+
   console.log(`🚀 Backend corriendo en http://localhost:${port}`);
-  console.log(`🌐 CORS habilitado para: ${frontendUrl}`);
+  console.log(`🌐 CORS habilitado (modo desarrollo)`);
 }
 
 bootstrap();
