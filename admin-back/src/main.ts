@@ -21,9 +21,9 @@ async function bootstrap() {
     prefix: '/uploads/',
   });
 
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 
-  console.log(`🚀 Backend corriendo en http://localhost:${port}`);
+  console.log(`🚀 Backend corriendo en red en el puerto ${port}`);
   console.log(`🌐 CORS habilitado (modo desarrollo)`);
 }
 
