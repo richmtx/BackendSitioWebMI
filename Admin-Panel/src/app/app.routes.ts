@@ -18,8 +18,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: '', component: LoginComponent },
   { path: 'panel', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'index', component: IndexComponent, canActivate: [authGuard] },
   { path: 'cohorte-gen', component: CohorteGenComponent, canActivate: [authGuard] },

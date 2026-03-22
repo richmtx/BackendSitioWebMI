@@ -5,19 +5,70 @@ import { Cohorte } from './cohorte.entity';
 import { unlinkSync, existsSync } from 'fs';
 import { join } from 'path';
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 @Injectable()
 export class CohorteService {
   constructor(
     @InjectRepository(Cohorte)
     private readonly cohorteRepository: Repository<Cohorte>,
-  ) {}
+  ) { }
 
-  findAll(): Promise<Cohorte[]> {
-    return this.cohorteRepository.find();
+  async findAll(): Promise<any[]> {
+    const cohortes = await this.cohorteRepository.find();
+
+    return cohortes.map((cohorte) => {
+      if (cohorte.imagen) {
+        const imagePath = path.join(process.cwd(), 'uploads', cohorte.imagen);
+
+        if (fs.existsSync(imagePath)) {
+          const file = fs.readFileSync(imagePath);
+          const base64 = file.toString('base64');
+
+          const ext = path.extname(imagePath).toLowerCase();
+
+          let mimeType = 'image/jpeg';
+          if (ext === '.png') mimeType = 'image/png';
+          if (ext === '.jpg' || ext === '.jpeg') mimeType = 'image/jpeg';
+          if (ext === '.webp') mimeType = 'image/webp';
+
+          cohorte.imagen = `data:${mimeType};base64,${base64}`;
+        }
+      }
+
+      return cohorte;
+    });
   }
 
-  findOne(id: number): Promise<Cohorte | null> {
-    return this.cohorteRepository.findOneBy({ id_cohorte: id });
+  async findOne(id: number): Promise<any> {
+    const cohorte = await this.cohorteRepository.findOneBy({
+      id_cohorte: id,
+    });
+
+    if (!cohorte) {
+      throw new Error(`No se encontró la cohorte con id ${id}`);
+    }
+
+    if (cohorte.imagen) {
+      const imagePath = path.join(process.cwd(), 'uploads', cohorte.imagen);
+
+      if (fs.existsSync(imagePath)) {
+        const file = fs.readFileSync(imagePath);
+        const base64 = file.toString('base64');
+
+        const ext = path.extname(imagePath).toLowerCase();
+
+        let mimeType = 'image/jpeg';
+        if (ext === '.png') mimeType = 'image/png';
+        if (ext === '.jpg' || ext === '.jpeg') mimeType = 'image/jpeg';
+        if (ext === '.webp') mimeType = 'image/webp';
+
+        cohorte.imagen = `data:${mimeType};base64,${base64}`;
+      }
+    }
+
+    return cohorte;
   }
 
   async create(cohorteData: Partial<Cohorte>): Promise<Cohorte> {
