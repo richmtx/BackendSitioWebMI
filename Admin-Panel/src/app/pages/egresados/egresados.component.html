@@ -8,7 +8,7 @@
             <tr>
                 <td style="text-align:center">
 
-                    <img *ngIf="egresado?.imagen" [src]="urlServer + '/' + egresado.imagen" [alt]="egresado?.nombre"
+                    <img *ngIf="egresado?.imagen" [src]="egresado.imagen" [alt]="egresado?.nombre"
                         class="imagen-egresado">
 
                     <p *ngIf="!egresado?.imagen">Sin imagen disponible</p>
