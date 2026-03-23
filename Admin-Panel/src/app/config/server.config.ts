@@ -1,3 +1,3 @@
 
 // URL Global
-export const URL_SERVER = 'http://192.168.1.70:3000';
+export const URL_SERVER = 'http://10.11.1.5:3000';
