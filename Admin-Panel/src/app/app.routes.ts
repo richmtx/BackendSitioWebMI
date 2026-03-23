@@ -15,21 +15,22 @@ import { RequisitosPermanenciaComponent } from './pages/requisitos-permanencia/r
 import { SintesisPlanComponent } from './pages/sintesis-plan/sintesis-plan.component';
 import { LoginComponent } from './pages/login/login.component';
 
-import { authGuard } from './auth.guard';
+import { authGuard, authMatchGuard } from './auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'panel', component: DashboardComponent, canActivate: [authGuard] },
-  { path: 'index', component: IndexComponent, canActivate: [authGuard] },
-  { path: 'cohorte-gen', component: CohorteGenComponent, canActivate: [authGuard] },
-  { path: 'contacto', component: ContactoComponent, canActivate: [authGuard] },
-  { path: 'egresados', component: EgresadosComponent, canActivate: [authGuard] },
-  { path: 'lgyac', component: LgyacComponent, canActivate: [authGuard] },
-  { path: 'nucleo-basico', component: NucleoBasicoComponent, canActivate: [authGuard] },
-  { path: 'productividad-lgyac', component: ProductividadLgyacComponent, canActivate: [authGuard] },
-  { path: 'productividad-tablas', component: ProductividadTablasComponent, canActivate: [authGuard] },
-  { path: 'requisitos-grado', component: RequisitosGradoComponent, canActivate: [authGuard] },
-  { path: 'requisitos-ingreso', component: RequisitosIngresoComponent, canActivate: [authGuard] },
-  { path: 'requisitos-permanencia', component: RequisitosPermanenciaComponent, canActivate: [authGuard] },
-  { path: 'sintesis-plan', component: SintesisPlanComponent, canActivate: [authGuard] },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'panel', component: DashboardComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'index', component: IndexComponent, canActivate: [authGuard],canMatch: [authMatchGuard] },
+  { path: 'cohorte-gen', component: CohorteGenComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'contacto', component: ContactoComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'egresados', component: EgresadosComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'lgyac', component: LgyacComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'nucleo-basico', component: NucleoBasicoComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'productividad-lgyac', component: ProductividadLgyacComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'productividad-tablas', component: ProductividadTablasComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'requisitos-grado', component: RequisitosGradoComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'requisitos-ingreso', component: RequisitosIngresoComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'requisitos-permanencia', component: RequisitosPermanenciaComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
+  { path: 'sintesis-plan', component: SintesisPlanComponent, canActivate: [authGuard], canMatch: [authMatchGuard] },
 ];
