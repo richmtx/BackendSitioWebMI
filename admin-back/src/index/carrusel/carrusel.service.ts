@@ -2,9 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Carrusel } from './carrusel.entity';
-
-import { readFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { imagenABase64 } from '../../utils/imagen.helper';
 
 @Injectable()
 export class CarruselService {
@@ -15,28 +13,10 @@ export class CarruselService {
 
   async getCarrusel(): Promise<any[]> {
     const items = await this.carruselRepo.find();
-
-    return items.map((item) => {
-      let imagenBase64: string | null = null;
-
-      if (item.imagen) {
-        const imagePath = join(process.cwd(), item.imagen);
-
-        if (existsSync(imagePath)) {
-          const file = readFileSync(imagePath);
-          const base64 = file.toString('base64');
-
-          const ext = item.imagen.split('.').pop() || 'png';
-
-          imagenBase64 = `data:image/${ext};base64,${base64}`;
-        }
-      }
-
-      return {
-        ...item,
-        imagen: imagenBase64,
-      };
-    });
+    return items.map((item) => ({
+      ...item,
+      imagen: imagenABase64(item.imagen),
+    }));
   }
 
   async updateImagen(id: number, imagen: string): Promise<Carrusel> {

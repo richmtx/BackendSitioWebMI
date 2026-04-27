@@ -2,9 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Portada } from './portada.entity';
-
-import { readFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { imagenABase64 } from '../../utils/imagen.helper';
 
 @Injectable()
 export class PortadaService {
@@ -15,27 +13,10 @@ export class PortadaService {
 
   async findAll(): Promise<any[]> {
     const portadas = await this.portadaRepository.find();
-
-    return portadas.map((portada) => {
-      let imagenBase64: string | null = null;
-
-      if (portada.imagen) {
-        const imagePath = join(process.cwd(), portada.imagen);
-
-        if (existsSync(imagePath)) {
-          const file = readFileSync(imagePath);
-          const base64 = file.toString('base64');
-          const ext = portada.imagen.split('.').pop();
-
-          imagenBase64 = `data:image/${ext};base64,${base64}`;
-        }
-      }
-
-      return {
-        ...portada,
-        imagen: imagenBase64,
-      };
-    });
+    return portadas.map((portada) => ({
+      ...portada,
+      imagen: imagenABase64(portada.imagen),
+    }));
   }
 
   async update(id: number, portadaData: Partial<Portada>): Promise<Portada> {
@@ -49,8 +30,6 @@ export class PortadaService {
 
     Object.assign(portada, portadaData);
 
-    const portadaActualizada = await this.portadaRepository.save(portada);
-
-    return portadaActualizada;
+    return this.portadaRepository.save(portada);
   }
 }

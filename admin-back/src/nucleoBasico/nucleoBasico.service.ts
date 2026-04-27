@@ -3,9 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeepPartial } from 'typeorm';
 import { NucleoBasico } from './nucleoBasico.entity';
 import { CvuEnlace } from './cvuEnlace.entity';
-
-import * as fs from 'fs';
-import * as path from 'path';
+import { imagenABase64 } from './../utils/imagen.helper';
 
 @Injectable()
 export class NucleoBasicoService {
@@ -17,26 +15,6 @@ export class NucleoBasicoService {
     private readonly cvuRepository: Repository<CvuEnlace>,
   ) { }
 
-  private convertirImagenABase64(rutaRelativa: string): string | null {
-    const imagePath = rutaRelativa.startsWith('uploads')
-      ? path.join(process.cwd(), rutaRelativa)
-      : path.join(process.cwd(), 'uploads', rutaRelativa);
-
-    if (!fs.existsSync(imagePath)) return null;
-
-    const file = fs.readFileSync(imagePath);
-    const base64 = file.toString('base64');
-
-    const ext = path.extname(imagePath).toLowerCase();
-
-    let mimeType = 'image/jpeg';
-    if (ext === '.png') mimeType = 'image/png';
-    if (ext === '.jpg' || ext === '.jpeg') mimeType = 'image/jpeg';
-    if (ext === '.webp') mimeType = 'image/webp';
-
-    return `data:${mimeType};base64,${base64}`;
-  }
-
   // GET ALL
   async obtenerTodos() {
     const registros = await this.nucleoRepository.find({
@@ -44,13 +22,10 @@ export class NucleoBasicoService {
       order: { id: 'ASC' },
     });
 
-    return registros.map((item) => {
-      if (item.imagen) {
-        const base64 = this.convertirImagenABase64(item.imagen);
-        if (base64) item.imagen = base64;
-      }
-      return item;
-    });
+    return registros.map((item) => ({
+      ...item,
+      imagen: imagenABase64(item.imagen),
+    }));
   }
 
   // CREATE
@@ -78,7 +53,6 @@ export class NucleoBasicoService {
           nucleo: { id: guardado.id },
         }),
       );
-
       await this.cvuRepository.save(enlaces);
     }
 
@@ -87,12 +61,10 @@ export class NucleoBasicoService {
       relations: ['cvu_enlaces'],
     });
 
-    if (resultado?.imagen) {
-      const base64 = this.convertirImagenABase64(resultado.imagen);
-      if (base64) resultado.imagen = base64;
-    }
-
-    return resultado;
+    return {
+      ...resultado,
+      imagen: imagenABase64(resultado?.imagen ?? null),
+    };
   }
 
   // UPDATE
@@ -137,12 +109,10 @@ export class NucleoBasicoService {
       relations: ['cvu_enlaces'],
     });
 
-    if (resultado?.imagen) {
-      const base64 = this.convertirImagenABase64(resultado.imagen);
-      if (base64) resultado.imagen = base64;
-    }
-
-    return resultado;
+    return {
+      ...resultado,
+      imagen: imagenABase64(resultado?.imagen ?? null),
+    };
   }
 
   // DELETE
